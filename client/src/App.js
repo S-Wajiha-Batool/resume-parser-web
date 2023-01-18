@@ -5,6 +5,8 @@ import { DataProvider } from './GlobalState';
 import MainPages from './PageRoutes';
 //import Footer from './Components/footer/Footer'
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 function App() {
   return (
@@ -13,6 +15,7 @@ function App() {
         <div className="App">
           <MainPages className='mainpage'/>
         </div>
+        <ToastContainer/>
       </Router>
     </DataProvider>
   );

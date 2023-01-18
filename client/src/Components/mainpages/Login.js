@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { GlobalState } from '../../GlobalState';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { loginAPI } from '../../API/UserAPI';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+
 function Login() {
 
     const navigate = useNavigate();
@@ -26,17 +29,43 @@ function Login() {
             .then(res => {
                 //console.log(res.data)
                 localStorage.setItem('firstLogin', true);
-                alert("Logged in successfully")
-                setToken(res.data.data.accessToken)
-                setIsLogged(true)
+                //alert("Logged in successfully")
+                showSuccessToast("Logged in successfully");
+                setToken(res.data.data.accessToken);
+                //setIsLogged(true)
                 //window.location.href = '/'
                 navigate('/');
             })
             .catch(err => {
                 //console.log(err.response.data)
-                alert(err.response.data.error.msg)
+                //alert(err.response.data.error.msg)
+                showErrorToast(err.response.data.error.msg)
             })
     }
+
+    const showSuccessToast = (msg) => {
+        toast.success(msg, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            //pauseOnHover: true,
+            //draggable: true,
+            progress: undefined,
+            })
+    };
+
+    const showErrorToast = (msg) => {
+        toast.error(msg, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            //pauseOnHover: true,
+            //draggable: true,
+            progress: undefined,
+            })
+    };
 
 
     return (
@@ -89,9 +118,10 @@ function Login() {
                     </div>
 
                     <a href="/register" className="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Register</a>
-
+                    <ToastContainer />
                 </div>
             </div>
+            
         </div>
     )
 }
