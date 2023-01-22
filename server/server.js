@@ -6,8 +6,8 @@ const dotenv = require("dotenv");
 const bodyParser = require('body-parser')
 const mongoose = require("mongoose");
 
-const jds_route = require("./controllers/JD")
-const cvs_route = require("./controllers/CV")
+const jds_route = require("./controllers/JDController")
+const cvs_route = require("./controllers/CVController")
 
 dotenv.config()
 mongoose.connect(process.env.MONGO_URL)
