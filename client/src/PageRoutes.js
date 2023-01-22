@@ -5,6 +5,7 @@ import Login from './Components/mainpages/Login';
 import HomePage from './Components/mainpages/HomePage';
 import Header from './Components/header/Header';
 import Footer from './Components/footer/Footer';
+import JdDetails from './Components/mainpages/JdDetails';
 
 const Layout = () => (
   <>
@@ -26,6 +27,7 @@ function PageRoutes() {
       <Route path="/login" exact element={<Login />} />
       <Route element={<Layout />}>
         <Route path="/" exact element={<HomePage />} />
+        <Route path="/jd/:id" exact element={<JdDetails />} />
       </Route>
     </Routes>
   )
