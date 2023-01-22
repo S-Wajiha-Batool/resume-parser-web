@@ -285,7 +285,7 @@ const userController = {
 
 
         } catch (err) {
-            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+            return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
         }
     }
 }
