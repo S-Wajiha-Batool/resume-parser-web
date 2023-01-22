@@ -1,8 +1,18 @@
 import React, { useContext } from 'react';
 import { GlobalState } from './GlobalState'
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 import Login from './Components/mainpages/Login';
 import HomePage from './Components/mainpages/HomePage';
+import Header from './Components/header/Header';
+import Footer from './Components/footer/Footer';
+
+const Layout = () => (
+  <>
+    <Header />
+    <Outlet />
+    <Footer />
+  </>
+);
 
 function PageRoutes() {
 
@@ -14,7 +24,9 @@ function PageRoutes() {
   return (
     <Routes>
       <Route path="/login" exact element={<Login />} />
-      <Route path="/" exact element={<HomePage />} />
+      <Route element={<Layout />}>
+        <Route path="/" exact element={<HomePage />} />
+      </Route>
     </Routes>
   )
 }

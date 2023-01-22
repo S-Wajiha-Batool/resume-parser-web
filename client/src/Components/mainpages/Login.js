@@ -14,6 +14,7 @@ function Login() {
     const [token, setToken] = state.UserAPI.token;
     const [isLogged, setIsLogged] = state.UserAPI.isLogged;
 
+
     const [user, setUser] = useState({
         email: '', password: ''
     })
@@ -77,7 +78,7 @@ function Login() {
                 </div>
 
                 <div className='card-body'>
-                    <form onSubmit={loginSubmit}>
+                    <form>
                         <div className='form-group mb-3'>
                             <text style={{ marginTop: 5, marginBottom: 5, fontWeight: 500 }}>
                                 Email
@@ -103,7 +104,8 @@ function Login() {
                         </div>
                         <div style={{textAlign: 'center'}}>
                         <button type='button'
-                            class='btn btn-primary'
+                        onClick={loginSubmit}
+                            className='btn btn-primary'
                             value='Submit'
                             position='center'>Submit
                         </button>
