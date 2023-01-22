@@ -9,14 +9,14 @@ const userController = {
         try {
             const user = await User.findOne({ email: req.body.email });
             if (!user) {
-                return res.status(401).json({ error: { code: res.statusCode, msg: "Wrong email" }, data: null })
+                return res.status(401).json({ error: { code: 401, msg: "Wrong email" }, data: null })
             }
             const decrypted_password = CryptoJS.AES.decrypt(user.password, process.env.SECRET_KEY);
 
             const pass = decrypted_password.toString(CryptoJS.enc.Utf8);
 
             if (pass != req.body.password) {
-                return res.status(401).json({ error: { code: res.statusCode, msg: "Wrong password" }, data: null })
+                return res.status(401).json({ error: { code: 401, msg: "Wrong password" }, data: null })
             }
 
             const accessToken = createAccessToken({ id: user._id })
@@ -32,22 +32,22 @@ const userController = {
                 maxAge: 7 * 24 * 60 * 60 * 1000
             })
 
-            return res.status(200).json({ error: { code: res.statusCode, msg: "Login Succesful" }, data: { accessToken: accessToken } })
+            return res.status(200).json({ error: { code: null, msg: null }, data: { accessToken: accessToken } })
 
 
         }
         catch (err) {
-            return res.status(500).json({ error: { code: res.statusCode, msg: statusMessage }, data: null })
+            return res.status(500).json({ error: { code: 500, msg: err }, data: null })
         }
     },
 
     logout: async (req, res) => {
         try {
             res.clearCookie('refreshtoken', { path: '/api/user/refresh_token' })
-            return res.status(200).json({ error: { code: res.statusCode, msg: "Successfully Logged out" }, data: null })
+            return res.status(200).json({ error: { code: null, msg: null }, data: "Successfully Logged out" })
         }
         catch (err) {
-            return res.status(500).json({ error: { code: res.statusCode, msg: res.statusMessage }, data: null })
+            return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
         }
     },
 
@@ -71,9 +71,9 @@ const userController = {
             try {
 
                 const savedUser = await newUser.save()
-                return res.status(200).json({ error: { code: res.statusCode, msg: "Successfully Logged out" }, data: null })
+                return res.status(200).json({ error: { code: null, msg: null }, data: "Successfully Logged out" })
             } catch (err) {
-                res.status(500).json({ error: {code: res.statusCode, msg: res.status}, data: null });
+                res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
             }
         }
         else if (loggedin_user.user_role == 1) {
@@ -83,9 +83,9 @@ const userController = {
             else {
                 try {
                     const savedUser = await newUser.save()
-                    res.status(200).json({ error: {code: res.statusCode, msg: "User Registered"}, data: null });
+                    res.status(200).json({ error: {code: null, msg: null}, data: "User Registered" });
                 } catch (err) {
-                    res.status(500).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: null });
+                    res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
                 }
 
             }
@@ -100,17 +100,17 @@ const userController = {
         if (user.user_role == 0) {
             if (!req?.query?.id) {
                 const all_users = await User.find();
-                res.status(200).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: all_users });
+                res.status(200).json({ error: {code: null, msg: null}, data: all_users });
             }
             else {
                 const selected_user = await User.findById({ _id: req.query.id });
-                res.status(200).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: selected_user })
+                res.status(200).json({ error: {code: null, msg: null}, data: selected_user })
             }
         }
         else if (user.user_role == 1) {
             if (!req?.query?.id) {
                 const all_users = await User.find({ user_role: { $eq: 2 } })
-                res.status(200).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: all_users });
+                res.status(200).json({ error: {code: null, msg: null}, data: all_users });
             }
             else {
                 const selected_user = await User.findById({ _id: req.query.id });
@@ -118,7 +118,7 @@ const userController = {
                     res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null })
                 }
                 else {
-                    res.status(200).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: selected_users });
+                    res.status(200).json({ error: {code: null, msg: err}, data: selected_users });
                 }
             }
         }
@@ -128,7 +128,7 @@ const userController = {
             }
             else {
                 const { user_role, is_active, token, createdAt, updatedAt, __v, ...others } = user._doc;
-                res.status(200).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: others });
+                res.status(200).json({ error: {code: null, msg: null}, data: others });
             }
         }
         else {
@@ -153,9 +153,9 @@ const userController = {
                     },
                     { new: true }
                 );
-                res.status(200).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: updated_user });
+                res.status(200).json({ error: {code: null, msg: null}, data: updated_user });
             } catch (err) {
-                res.status(500).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: null });
+                res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
             }
         }
         else if (loggedin_user.user_role == 1) {
@@ -180,9 +180,9 @@ const userController = {
                                 },
                                 { new: true }
                             );
-                            res.status(200).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: updatedUsers });
+                            res.status(200).json({ error: {code: null, msg: null}, data: updatedUsers });
                         } catch (err) {
-                            res.status(500).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: null });
+                            res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
                         }
                     }
                 }
@@ -199,9 +199,9 @@ const userController = {
                         },
                         { new: true }
                     );
-                    res.status(200).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: updatedUsers });
+                    res.status(200).json({ error: {code: null, msg: null}, data: updatedUsers });
                 } catch (err) {
-                    res.status(500).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: null });
+                    res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
                 }
 
             }
@@ -228,9 +228,9 @@ const userController = {
                             },
                             { new: true }
                         );
-                        res.status(200).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: updatedUser });
+                        res.status(200).json({ error: {code: null, msg: null}, data: updatedUser });
                     } catch (err) {
-                        res.status(500).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: null });
+                        res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
                     }
                 }
             }
@@ -255,11 +255,11 @@ const userController = {
 
 
                 const accessToken = createAccessToken({ id: user.id })
-                return res.status(200).json({ error: { code: res.statusCode, msg: res.statusMessage }, data: accessToken })
+                return res.status(200).json({ error: { code: null, msg: null }, data: accessToken })
             })
 
         } catch (err) {
-            return res.status(500).json({ error: { code: res.statusCode, msg: res.statusMessage }, data: null })
+            return res.status(500).json({ error: { code: res.statusCode, msg: er }, data: null })
         }
     },
 

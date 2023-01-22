@@ -26,9 +26,9 @@ const JDController = {
 
         try {
             const savedJD = await new_jd.save()
-            res.status(200).json({ error: {code: res.statusCode, msg:"JD Created"}, data: null });
+            res.status(200).json({ error: {code: null, msg: null}, data: "JD saved" });
         } catch (err) {
-            res.status(500).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: null });
+            res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
         }
 
     },
@@ -36,16 +36,16 @@ const JDController = {
     getJD: async (req, res) => {
         if (!req.query.id) {
             const all_jds = await JD.find();
-            res.status(200).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: all_jds });
+            res.status(200).json({ error: {code: null, msg: null}, data: all_jds });
         }
         else {
             const selected_jd = await JD.findById({ _id: req.query.id })
-            res.status(200).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: selected_jd });
+            res.status(200).json({ error: {code: null, msg: null}, data: selected_jd });
         }
 
     },
 
-    updatedJD: async (req, res) => {
+    updateJD: async (req, res) => {
         const selected_jd = await JD.findById({ _id: req.params.id })
         if (!selected_jd) {
             res.status(404).json({ code: {code: res.statusCode, msg: "JD not found"}, data: null })
@@ -60,9 +60,9 @@ const JDController = {
                     { new: true }
                 );
 
-                res.status(200).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: updatedJD });
+                res.status(200).json({ error: {code: null, msg: null}, data: updatedJD });
             } catch (err) {
-                res.status(500).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: null });
+                res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
             }
         }
     },
@@ -85,15 +85,15 @@ const JDController = {
                         },
                         { new: true }
                     );
-                    res.status(200).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: updatedJD });
+                    res.status(200).json({ error: {code: null, msg: null}, data: updatedJD });
                 }
             } catch (err) {
-                res.status(500).json({ error: {code: res.statusCode, msg: res.statusMessage}, data: null });
+                res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
             }
         }
     }
 }
 
 
-module.exports = router;
+module.exports = JDController;
 
