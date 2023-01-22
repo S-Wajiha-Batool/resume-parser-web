@@ -69,8 +69,8 @@ function Login() {
 
 
     return (
-        <div className='container col-md-6'  >
-            <div className='card mt-4'>
+        <div className='container col-md-8 d-flex align-items-center justify-content-center vh-100'>
+            <div className='card'>
 
                 <div className="card-header">
                     <h4 style={{ textAlign: 'center' }}>Login</h4>
@@ -95,29 +95,20 @@ function Login() {
                                 Password
                             </text>
                             <input type='password'
-                                //placeholder='Password'
                                 name='password'
                                 value={user.password}
                                 required
                                 onChange={onChangeInput}
                                 className='form-control form-group' />
                         </div>
-
-                        <button type='submit'
-                            className='btn btn-danger btn-block'
-                            variant='primary'
-                            value='Submit'>Submit
+                        <div style={{textAlign: 'center'}}>
+                        <button type='button'
+                            class='btn btn-primary'
+                            value='Submit'
+                            position='center'>Submit
                         </button>
-
-
-
+                        </div>
                     </form>
-
-                    <div className="text-muted " >
-                        Don't have an account?
-                    </div>
-
-                    <a href="/register" className="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Register</a>
                     <ToastContainer />
                 </div>
             </div>
