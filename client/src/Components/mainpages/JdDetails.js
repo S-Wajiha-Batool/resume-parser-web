@@ -19,17 +19,17 @@ function JdDetails() {
             <div class="row align-items-start">
                 <div class="col border border-secondary rounded">
                     <p class="fw-bold fs-6 text-start">Title</p>
-                    <p class="fs-7 text-start border border-secondary rounded border-opacity-50">HR Manager</p>
+                    <p class="fs-7 text-start border border-secondary rounded border-opacity-50 text-wrap">HR Manager</p>
                     <p class="fw-bold fs-6 text-start">Department</p>
-                    <p class="fs-7 text-start border border-secondary rounded border-opacity-50">HR</p>
+                    <p class="fs-7 text-start border border-secondary rounded border-opacity-50 text-wrap">HR</p>
                     <p class="fw-bold fs-6 text-start">Skills</p>
-                    <p class="fs-7 text-start border border-secondary rounded border-opacity-50">Lorem ipsum</p>
+                    <p class="fs-7 text-start border border-secondary rounded border-opacity-50 text-wrap">Lorem ipsum</p>
                     <p class="fw-bold fs-6 text-start">Department</p>
-                    <p class="fs-7 text-start border border-secondary rounded border-opacity-50">Lorem ipsum</p>
+                    <p class="fs-7 text-start border border-secondary rounded border-opacity-50 text-wrap">Lorem ipsum</p>
                     <p class="fw-bold fs-6 text-start">Qualification</p>
-                    <p class="fs-7 text-start border border-secondary rounded border-opacity-50">Lorem ipsum</p>
+                    <p class="fs-7 text-start border border-secondary rounded border-opacity-50 text-wrap">Lorem ipsum</p>
                     <p class="fw-bold fs-6 text-start">Upload date</p>
-                    <p class="fs-7 text-start border border-secondary rounded border-opacity-50">Lorem ipsum</p>
+                    <p class="fs-7 text-start border border-secondary rounded border-opacity-50 text-wrap">Lorem ipsum</p>
                 </div>
                 <div class="col">
                     CV table
