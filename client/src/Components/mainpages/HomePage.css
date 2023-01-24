@@ -1,0 +1,14 @@
+.heading-h1 {
+    flex: auto;
+    align-content: center;
+}
+
+.table {
+    font-size: 1.2em;
+    margin-left: 40px;
+    margin-right: 40px;
+    border-collapse: collapse;
+    border: 1px solid #000;
+    text-align: center;
+    padding: 20px;
+}
