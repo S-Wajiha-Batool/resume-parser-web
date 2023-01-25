@@ -3,6 +3,7 @@ import { Table, TableHead, TableRow, TableCell, TableBody, TableSortLabel } from
 
 const ReusableTable = (props) => {
     const { data } = props;
+    console.log(data);
     const headers = Object.keys(data[0]);
     const [sortType, setSortType] = React.useState({column:null, order:'asc'});
 

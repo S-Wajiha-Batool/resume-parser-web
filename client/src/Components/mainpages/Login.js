@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { loginAPI } from '../../API/UserAPI';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import {showSuccessToast, showErrorToast} from '../utilities/Toasts';
 
 function Login() {
 
@@ -44,29 +45,7 @@ function Login() {
             })
     }
 
-    const showSuccessToast = (msg) => {
-        toast.success(msg, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            //pauseOnHover: true,
-            //draggable: true,
-            progress: undefined,
-            })
-    };
-
-    const showErrorToast = (msg) => {
-        toast.error(msg, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            //pauseOnHover: true,
-            //draggable: true,
-            progress: undefined,
-            })
-    };
+ 
 
 
     return (
