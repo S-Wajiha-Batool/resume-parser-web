@@ -3,10 +3,10 @@ import ReusableTable from '../utilities/ReuseableTable';
 import '../UI/HomePage.css';
 import { useNavigate } from 'react-router-dom';
 import { GlobalState } from '../../GlobalState';
-import { getAllJDsAPI } from '../../API/JDAPI'
+import { getAllJdsAPI } from '../../API/JDAPI'
 import axios from 'axios'
 import LoadingSpinner from '../utilities/LoadingSpinner';
-
+import {showSuccessToast, showErrorToast} from '../utilities/Toasts';
 
 function HomePage() {
 
@@ -21,9 +21,9 @@ function HomePage() {
 
     useEffect(() => {
         if (token) {
-            const getAllJDs = async () => {
+            const getAllJds = async () => {
                 try {
-                    getAllJDsAPI(token)
+                    getAllJdsAPI(token)
                         .then(res => {
                             console.log(res.data)
                             setAllJDs(res.data.data.all_jds)
@@ -32,16 +32,16 @@ function HomePage() {
                         })
                         .catch(err => {
                             console.log(err.response.data)
-                            alert(err.response.data.error.msg)
+                            showErrorToast(err.response.data.error.msg)
                         })
                         .finally(() => {
                             setIsLoading(false);
                         })
                 } catch (err) {
-                    alert(err.response.data.error.msg)
+                    showErrorToast(err.response.data.error.msg)
                 }
             }
-            getAllJDs()
+            getAllJds()
         }
 
     }, [token])

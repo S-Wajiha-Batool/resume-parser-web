@@ -10,7 +10,7 @@ const path = require('path')
 const JDController = {
     createJD: async (req, res) => {
 
-        
+
         var date_ob = new Date();
         var day = ("0" + date_ob.getDate()).slice(-2);
         var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
@@ -26,28 +26,35 @@ const JDController = {
 
         try {
             const savedJD = await new_jd.save()
-            res.status(200).json({ error: {code: null, msg: null}, data: "JD saved" });
+            res.status(200).json({ error: { code: null, msg: null }, data: "JD saved" });
         } catch (err) {
-            res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
+            res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
         }
 
     },
 
     getJD: async (req, res) => {
-        if (!req.query.id) {
-            const all_jds = await JD.find();
-            res.status(200).json({ error: {code: null, msg: null}, data: {all_jds: all_jds} });
+        try {
+            if (!req.query.id) {
+                const all_jds = await JD.find();
+                return res.status(200).json({ error: { code: null, msg: null }, data: { all_jds: all_jds } });
+            }
+
+            else {
+                console.log(req.query.id)
+                const selected_jd = await JD.findById({ _id: req.query.id })
+                return res.status(200).json({ error: { code: null, msg: null }, data: { jd: selected_jd,  cvs: null} });
+            }
         }
-        else {
-            const selected_jd = await JD.findById({ _id: req.query.id })
-            res.status(200).json({ error: {code: null, msg: null}, data: {jd: selected_jd} });
+        catch (err){
+            return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
         }
     },
 
     updateJD: async (req, res) => {
         const selected_jd = await JD.findById({ _id: req.params.id })
         if (!selected_jd) {
-            res.status(404).json({ code: {code: res.statusCode, msg: "JD not found"}, data: null })
+            res.status(404).json({ code: { code: res.statusCode, msg: "JD not found" }, data: null })
         }
         else {
             try {
@@ -59,9 +66,9 @@ const JDController = {
                     { new: true }
                 );
 
-                res.status(200).json({ error: {code: null, msg: null}, data: updatedJD });
+                res.status(200).json({ error: { code: null, msg: null }, data: updatedJD });
             } catch (err) {
-                res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
+                res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
             }
         }
     },
@@ -69,14 +76,14 @@ const JDController = {
     delete_JD: async (req, res) => {
         const selected_jd = await JD.findById({ _id: req.params.id })
         if (!selected_jd) {
-            res.status(404).json({ error: {code: res.statusCode, msg: "JD not found"}, data: null })
+            res.status(404).json({ error: { code: res.statusCode, msg: "JD not found" }, data: null })
         }
         else {
             try {
-                if(!req.body.is_active){
-                    res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null })
+                if (!req.body.is_active) {
+                    res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
                 }
-                else{
+                else {
                     const updatedJD = await JD.findByIdAndUpdate(
                         req.params.id,
                         {
@@ -84,10 +91,10 @@ const JDController = {
                         },
                         { new: true }
                     );
-                    res.status(200).json({ error: {code: null, msg: null}, data: updatedJD });
+                    res.status(200).json({ error: { code: null, msg: null }, data: updatedJD });
                 }
             } catch (err) {
-                res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
+                res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
             }
         }
     }

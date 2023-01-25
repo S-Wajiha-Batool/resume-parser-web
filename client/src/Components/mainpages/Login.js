@@ -14,7 +14,7 @@ function Login() {
 
     const [token, setToken] = state.UserAPI.token;
     const [isLogged, setIsLogged] = state.UserAPI.isLogged;
-
+    const [isLoading, setIsLoading] = useState(false);
 
     const [user, setUser] = useState({
         email: '', password: ''
@@ -31,11 +31,13 @@ function Login() {
             .then(res => {
                 //console.log(res.data)
                 localStorage.setItem('firstLogin', true);
+                setIsLogged(true);
+
                 //alert("Logged in successfully")
                 showSuccessToast("Logged in successfully");
                 setToken(res.data.data.accessToken);
-                //setIsLogged(true)
                 //window.location.href = '/'
+
                 navigate('/');
             })
             .catch(err => {

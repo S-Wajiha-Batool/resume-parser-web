@@ -1,9 +1,10 @@
 import React from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody, TableSortLabel } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 
 const ReusableTable = (props) => {
     const { data } = props;
-    console.log(data);
+    const navigate = useNavigate();
     const headers = Object.keys(data[0]);
     const [sortType, setSortType] = React.useState({column:null, order:'asc'});
 
@@ -61,7 +62,10 @@ const ReusableTable = (props) => {
             </TableHead>
             <TableBody>
                 {sortedData.map((item, index) => (
-                    <TableRow key={index}>
+                    <TableRow key={index}
+                    onClick={() => {
+                        navigate(`/jd/${item._id}`)
+                    }}>
                         {headers.map((header, index) => (
                             <TableCell key={index}>
                                 {item[header]}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { showErrorToast } from '../Components/utilities/Toasts'
 import axios from 'axios'
 let timer = null
 
@@ -13,34 +14,36 @@ export default function UserAPI() {
     const firstLogin = localStorage.getItem('firstLogin')
 
     useEffect(() => {
-
-        console.log('login')
-            if (firstLogin) {
-                const refreshToken = async () => {
-                    await axios.get("api/user/refresh_token")
-                        .then(res => {
-                            timer = setTimeout(() => {
-                                refreshToken()
-                            }, 60 * 60 * 1000)
-                            console.log(res.data)
-                            setToken(res.data.data)
-                            setIsLogged(true)
-                        })
-                        .catch(err => {
-                            setIsLogged(false)
-                            //setIsAdmin(false)
-                            setUser(false)
-                            localStorage.removeItem('firstLogin')
-                            alert(err.response.data.error.msg)
-                            console.log(err.response.data)
-                            clearTimeout(timer);
-                        }) 
-                        
-                    }
-                    refreshToken()
+        if (firstLogin) {
+            const refreshToken = async () => {
+                await axios.get("api/user/refresh_token")
+                    .then(res => {
+                        console.log('refresh')
+                        timer = setTimeout(() => {
+                            refreshToken()
+                        }, 60 * 60 * 1000)
+                        console.log(res.data)
+                        setToken(res.data.data)
+                        setIsLogged(true)
+                    })
+                    .catch(err => {
+                        setIsLogged(false)
+                        //setIsAdmin(false)
+                        setToken(false)
+                        setUser(false)
+                        localStorage.removeItem('firstLogin')
+                        showErrorToast(err.response.data.error.msg)
+                        clearTimeout(timer);
+                    })
+            }
+            refreshToken()
+        }
+        else {
+            //setIsLogged(false)
+            showErrorToast("Please login to proceed")
         }
     }, [])
-    
+
     useEffect(() => {
         if (token) {
             const getUser = async () => {
@@ -48,32 +51,32 @@ export default function UserAPI() {
                     await axios.get(`api/user/profile`, {
                         headers: { token: `Bearer ${token}` }
                     })
-                    .then(res => {
-                        console.log(res.data)
-                        setUser(res.data.data)
-                    })
-                    .catch(err => {
-                        console.log(err.response.data)
-                        alert(err.response.data.error.msg)
+                        .then(res => {
+                            console.log(res.data)
+                            setUser(res.data.data)
                         })
-
+                        .catch(err => {
+                            console.log(err.response.data)
+                            setIsLogged(false)
+                            setToken(false)
+                            alert(err.response.data.error.msg)
+                        })
                 } catch (err) {
-                    alert(err.response.data.msg)
+                    alert(err.response.data.error.msg)
+                    setIsLogged(false)
+                    setToken(false)
                 }
             }
             getUser()
         }
 
-            else{
-                setIsLogged(false)
-            }
-    },[token,userCallback])
+    }, [token, userCallback])
 
-  return {
-    isLogged: [isLogged, setIsLogged],
-    user: [user, setUser],
-    token: [token, setToken],
-  }
+    return {
+        isLogged: [isLogged, setIsLogged],
+        user: [user, setUser],
+        token: [token, setToken],
+    }
 }
 
 export const loginAPI = async (user) => {
