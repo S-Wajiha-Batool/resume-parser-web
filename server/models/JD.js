@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const JDsSchema = new mongoose.Schema({
-	text:{
+	jd_url:{
 	  type: String,
 	  required: true
     },
@@ -10,15 +10,29 @@ const JDsSchema = new mongoose.Schema({
     },
     is_active:{
         type: Boolean,
-        required: true
+        required: true,
+        default: true
     },
     upload_date:{
         type: Date,
         required: true
-    }
+    },
+    department_name:{
+        type: String,
+        required: true
+    },
+    job_posted_by:{
+        type: String,
+        required: true
+    },
+    skills:{
+        type: [String],
+        required: true
+    },
+    
 },
     {
 	timestamps:true
     })
     
-module.exports = mongoose.model('JDs', JDsSchema)    
+module.exports = mongoose.model('JD', JDsSchema)    

@@ -6,8 +6,8 @@ const dotenv = require("dotenv");
 const bodyParser = require('body-parser')
 const mongoose = require("mongoose");
 
-const jds_route = require("./controllers/JD")
-const cvs_route = require("./controllers/CV")
+const jds_route = require("./controllers/JDController")
+const cvs_route = require("./controllers/CVController")
 
 dotenv.config()
 mongoose.connect(process.env.MONGO_URL)
@@ -23,9 +23,11 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}));
 
 app.use('/api/user', require('./routes/userRouter'))
+app.use('/api/CV', require('./routes/CVRouter'))
+app.use('/api/JD', require('./routes/JDRouter'))
 
-app.use("/resume_parser", jds_route);
-app.use("/resume_parser", cvs_route);
+// app.use("/resume_parser", jds_route);
+// app.use("/resume_parser", cvs_route);
 app.use("/uploaded_JDs", express.static('uploaded_JDs'))
 app.use("/uploaded_CVs", express.static('uploaded_CVs'))
 app.listen(process.env.PORT || 3002, () =>{
