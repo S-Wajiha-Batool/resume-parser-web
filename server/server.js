@@ -23,8 +23,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}));
 
 app.use('/api/user', require('./routes/userRouter'))
-app.use('/api/CV', require('./routes/CVRouter'))
-app.use('/api/JD', require('./routes/JDRouter'))
+app.use('/api/cv', require('./routes/CVRouter'))
+app.use('/api/jd', require('./routes/JDRouter'))
 
 // app.use("/resume_parser", jds_route);
 // app.use("/resume_parser", cvs_route);

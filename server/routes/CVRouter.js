@@ -9,8 +9,8 @@ router.post('/createCV', upload_cv.single('CV') , CVController.createCv)
 
 router.get('/getCV/:id?', CVController.getCV)
 
-router.put('updateCV/:id', CVController.updatCV)
+router.put('/updateCV/:id', CVController.updatCV)
 
-router.get('getallCV/:id', CVController.getallCV) //JD ID will be given
+router.get('/getallCV/:id', CVController.getallCV) //JD ID will be given
 
 module.exports = router;

@@ -13,6 +13,7 @@ export default function UserAPI() {
     const firstLogin = localStorage.getItem('firstLogin')
 
     useEffect(() => {
+
         console.log('login')
             if (firstLogin) {
                 const refreshToken = async () => {

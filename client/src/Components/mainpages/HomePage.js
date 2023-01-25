@@ -16,33 +16,35 @@ function HomePage() {
     console.log(allJDs)
     const [isLoading, setIsLoading] = useState(true);
     const [success, setSuccess] = useState(false);
-console.log('loading: ' + isLoading);
-console.log('success: ' + success);
+    console.log('loading: ' + isLoading);
+    console.log('success: ' + success);
 
     useEffect(() => {
-        const getAllJDs = async () => {
-            try {
-                //getAllJDsAPI(token)
-                await axios.get('https://jsonplaceholder.typicode.com/posts')
-                    .then(res => {
-                        console.log(res.data)
-                        setAllJDs(res.data)
-                        console.log(allJDs)
-                        setSuccess(true);
-                    })
-                    .catch(err => {
-                        console.log(err.response.data)
-                        alert(err.response.data.error.msg)
-                    })
-                    .finally(() => {
-                        setIsLoading(false);
-                    })
-            } catch (err) {
-                alert(err.response.data.error.msg)
+        if (token) {
+            const getAllJDs = async () => {
+                try {
+                    getAllJDsAPI(token)
+                        .then(res => {
+                            console.log(res.data)
+                            setAllJDs(res.data.data.all_jds)
+                            console.log(allJDs)
+                            setSuccess(true);
+                        })
+                        .catch(err => {
+                            console.log(err.response.data)
+                            alert(err.response.data.error.msg)
+                        })
+                        .finally(() => {
+                            setIsLoading(false);
+                        })
+                } catch (err) {
+                    alert(err.response.data.error.msg)
+                }
             }
+            getAllJDs()
         }
-        getAllJDs()
-    }, [])
+
+    }, [token])
 
 
 
@@ -70,16 +72,16 @@ console.log('success: ' + success);
     //if (isLoading) return null
 
     return (
-            isLoading ? <LoadingSpinner />: 
+        isLoading ? <LoadingSpinner /> :
             success ? <div>
-            <h1 className='heading-h1'>Job Descriptions</h1>
+                <h1 className='heading-h1'>Job Descriptions</h1>
                 <div>
                     <ReusableTable
                         className='table'
                         data={allJDs}
                     />
                 </div>
-            </div> : null      
+            </div> : null
     )
 }
 

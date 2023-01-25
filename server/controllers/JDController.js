@@ -36,13 +36,12 @@ const JDController = {
     getJD: async (req, res) => {
         if (!req.query.id) {
             const all_jds = await JD.find();
-            res.status(200).json({ error: {code: null, msg: null}, data: all_jds });
+            res.status(200).json({ error: {code: null, msg: null}, data: {all_jds: all_jds} });
         }
         else {
             const selected_jd = await JD.findById({ _id: req.query.id })
-            res.status(200).json({ error: {code: null, msg: null}, data: selected_jd });
+            res.status(200).json({ error: {code: null, msg: null}, data: {jd: selected_jd} });
         }
-
     },
 
     updateJD: async (req, res) => {
