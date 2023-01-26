@@ -9,8 +9,7 @@ const path = require('path')
 
 const JDController = {
     createJD: async (req, res) => {
-
-
+        try {
         var date_ob = new Date();
         var day = ("0" + date_ob.getDate()).slice(-2);
         var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
@@ -18,13 +17,13 @@ const JDController = {
         var date = year + "-" + month + "-" + day;
 
         const new_jd = new JD({
-            text: req.file.path,
+            jd_url: req.file.path,
             position_name: req.body.position_name,
-            is_active: req.body.is_active,
+            department_name: req.body.department_name,
+            job_posted_by: req.user.id,
             upload_date: date
         });
-
-        try {
+        
             const savedJD = await new_jd.save()
             res.status(200).json({ error: { code: null, msg: null }, data: "JD saved" });
         } catch (err) {
