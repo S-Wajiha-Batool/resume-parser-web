@@ -18,8 +18,8 @@ const JDController = {
 
         const new_jd = new JD({
             jd_url: req.file.path,
-            position_name: req.body.position_name,
-            department_name: req.body.department_name,
+            position_name: req.body.position,
+            department_name: req.body.department,
             job_posted_by: req.user.id,
             upload_date: date
         });
