@@ -4,12 +4,12 @@ const { verifyToken, verifyTokenAndAuth } = require('../middleware/verifyToken')
 const upload_jd = require('../Middleware/upload_jd')
 const path = require('path')
 
-router.post('/create_jd', upload_jd.array('JD') , JDController.createJD)
+router.post('/upload_jd', upload_jd.single('file'), JDController.createJD)
 
-router.get('/get_jd/:id?', verifyToken, JDController.getJD)
+router.get('/get_jd/:id?',verifyToken, JDController.getJD)
 
-router.put('/update_jd/:id', JDController.updateJD)
+router.put('/update_jd/:id', verifyToken, JDController.updateJD)
 
-router.put('/delete_jd/:id', JDController.delete_JD)
+router.put('/delete_jd/:id', verifyToken, JDController.delete_JD)
 
 module.exports = router;

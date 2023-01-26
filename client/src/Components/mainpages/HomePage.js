@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import ReusableTable from '../utilities/ReuseableTable';
 import '../UI/HomePage.css';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +6,9 @@ import { GlobalState } from '../../GlobalState';
 import { getAllJdsAPI } from '../../API/JDAPI'
 import axios from 'axios'
 import LoadingSpinner from '../utilities/LoadingSpinner';
-import {showSuccessToast, showErrorToast} from '../utilities/Toasts';
+import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
+import { Container, Row, Col, Modal, Button, Form } from 'react-bootstrap';
+const FormData = require('form-data');
 
 function HomePage() {
 
@@ -18,7 +20,46 @@ function HomePage() {
     const [success, setSuccess] = useState(false);
     console.log('loading: ' + isLoading);
     console.log('success: ' + success);
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
+    // for upload jd ----
+    const inputRef = useRef();
+
+    const [jd, setJd] = useState({ position: "", department: "HR", file: null })
+    console.log(jd)
+    const [uploadedFileName, setUploadedFileName] = useState(null);
+
+    const departments = ["HR", "IT", "Finance", "Marketing", "Software Engineering"]
+
+    const onFileChange = (e) => {
+        console.log("upload")
+        inputRef.current.click();
+       
+    };
+
+    const onChangeInput = e => {
+        const { name, value } = e.target;
+        setJd({ ...jd, [name]: value })
+    }
+
+  const handleDisplayFileDetails = (e) => {
+    inputRef.current?.files &&
+      setUploadedFileName(inputRef.current.files[0].name);
+      const { name, value } = e.target;
+      console.log(e.target.files)
+      setJd({ ...jd, [name]: value });
+  };
+
+  const handleSubmit = () => {
+    let formData = new FormData();
+      formData.append('position', jd.position);
+      formData.append('department', jd.department);
+      formData.append('file', jd.file);
+        
+    }
+    //------
     useEffect(() => {
         if (token) {
             const getAllJds = async () => {
@@ -46,42 +87,104 @@ function HomePage() {
 
     }, [token])
 
-
-
-    ////// will replace createData and rows with actual data
-    // function createData(number, item, qty, price, temp) {
-    //     return { number, item, qty, price, temp};
-    //   }
-
-    // const rows = fetch('http://localhost:5000/api/jobs').then(res => res.json()).then(data => {
-    //     console.log(data);
-    //     return data;
-    // });
-
-    //   const rows = [
-    //     createData(1, "Apple", 5, 3,"temp"),
-    //     createData(2, "Orange", 2, 2,"temp"),
-    //     createData(3, "Grapes", 3, 1,"temp"),
-    //     createData(4, "Tomato", 2, 1.6,"temp"),
-    //     createData(5, "Mango", 1.5, 4,"temp")
-    //   ];
-
-    // const [data, setData] = useState(rows);
-    // console.log(data);
-
-    //if (isLoading) return null
-
     return (
         isLoading ? <LoadingSpinner /> :
-            success ? <div>
-                <h1 className='heading-h1'>Job Descriptions</h1>
-                <div>
-                    <ReusableTable
-                        className='table'
-                        data={allJDs}
-                    />
+            success ? 
+                <> <Container>
+                    <Row>
+                        <Col><h1 className='heading-h1'>Job Descriptions</h1></Col>
+                        <Col><Button onClick={handleShow}>Add JD</Button></Col>
+                    </Row>
+                    <div>
+                        {allJDs.length !==0 && 
+                        <ReusableTable
+                            className='table'
+                            data={allJDs}
+                        />}
+
+                        {allJDs.length ===0 && 
+                            <div>No JDs found</div>}
+                    </div>
+                </Container>
+
+                    <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Add Job Description</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form.Group>
+                                <Form.Label>Position</Form.Label>
+                                <Form.Control type='text'
+                                    name='position'
+                                    placeholder='Position'
+                                    value={jd.position}
+                                    required
+                                    onChange={onChangeInput} />
+                            </Form.Group>
+                            <br />
+
+                            <select className="form-control"
+                                name='department'
+                                value={jd.department}
+                                onChange={onChangeInput}>
+                                {departments.map((d, key) => {
+                                    return <option className='option' key={key} value={d}>{d}</option>;
+                                })}
+                            </select>
+                            <br />
+                            <Row>
+                                {/* <label className='mainLabel'> File</label>
+                                <div className=''>FileName</div>
+                                <input className='file_up' type='file' name='file' required accept='image/*' onChange={onFileChange("file")}></input> */}
+                                <input
+        ref={inputRef}
+        required 
+        onChange={handleDisplayFileDetails}
+        className="d-none"
+        type="file"
+        accept="application/msword, application/pdf"
+      />
+      <button
+        name='file'
+        onClick={onFileChange}
+        className={`btn btn-outline-${
+          uploadedFileName ? "success" : "primary"
+        }`}
+      >
+        {uploadedFileName ? uploadedFileName : "Upload"}
+      </button>
+                            </Row>
+
+                            <Row>
+              <Form.Group as={Col} md="12" controlId="photo">
+                <input
+                  type="file"
+                  ref={inputRef}
+                  name="file"
+                  style={{ display: "none" }}
+                  onChange={handleDisplayFileDetails}
+                  accept="application/msword, application/pdf"
+                />
+                <div className="file-box">
+                  <Button type="button" onClick={onFileChange}>
+                    Upload File
+                  </Button>
+                  <span style={{ paddingLeft: "10px", marginTop: "5px" }}>
+                    {uploadedFileName}
+                  </span>
                 </div>
-            </div> : null
+              </Form.Group>
+              </Row>
+                            <br />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button className='primary-button' onClick={handleSubmit}>
+                                DONE
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </>
+                : "No Jds found" 
     )
 }
 

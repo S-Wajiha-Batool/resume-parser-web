@@ -17,9 +17,12 @@ export const getAllJdsAPI = async (token) => {
 }
 
 export const getJdAPI = async (id, token) => {
-    console.log(id)
     return await axios.get(`/api/jd/get_jd/${id}`, {
         headers: {token: `Bearer ${token}`}
     })
+}
+
+export const addJdAPI = async (jd, token) => {
+    return await axios.post(`/api/jd/`)
 }
 
