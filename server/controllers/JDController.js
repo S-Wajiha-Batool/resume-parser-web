@@ -10,6 +10,8 @@ const path = require('path')
 const JDController = {
     createJD: async (req, res) => {
         try {
+            console.log('body', req.body)
+            console.log('file', req.file)
         var date_ob = new Date();
         var day = ("0" + date_ob.getDate()).slice(-2);
         var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
@@ -24,10 +26,10 @@ const JDController = {
             upload_date: date
         });
         
-            const savedJD = await new_jd.save()
-            res.status(200).json({ error: { code: null, msg: null }, data: "JD saved" });
+            //const savedJD = await new_jd.save()
+            return res.status(200).json({ error: { code: null, msg: null }, data: {msg: "JD saved"}});
         } catch (err) {
-            res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
         }
 
     },
