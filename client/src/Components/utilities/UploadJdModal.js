@@ -13,17 +13,17 @@ import '../UI/UploadJdModal.css'
 import {skills} from '../../constants'
 
 function UploadJdModal({ showModal, handleCloseModal }) {
+    console.log(Object.values(Object.values(skills[0])))
 
-//     const map = () => {
-//         var arr = [];
-//         skills.map(s => {
-//         })
-//         console.log(Object.values(skills[0]))
+    const [skillss, setSkills] = useState([])
+    const map = () => {
+        
+        console.log(Object.values(Object.values(skills(0))))
 
-//     }
-// useEffect(() => {
-//     map()
-// },[])
+    }
+    useEffect(() => {
+        setSkills(Object.values(skills[0]))
+    },[])
     const top100Films = [
         { title: 'The Shawshank Redemption', year: 1994 },
         { title: 'The Godfather', year: 1972 },
@@ -189,11 +189,11 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                         <Form.Label>Skills</Form.Label>
                         <StyledEngineProvider injectFirst>
                             <Autocomplete
-                                isOptionEqualToValue={(option, value) => option === value}
+                                isOptionEqualToValue={(option, value) => option.skill_name === value.skill_name}
                                 multiple
                                 id="checkboxes-tags-demo"
                                 size="small"
-                                options={top100Films}
+                                options={Object.values(Object.values(skills[0]))}
                                 disableCloseOnSelect
                                 getOptionLabel={(option) => option.skill_name}
                                 onChange={onChangeSkills}
@@ -205,7 +205,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                                             style={{ marginRight: 8 }}
                                             checked={selected}
                                         />
-                                        {option.title}
+                                        {option.skill_name}
                                     </li>
                                 )}
                                 style={{ width: 500 }}
