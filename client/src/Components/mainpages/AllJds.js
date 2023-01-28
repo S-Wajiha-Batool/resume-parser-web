@@ -3,11 +3,11 @@ import ReusableTable from '../utilities/ReuseableTable';
 import '../UI/AllJds.css';
 import { useNavigate } from 'react-router-dom';
 import { GlobalState } from '../../GlobalState';
-import { getAllJdsAPI, addJdAPI } from '../../API/JDAPI'
-import axios from 'axios'
+import { getAllJdsAPI, addJdAPI} from '../../API/JDAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { Container, Row, Col, Modal, Button, Form } from 'react-bootstrap';
+import UploadJdModal from '../utilities/UploadJdModal';
 const FormData = require('form-data');
 
 function AllJds() {
@@ -20,9 +20,9 @@ function AllJds() {
     const [success, setSuccess] = useState(false);
     console.log('loading: ' + isLoading);
     console.log('success: ' + success);
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const [showModal, setShowModal] = useState(false);
+    const handleCloseModal = () => setShowModal(false);
+    const handleShowModal = () => setShowModal(true);
 
     // for upload jd ----
     const inputRef = useRef();
@@ -64,7 +64,7 @@ function AllJds() {
                 console.log(res.data)
                 showSuccessToast(res.data.data.msg);
                 setCallback(!callback)
-                setShow(false)
+                setShowModal(false)
             })
             .catch(err => {
                 //console.log(err.response.data)
@@ -104,7 +104,7 @@ function AllJds() {
                 <> <Container>
                     <Row>
                         <Col><h1 className='heading-h1'>Job Descriptions</h1></Col>
-                        <Col><Button onClick={handleShow}>Add JD</Button></Col>
+                        <Col><Button onClick={handleShowModal}>Add JD</Button></Col>
                     </Row>
                     <div>
                         {allJDs.length !== 0 &&
@@ -117,8 +117,8 @@ function AllJds() {
                             <div>No JDs found</div>}
                     </div>
                 </Container>
-
-                    <Modal show={show} onHide={handleClose}>
+                <UploadJdModal showModal={showModal} handleCloseModal={handleCloseModal}/>
+                    {/* <Modal show={show} onHide={handleClose}>
                         <Form onSubmit={handleSubmit}>
                             <Modal.Header closeButton>
                                 <Modal.Title>Add Job Description</Modal.Title>
@@ -149,9 +149,9 @@ function AllJds() {
 
                                 <br />
                                 <Form.Group>
-                                    {/* <label className='mainLabel'> File</label>
-                                <div className=''>FileName</div>
-                                <input className='file_up' type='file' name='file' required accept='image/*' onChange={onFileChange("file")}></input> */}
+                                    // <label className='mainLabel'> File</label>
+                                //<div className=''>FileName</div>
+                                //<input className='file_up' type='file' name='file' required accept='image/*' onChange={onFileChange("file")}></input> 
                                     <input
                                         ref={inputRef}
                                         required
@@ -196,7 +196,7 @@ function AllJds() {
                             </Modal.Footer>
                         </Form>
 
-                    </Modal>
+                    </Modal> */}
                 </>
                 : "No Jds found"
     )

@@ -32,17 +32,13 @@ export default function UserAPI() {
                         setToken(false)
                         setUser(false)
                         localStorage.removeItem('firstLogin')
-                        showErrorToast(err.response.data.error.msg)
+                        alert(err.response.data.error.msg)
                         clearTimeout(timer);
                     })
             }
             refreshToken()
         }
-        else {
-            //setIsLogged(false)
-            showErrorToast("Please login to proceed")
-        }
-    }, [])
+    }, [localStorage.getItem('firstLogin')])
 
     useEffect(() => {
         if (token) {
@@ -69,7 +65,10 @@ export default function UserAPI() {
             }
             getUser()
         }
-
+        else {
+            setIsLogged(false)
+            //showErrorToast("Please login to proceed")
+        }
     }, [token, userCallback])
 
     return {
