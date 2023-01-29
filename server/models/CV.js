@@ -4,17 +4,12 @@ const CVsSchema = new mongoose.Schema({
 	  type: String,
 	  required: true
     },
-	position:{
+	position_name:{
 	  type: String,
 	  required: true
     },
     upload_date:{
         type: Date,
-        required: true
-    },
-    JD_ID:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "JD",
         required: true
     },
     department_name:{
@@ -48,6 +43,10 @@ const CVsSchema = new mongoose.Schema({
         required: true
     },
     full_name:{
+        type: String,
+        required: true
+    },
+    uploaded_by:{
         type: String,
         required: true
     }

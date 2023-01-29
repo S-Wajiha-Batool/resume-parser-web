@@ -2,14 +2,14 @@ const User = require("../models/Users")
 
 const mongoose = require("mongoose")
 const CV_JD_Schema = new mongoose.Schema({
-	processed_JD_ID: {
+	JD_ID: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "processed_JD",
+        ref: "JD",
         required: true
     },
-    processed_CV_ID:{
+    CV_ID:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "processed_CV",
+        ref: "CV",
         required: true
     },
     weighted_percentage:{
@@ -19,6 +19,11 @@ const CV_JD_Schema = new mongoose.Schema({
     rank:{
         type: Number, 
         reuired: true
+    },
+    hire_status:{
+        type: String,
+        requires: true,
+        enum: ["Rejected", "Pending", "Accepted"]
     }
     
 },

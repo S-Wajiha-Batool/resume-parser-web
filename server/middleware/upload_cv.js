@@ -15,8 +15,8 @@ var upload = multer({
     storage: storage,
     fileFilter: function(req, file, callback){
         if(
-            file.mimetype == 'application/doc' ||
-            file.mimetype == 'application/docx' ||
+            file.mimetype == 'application/msword' ||
+            file.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
             file.mimetype == 'application/pdf'
         ){
             callback(null, true)

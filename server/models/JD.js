@@ -21,7 +21,7 @@ const JDsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    job_posted_by:{
+    uploaded_by:{
         type: String,
         required: true
     },
@@ -29,6 +29,14 @@ const JDsSchema = new mongoose.Schema({
         type: [String],
         required: true
     },
+    experiance:{
+        type: Number,
+        required: true
+    },
+    qualification:{
+        type: String,
+        required: true
+    }
     
 },
     {
