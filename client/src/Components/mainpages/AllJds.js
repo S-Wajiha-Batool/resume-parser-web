@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import ReusableTable from '../utilities/ReuseableTable';
+import JdTable from '../utilities/JdTable';
 import '../UI/AllJds.css';
 import { useNavigate } from 'react-router-dom';
 import { GlobalState } from '../../GlobalState';
-import { getAllJdsAPI, addJdAPI} from '../../API/JDAPI'
+import { getAllJdsAPI, addJdAPI } from '../../API/JDAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
-import { Container, Row, Col, Modal, Button, Form } from 'react-bootstrap';
+import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import UploadJdModal from '../utilities/UploadJdModal';
 const FormData = require('form-data');
 
@@ -99,16 +99,17 @@ function AllJds() {
     }, [token])
 
     return (
-        isLoading ? <LoadingSpinner /> :
+        isLoading ?
+            <LoadingSpinner /> :
             success ?
                 <> <Container>
-                    <Row>
-                        <Col><h1 className='heading-h1'>Job Descriptions</h1></Col>
-                        <Col><Button onClick={handleShowModal}>Add JD</Button></Col>
+                    <Row >
+                        <Col><h3>Job Descriptions</h3></Col>
+                        <Col className='uploadJd_btn'><Button onClick={handleShowModal}>Add JD</Button></Col>
                     </Row>
                     <div>
                         {allJDs.length !== 0 &&
-                            <ReusableTable
+                            <JdTable
                                 className='table'
                                 data={allJDs}
                             />}
@@ -117,7 +118,7 @@ function AllJds() {
                             <div>No JDs found</div>}
                     </div>
                 </Container>
-                <UploadJdModal showModal={showModal} handleCloseModal={handleCloseModal}/>
+                    <UploadJdModal showModal={showModal} handleCloseModal={handleCloseModal} />
                     {/* <Modal show={show} onHide={handleClose}>
                         <Form onSubmit={handleSubmit}>
                             <Modal.Header closeButton>

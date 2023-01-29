@@ -1,12 +1,12 @@
 import React from 'react';
-import '../UI/LoadingSpinner.css'
+import {Spinner} from 'react-bootstrap'
 
 function LoadingSpinner() {
     console.log('loader')
     return (
-        <div className="spinner-container">
-          <div className="loading-spinner"></div>
-        </div>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: "100%", height: "70vh" }}>
+      <Spinner animation="border" variant="secondary" />
+  </div>
       );
 }
 

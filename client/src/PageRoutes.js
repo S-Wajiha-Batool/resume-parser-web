@@ -10,7 +10,7 @@ import JdDetails from './Components/mainpages/JdDetails';
 const Layout = () => (
   <>
     <Header />
-    <Outlet />
+    <Outlet/>
     <Footer />
   </>
 );

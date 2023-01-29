@@ -4,7 +4,7 @@ const { verifyToken, verifyTokenAndAuth } = require('../middleware/verifyToken')
 const upload_jd = require('../Middleware/upload_jd')
 const path = require('path')
 
-router.post('/upload_jd', upload_jd.single('file'), JDController.createJD)
+router.post('/upload_jd', verifyToken, JDController.createJD)
 
 router.get('/get_jd/:id?',verifyToken, JDController.getJD)
 

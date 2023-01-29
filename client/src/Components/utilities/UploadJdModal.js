@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { GlobalState } from '../../GlobalState';
-import { Container, Row, Col, Modal, Button, Form, FormLabel } from 'react-bootstrap';
+import { Container, Row, Col, Modal, Button, Form, FormLabel, Spinner } from 'react-bootstrap';
 import { Checkbox, TextField, Autocomplete } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
@@ -10,20 +10,28 @@ import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { addJdAPI } from '../../API/JDAPI'
 import arrow from '../../Icons/down_arrow.svg'
 import '../UI/UploadJdModal.css'
-import {skills} from '../../constants'
+import { skills, departments, experience, qualification, universities } from '../../constants'
 
 function UploadJdModal({ showModal, handleCloseModal }) {
-    console.log(Object.values(Object.values(skills[0])))
+    const [jd, setJd] = useState({ position: "", department: "HR", skills: [], experience: "None", qualification: '', universities: [] })
+    console.log(jd)
 
-    const [skillss, setSkills] = useState([])
-    const map = () => {
-        
-        console.log(Object.values(Object.values(skills(0))))
-
-    }
     useEffect(() => {
-        setSkills(Object.values(skills[0]))
-    },[])
+            if (!showModal){
+                setValidated(false)
+            }   
+    }, [showModal])
+
+    const [isUploadingJd, setIsUploadingJd] = useState(false)
+
+    const map = () => {
+        var a = [];
+        jd.skills.map(s => {
+            a.push(s.skill_name)
+        })
+        console.log(a)
+    }
+
     const top100Films = [
         { title: 'The Shawshank Redemption', year: 1994 },
         { title: 'The Godfather', year: 1972 },
@@ -81,13 +89,6 @@ function UploadJdModal({ showModal, handleCloseModal }) {
     const [token] = state.UserAPI.token;
     const [callback, setCallback] = state.JDAPI.callback;
 
-    const [jd, setJd] = useState({ position: "", department: undefined, skills: [], experience: -1, qualification: '' })
-    console.log(jd)
-
-    const departments = ["HR", "IT", "Finance", "Marketing", "Software Engineering"]
-    const experience = ["None", "6 months", "1 year", "2 years", "3 years", "4 years", "5 years", "6 years", "7 years", "8 years", "9 years", "10 years", "10+ years"]
-    const qualification = ["BS-Computer Science", "BS-Social Sciences", "Bachelors of Business Administration"]
-
     const onChangeInput = e => {
         const { name, value } = e.target;
         setJd({ ...jd, [name]: value })
@@ -96,6 +97,11 @@ function UploadJdModal({ showModal, handleCloseModal }) {
     const onChangeSkills = (e, value) => {
         setJd({ ...jd, 'skills': value })
     }
+
+    const onChangeUniversities = (e, value) => {
+        setJd({ ...jd, 'universities': value })
+    }
+
     const [validated, setValidated] = useState(false);
 
 
@@ -105,29 +111,29 @@ function UploadJdModal({ showModal, handleCloseModal }) {
             e.preventDefault();
             e.stopPropagation();
         }
-
         setValidated(true);
         console.log('in submit')
         e.preventDefault()
-        let formData = new FormData();
-        formData.append('position', jd.position);
-        formData.append('department', jd.department);
-
-        addJdAPI(formData, token)
+        setIsUploadingJd(true);
+        addJdAPI(jd, token)
             .then(res => {
                 console.log(res.data)
                 showSuccessToast(res.data.data.msg);
                 setCallback(!callback)
                 handleCloseModal()
+                setJd({ position: "", department: "HR", skills: [], experience: "None", qualification: '', universities: []})
             })
             .catch(err => {
                 showErrorToast(err.response.data.error.msg)
+            })
+            .finally(() => {
+                setIsUploadingJd(false)
             })
     }
 
     return (
         <Modal show={showModal} onHide={handleCloseModal}>
-            <Form onSubmit={handleSubmit}>
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add Job Description</Modal.Title>
                 </Modal.Header>
@@ -140,7 +146,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                             value={jd.position}
                             required
                             onChange={onChangeInput} />
-                        </Form.Group>
+                    </Form.Group>
                     <br />
                     <Form.Group>
                         <Form.Label>
@@ -154,7 +160,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                                 return <option className='option' key={key} value={d}>{d}</option>;
                             })}
                         </Form.Select>
-                        </Form.Group>
+                    </Form.Group>
                     <br />
                     <Row>
                         <Col>
@@ -215,15 +221,50 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                                 )}
                             />
                         </StyledEngineProvider>
-
                     </Row>
-
-
+                    <br />
+                    <Row>
+                        <Form.Label>Universities</Form.Label>
+                        <StyledEngineProvider injectFirst>
+                            <Autocomplete
+                                isOptionEqualToValue={(option, value) => option === value}
+                                multiple
+                                id="checkboxes-tags-demo"
+                                size="small"
+                                options={universities}
+                                disableCloseOnSelect
+                                getOptionLabel={(option) => option}
+                                onChange={onChangeUniversities}
+                                renderOption={(props, option, { selected }) => (
+                                    <li {...props}>
+                                        <Checkbox
+                                            icon={icon}
+                                            checkedIcon={checkedIcon}
+                                            style={{ marginRight: 8 }}
+                                            checked={selected}
+                                        />
+                                        {option}
+                                    </li>
+                                )}
+                                style={{ width: 500 }}
+                                renderInput={(params) => (
+                                    <TextField required {...params} placeholder="Universities" />
+                                )}
+                            />
+                        </StyledEngineProvider>
+                    </Row>
                     <br />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button className='primary-button' type='submit' onClick={handleSubmit}>
-                        DONE
+                    <Button variant='primary' type='submit' disabled={isUploadingJd} onClick={!isUploadingJd ? handleSubmit : null}>
+                        {isUploadingJd && <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />}
+                        {isUploadingJd ? " Uploading Jd..." : "Done"}
                     </Button>
                 </Modal.Footer>
             </Form>

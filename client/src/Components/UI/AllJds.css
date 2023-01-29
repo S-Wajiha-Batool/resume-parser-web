@@ -12,3 +12,11 @@
     text-align: center;
     padding: 20px;
 }
+
+.uploadJd_btn{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.heading_row{
+}
