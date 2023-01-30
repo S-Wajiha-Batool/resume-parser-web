@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody, TableSortLabel } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 
-const ReusableTable = (props) => {
+const JdTable = (props) => {
     const { data } = props;
     const navigate = useNavigate();
     const headers = Object.keys(data[0]);
@@ -78,4 +78,4 @@ const ReusableTable = (props) => {
     );
 };
 
-export default ReusableTable;
+export default JdTable;

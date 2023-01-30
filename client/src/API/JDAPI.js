@@ -1,11 +1,13 @@
 import axios from 'axios'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 export default function JDAPI() {
     const [allJDs, setAllJDs] = useState([]);
+    const [callback, setCallback] = useState(false);
     
     return {
-        allJDs : [allJDs, setAllJDs]
+        allJDs : [allJDs, setAllJDs],
+        callback: [callback, setCallback]
     }
 }
 
@@ -17,8 +19,13 @@ export const getAllJdsAPI = async (token) => {
 }
 
 export const getJdAPI = async (id, token) => {
-    console.log(id)
     return await axios.get(`/api/jd/get_jd/${id}`, {
+        headers: {token: `Bearer ${token}`}
+    })
+}
+
+export const addJdAPI = async (jd, token) => {
+    return await axios.post(`/api/jd/upload_jd`, jd, {
         headers: {token: `Bearer ${token}`}
     })
 }

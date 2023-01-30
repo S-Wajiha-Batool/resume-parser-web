@@ -1,0 +1,16 @@
+.css-wb47ya-MuiFormControl-root-MuiTextField-root:focus {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+
+.MuiTextField-root:hover {
+    color: #2e8b57;
+  }
+
+
+  .MuiInput-underline:hover:not(.Mui-disabled):before{
+    border-bottom: 0 !important;
+}

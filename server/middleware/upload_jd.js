@@ -3,9 +3,10 @@ const multer = require('multer')
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb){
-        cb(null, 'uploaded_JDs/')
+        cb(null, './uploaded_JDs/')
     },
     filename: function(req, file, cb){
+        console.log('file',file)
         let ext = path.extname(file.originalname)
         cb(null, Date.now() + ext)
     }
@@ -20,14 +21,15 @@ var upload = multer({
             file.mimetype == 'application/pdf'
         ){
             callback(null, true)
-        }else{
+        }
+        else{
             console.log("Only doc, docx and pdf files supported!")
             callback(null, false)
         }
     },
-    limits: {
-        fileSize: 1024 * 1024 * 5
-    }
+    // limits: {
+    //     fileSize: 1024 * 1024 * 5
+    // }
 })
 
 module.exports = upload

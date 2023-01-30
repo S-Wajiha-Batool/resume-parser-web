@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const JD = require("../models/JD")
+const Users = require("../models/Users")
 const CryptoJS = require("crypto-js");
 const jwt = require('jsonwebtoken');
 const { verifyToken, verifyTokenAndAuth } = require('../middleware/verifyToken');
@@ -12,33 +13,38 @@ const CV = require('../models/CV');
 
 const JDController = {
     createJD: async (req, res) => {
+        try {
 
+        const user = await Users.findById(req.user.id)
+        if (!user) return res.status(404).json({ error: { code: res.statusCode, msg: 'No user found' }, data: null })
 
+        const {position, department, experience, qualification, skills, universities} = req.body
+            
+        if (Object.keys(position, department, experience, qualification).length === 0) {
+            return res.status(404).json({ error: { code: res.statusCode, msg: 'Input data missing' }, data: null })
+        }
+
+        // we dont need upload date, timestamps has it
         var date_ob = new Date();
         var day = ("0" + date_ob.getDate()).slice(-2);
         var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
         var year = date_ob.getFullYear();
         var date = year + "-" + month + "-" + day;
 
-        var upload_date = date.toString();
-        upload_date = upload_date.substring(0, 10);
+        // const new_jd = new JD({
+        //     jd_url: req.file.path,
+        //     position_name: req.body.position,
+        //     department_name: req.body.department,
+        //     job_posted_by: req.user.id,
+        //     upload_date: date
+        // });
 
-        const new_jd = new JD({
-            jd_url: req.file.path,
-            position_name: req.body.position_name,
-            upload_date: upload_date,
-            department_name: req.body.department_name,
-            uploaded_by: req.body.uploaded_by,
-            skills: req.body.skills,
-            experiance: req.body.experiance,
-            qualification: req.body.qualification
-        });
-
-        try {
-            const savedJD = await new_jd.save()
-            res.status(200).json({ error: { code: null, msg: null }, data: "JD saved" });
+        //use this after db update
+        //const newJd = new JD({position, department, experience, qualification, skills, universities, uploaded_by: user._id })
+        //if (!newJd) return res.status(404).json({ error: { code: res.statusCode, msg: 'Job not posted' }, data: null })
+            return res.status(200).json({ error: { code: null, msg: null }, data: {msg: "JD uploaded successfully"}});
         } catch (err) {
-            res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
         }
 
     },
