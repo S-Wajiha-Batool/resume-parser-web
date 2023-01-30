@@ -7,24 +7,19 @@ const upload_cv = require('../Middleware/upload_cv')
 const path = require('path');
 const JD = require('../models/JD');
 const CV_JD = require('../models/CV_JD');
+const Users = require('../models/Users');
 
 const CVController = {
     createCV: async (req, res) => {
 
-        var date_ob = new Date();
-        var day = ("0" + date_ob.getDate()).slice(-2);
-        var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-        var year = date_ob.getFullYear();
-        var date = year + "-" + month + "-" + day;
-
-        var upload_date = date.toString();
-        upload_date = upload_date.substring(0, 10);
+        const user = await Users.findById(req.user.id)
+            console.log(user._id)
+            if (!user) return res.status(404).json({ error: { code: res.statusCode, msg: 'No user found' }, data: null })
 
         const new_CV = new CV({
             cv_url: req.file.path,
-            position_name: req.body.position_name,
-            upload_date: upload_date,
-            department_name: req.body.department_name,
+            position: req.body.position,
+            department: req.body.department,
             skills: req.body.skills,
             experiance: req.body.experiance,
             qualification: req.body.qualification,
@@ -32,7 +27,7 @@ const CVController = {
             email: req.body.email,
             phone_number: req.body.phone_number,
             full_name: req.body.full_name,
-            uploaded_by: req.body.uploaded_by
+            uploaded_by: user._id
         });
 
         try {

@@ -1,18 +1,19 @@
 const mongoose = require("mongoose")
+const User = require("../models/Users")
 const CVsSchema = new mongoose.Schema({
 	cv_url:{
 	  type: String,
 	  required: true
     },
-	position_name:{
+	position:{
 	  type: String,
 	  required: true
     },
-    upload_date:{
-        type: Date,
-        required: true
-    },
-    department_name:{
+    // upload_date:{
+    //     type: Date,
+    //     required: true
+    // },
+    department:{
         type: String,
         required: true
     },
@@ -47,7 +48,8 @@ const CVsSchema = new mongoose.Schema({
         required: true
     },
     uploaded_by:{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
         required: true
     }
 },
@@ -58,4 +60,4 @@ const CVsSchema = new mongoose.Schema({
         var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         return re.test(email)
     };
-module.exports = mongoose.model('CV', CVsSchema)    
+module.exports = mongoose.model('cvs', CVsSchema)    

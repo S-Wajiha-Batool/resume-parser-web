@@ -5,7 +5,7 @@ const upload_cv = require('../middleware/upload_cv')
 const path = require('path');
 const { Router } = require('express');
 
-router.post('/createCV', upload_cv.single('cv_url') , CVController.createCV)
+router.post('/createCV', verifyToken, upload_cv.single('cv_url') , CVController.createCV)
 
 router.get('/getCV/:id?', CVController.getCV)
 

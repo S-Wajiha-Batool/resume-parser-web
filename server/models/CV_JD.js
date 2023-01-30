@@ -4,12 +4,12 @@ const mongoose = require("mongoose")
 const CV_JD_Schema = new mongoose.Schema({
 	JD_ID: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "JD",
+        ref: "jds",
         required: true
     },
     CV_ID:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "CV",
+        ref: "cvs",
         required: true
     },
     weighted_percentage:{
@@ -31,4 +31,4 @@ const CV_JD_Schema = new mongoose.Schema({
 	timestamps:true
     })
     
-module.exports = mongoose.model('CV_JD', CV_JD_Schema)    
+module.exports = mongoose.model('cvs_jds', CV_JD_Schema)    
