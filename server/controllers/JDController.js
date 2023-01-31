@@ -11,7 +11,9 @@ const CV_JD = require("../models/CV_JD");
 const CV = require('../models/CV');
 const { Console } = require('console');
 const { type } = require('os');
-let ObjectId = require('mongodb').ObjectID;
+//let ObjectId = require('mongodb').ObjectID;
+const mongoose = require('mongoose');
+const { ObjectId } = require('mongodb');
 //const JDController = require('../controllers/JDController')
 
 const JDController = {
@@ -139,15 +141,19 @@ const JDController = {
             else {
                 const JD_detail = await CV_JD.find({ JD_ID: { $eq: req.params.id } });
                 //console.log("JD_Details", JD_detail)
+                console.log(req.params.id)
+                //const id = new mongoose.Types.ObjectID(req.params.id)
+
+                const id = ObjectId(req.params.id);
 
                 CV_JD.aggregate([
                     {
-                        $filter: { JD_ID: req.params.id }
+                        $match: { JD_ID: id }
                         },
                     {
                     $lookup: {
-                        from: "jds",
-                        localField: "JD_ID",
+                        from: "cvs",
+                        localField: "CV_ID",
                         foreignField: "_id",
                         as: "matchlist"
                     }
