@@ -8,23 +8,78 @@ const path = require('path');
 const JD = require('../models/JD');
 const CV_JD = require('../models/CV_JD');
 const Users = require('../models/Users');
+const { spawn } = require("child_process");
+var request = require('request-promise');
 
 const CVController = {
     parseCV: async (req, res) => {
         try{
-        const user = await Users.findById(req.user.id)
+            const user = await Users.findById(req.user.id)
             console.log(user._id)
             if (!user) return res.status(404).json({ error: { code: res.statusCode, msg: 'No user found' }, data: null })
 
+            var ids = []
+            var data = []
+            console.log(req.files)
+            const promises = req.files.map(async (file) => new Promise(async (resolve, reject) => {
+                    resolve(data.push(file.filename))
+            }))
+
+            await Promise.all(promises)
+            console.log(data)
+
+            var options = {
+                method: 'POST',
+                uri: 'http://127.0.0.1:5000/parse_cv',
+                body: data,
+                json: true
+            };
+
+            await new Promise( async (resolve, reject) => {
+                
+                var sendrequest = await request(options)
+                .then(function (parsedBody) {
+                    console.log(parsedBody);
+                    resolve(ids=parsedBody)
+                    //return res.status(200).json({ error: { code: res.statusCode, msg: err }, data: parsedBody })
+                })
+                .catch(function (err) {
+                    console.log(err)
+                    //return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+                });
+            })
+            
+
+
+            // const childPython = spawn('python', ['./parse_cv.py', '1675098578460.pdf']);
+            // childPython.stderr.pipe(process.stderr)
+
+            // childPython.stdout.on('data', (data) => {
+            //     //console.log(data)
+            //     return res.status(200).json({ error: { code: null, msg: null }, data: data.toString() })
+            // });
+
+            // childPython.stderr.on('data', (data) => {
+            //     console.error(`There was an error: ${data.toString}`);
+            //     return res.status(200).json({ error: { code: null, msg: null }, data: data.toString() })
+            // });
+
+            // await new Promise( (resolve) => {
+            //     childPython.on('close', (code) => {
+            //         console.log(`child process exited with code ${code}`);
+            //     });
+            // })
+
+            
         // const new_CV = new CV({
         //     CV: req.file.path,
         //     position_name: req.body.position_name,
         //     upload_date: date
         // });
-
+            console.log(ids[0].name)
         
             //const savedcCV = await new_CV.save()
-            return res.status(200).json({ error: {code: null, msg: null}, data: {ids: []}});
+            return res.status(200).json({ error: {code: null, msg: null}, data: {ids: ids}});
         } catch (err) {
             return res.status(500).json({ error: {code: null, msg: err.message}, data: null });
         }

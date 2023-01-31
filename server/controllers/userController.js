@@ -3,6 +3,7 @@ const User = require("../models/Users")
 const CryptoJS = require("crypto-js");
 const jwt = require('jsonwebtoken');
 const { spawn } = require('child_process');
+var request = require('request-promise');
 
 const userController = {
     login: async (req, res) => {
@@ -52,14 +53,9 @@ const userController = {
     },
 
     profile: async (req, res) => {
-        try {
-            const user = await User.findOne({ _id: req.user.id });
-            const { user_role, is_active, token, createdAt, updatedAt, __v, ...others } = user._doc;
-            return res.status(200).json({ error: { code: null, msg: null }, data: others })
-        }
-        catch (err) {
-            return res.status(500).json({ error: { code: 500, msg: err }, data: null })
-        }
+        const user = await User.findOne({ _id: req.user.id });
+        const { user_role, is_active, token, createdAt, updatedAt, __v, ...others } = user._doc;
+        return res.status(200).json({ error: { code: null, msg: null }, data: others })
     },
 
     createUser: async (req, res) => {
@@ -103,55 +99,38 @@ const userController = {
     getAllUsers: async (req, res) => {
         const user = await User.findOne({ _id: req.user.id });
         if (user.user_role == 0) {
-            try{
-                if (!req?.query?.id) {
-                    const all_users = await User.find();
-                    res.status(200).json({ error: { code: null, msg: null }, data: all_users });
-                }
-                else {
-                    const selected_user = await User.findById({ _id: req.query.id });
-                    res.status(200).json({ error: { code: null, msg: null }, data: selected_user })
-                }
+            if (!req?.query?.id) {
+                const all_users = await User.find();
+                res.status(200).json({ error: { code: null, msg: null }, data: all_users });
             }
-            catch(err){
-                res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
+            else {
+                const selected_user = await User.findById({ _id: req.query.id });
+                res.status(200).json({ error: { code: null, msg: null }, data: selected_user })
             }
         }
         else if (user.user_role == 1) {
-            try{
-                if (!req?.query?.id) {
-                    const all_users = await User.find({ user_role: { $eq: 2 } })
-                    res.status(200).json({ error: { code: null, msg: null }, data: all_users });
-                }
-                else {
-                    const selected_user = await User.findById({ _id: req.query.id });
-                    if (selected_user.user_role !== 2) {
-                        res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
-                    }
-                    else {
-                        res.status(200).json({ error: { code: null, msg: err }, data: selected_users });
-                    }
-                }
+            if (!req?.query?.id) {
+                const all_users = await User.find({ user_role: { $eq: 2 } })
+                res.status(200).json({ error: { code: null, msg: null }, data: all_users });
             }
-            catch(err){
-                res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
-            }
-            
-        }
-        else if (user.user_role == 2) {
-            try{
-                if (req.query.id) {
+            else {
+                const selected_user = await User.findById({ _id: req.query.id });
+                if (selected_user.user_role !== 2) {
                     res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
                 }
                 else {
-                    const { user_role, is_active, token, createdAt, updatedAt, __v, ...others } = user._doc;
-                    res.status(200).json({ error: { code: null, msg: null }, data: others });
+                    res.status(200).json({ error: { code: null, msg: err }, data: selected_users });
                 }
             }
-            catch(err){
-                res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
+        }
+        else if (user.user_role == 2) {
+            if (req.query.id) {
+                res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
             }
-            
+            else {
+                const { user_role, is_active, token, createdAt, updatedAt, __v, ...others } = user._doc;
+                res.status(200).json({ error: { code: null, msg: null }, data: others });
+            }
         }
         else {
             res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
@@ -287,24 +266,49 @@ const userController = {
 
     testPython: async (req, res) => {
         try {
-            const childPython = spawn('python', ['./script.py', 'node.js', 'python']);
+            // const childPython = spawn('python', ['./script.py', 'node.js', 'python']);
 
-            childPython.stdout.on('data', (data) => {
-                console.log(`The new random number is: ${data}`)
-                return res.status(200).json({ error: { code: null, msg: null }, data: `The new random number is: ${data}` })
+            // childPython.stdout.on('data', (data) => {
+            //     console.log(`The new random number is: ${data}`)
+            //     return res.status(200).json({ error: { code: null, msg: null }, data: `The new random number is: ${data}` })
 
-            });
+            // });
 
-            childPython.stderr.on('data', (data) => {
-                console.error(`There was an error: ${data}`);
-                return res.status(200).json({ error: { code: null, msg: null }, data: data })
-            });
+            // childPython.stderr.on('data', (data) => {
+            //     console.error(`There was an error: ${data}`);
+            //     return res.status(200).json({ error: { code: null, msg: null }, data: data })
+            // });
 
-            childPython.on('close', (code) => {
-                console.log(`child process exited with code ${code}`);
-            });
+            // childPython.on('close', (code) => {
+            //     console.log(`child process exited with code ${code}`);
+            // });
 
 
+            // This variable contains the data
+            // you want to send 
+            var data = {
+                array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            }
+
+            var options = {
+                method: 'POST',
+                uri: 'http://127.0.0.1:5000/parse_cv',
+                body: data,
+                json: true
+            };
+
+            var sendrequest = await request(options)
+                .then(function (parsedBody) {
+                    console.log(parsedBody);
+                    let result;
+                    result = parsedBody['result'];
+                    console.log("Sum of Array from Python: ", result);
+                    return res.status(200).json({ error: { code: res.statusCode, msg: err }, data: result })
+
+                })
+                .catch(function (err) {
+                    return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
+                });
 
         } catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
