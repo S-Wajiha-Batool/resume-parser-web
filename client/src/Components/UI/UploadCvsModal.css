@@ -1,0 +1,14 @@
+.file_row{
+    display: flex;
+    justify-content: space-between;
+}
+
+.remove_action{
+    color: rgb(243, 70, 70) ;
+    text-decoration: underline;
+    font-size: 12px
+}
+
+.remove_action:hover{
+    
+}

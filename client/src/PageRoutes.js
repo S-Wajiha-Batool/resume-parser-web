@@ -17,8 +17,8 @@ const Layout = () => (
 
 function PageRoutes() {
   const state = useContext(GlobalState)
-  const [isLogged, setIsLogged] = state.UserAPI.isLogged
-  //const isLogged = localStorage.getItem('firstLogin')
+  //const [isLogged, setIsLogged] = state.UserAPI.isLogged
+  const isLogged = localStorage.getItem('firstLogin')
   console.log(isLogged)
   //const [isAdmin, setIsAdmin] = state.UserAPI.isAdmin
   const navigate = useNavigate()

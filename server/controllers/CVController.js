@@ -3,12 +3,27 @@ const CV = require("../models/CV")
 const CryptoJS = require("crypto-js");
 const jwt = require('jsonwebtoken');
 const { verifyToken, verifyTokenAndAuth } = require('../middleware/verifyToken');
-const upload_cv = require('../Middleware/upload_cv')
+const upload_cv = require('../middleware/upload_cv')
 const path = require('path');
 const JD = require('../models/JD');
+const fs = require('fs')
+
 
 const CVController = {
     createCv: async (req, res) => {
+        try {
+
+        console.log(req.files)
+
+        // req.files.map((file) => {
+        //     if (file.size > (1024 * 1024)) {
+        //         return res.status(404).json({ error: { code: res.statusCode, msg:`File ${file.originalname} size is too large` }, data: null })
+        //     }
+
+        //     if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'application/msword' && file.mimetype !== 'application/pdf') {
+        //         return res.status(404).json({ error: { code: res.statusCode, msg: `File ${file.originalname} format is incorrect` }, data: null })
+        //     }
+        // })
 
         var date_ob = new Date();
         var day = ("0" + date_ob.getDate()).slice(-2);
@@ -16,17 +31,17 @@ const CVController = {
         var year = date_ob.getFullYear();
         var date = year + "-" + month + "-" + day;
 
-        const new_CV = new CV({
-            CV: req.file.path,
-            position_name: req.body.position_name,
-            upload_date: date
-        });
+        // const new_CV = new CV({
+        //     CV: req.file.path,
+        //     position_name: req.body.position_name,
+        //     upload_date: date
+        // });
 
-        try {
-            const savedcCV = await new_CV.save()
-            res.status(200).json({ error: {code: null, msg: null}, data: "CV Saved" });
+        
+            //const savedcCV = await new_CV.save()
+            return res.status(200).json({ error: {code: null, msg: null}, data: {ids: []}});
         } catch (err) {
-            res.status(500).json({ error: {code: null, msg: err}, data: null });
+            return res.status(500).json({ error: {code: null, msg: err.message}, data: null });
         }
 
     },
@@ -77,6 +92,20 @@ const CVController = {
 
     }
 
+}
+
+const removeFiles = () => {
+    fs.unlink('fileToBeRemoved', function(err) {
+        if(err && err.code == 'ENOENT') {
+            // file doens't exist
+            console.info("File doesn't exist, won't remove it.");
+        } else if (err) {
+            // other errors, e.g. maybe we don't have enough permission
+            console.error("Error occurred while trying to remove file");
+        } else {
+            console.info(`removed`);
+        }
+    });
 }
 
 module.exports = CVController;

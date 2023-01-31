@@ -16,7 +16,7 @@ export default function UserAPI() {
     useEffect(() => {
         if (firstLogin) {
             const refreshToken = async () => {
-                await axios.get("api/user/refresh_token")
+                await axios.get("/api/user/refresh_token")
                     .then(res => {
                         console.log('refresh')
                         timer = setTimeout(() => {
@@ -44,7 +44,7 @@ export default function UserAPI() {
         if (token) {
             const getUser = async () => {
                 try {
-                    await axios.get(`api/user/profile`, {
+                    await axios.get(`/api/user/profile`, {
                         headers: { token: `Bearer ${token}` }
                     })
                         .then(res => {

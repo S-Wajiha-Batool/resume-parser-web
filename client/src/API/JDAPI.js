@@ -13,7 +13,7 @@ export default function JDAPI() {
 
 export const getAllJdsAPI = async (token) => {
     console.log(token)
-    return await axios.get(`api/jd/get_jd`, {
+    return await axios.get(`/api/jd/get_jd`, {
         headers: {token: `Bearer ${token}`}
     })
 }

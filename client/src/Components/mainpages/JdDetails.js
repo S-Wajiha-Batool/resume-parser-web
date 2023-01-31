@@ -1,21 +1,25 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {useParams} from 'react-router-dom'
+import React, { useState, useEffect, useContext } from 'react';
+import { useParams } from 'react-router-dom'
 import { GlobalState } from '../../GlobalState';
 import { getJdAPI } from '../../API/JDAPI'
-import {showSuccessToast, showErrorToast} from '../utilities/Toasts';
+import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import '../UI/JdDetails.css'
 import LoadingSpinner from '../utilities/LoadingSpinner';
+import UploadCvsModal from '../utilities/UploadCvsModal';
 
 function JdDetails() {
     const state = useContext(GlobalState);
+    const [showModal, setShowModal] = useState(false);
+    const handleCloseModal = () => setShowModal(false);
+    const handleShowModal = () => setShowModal(true);
     const [token] = state.UserAPI.token;
     const [jd, setJd] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [success, setSuccess] = useState(false);
-
     const { id } = useParams()
-   
+console.log(id)
+
     useEffect(() => {
         if (token) {
             const getJd = async () => {
@@ -35,7 +39,7 @@ function JdDetails() {
                             setIsLoading(false);
                         })
                 } catch (err) {
-                    showErrorToast(err.response.data.error.msg)
+                    showErrorToast(err)
                 }
             }
             getJd()
@@ -44,27 +48,28 @@ function JdDetails() {
 
     return (
         isLoading ?
-            <LoadingSpinner/> :
+            <LoadingSpinner /> :
             success ?
                 <> <Container>
-                    <Row>
-                <Col><h4>Job Description # {id}</h4></Col>
-                <Col className='uploadCv_btn'>
-                <Button >Add CV</Button>
-                </Col>
-            </Row>
                     <div>
                         {jd.length !== 0 &&
-                            <></>}
-
+                            <>
+                                
+                            </>}
                         {jd.length === 0 &&
                             <div>JD not found</div>}
                     </div>
                 </Container>
-                    
                 </>
-                : "Jd not found"
-            
+                : <div>Jd not found<Row>
+                                    <Col><h4>Job Description # {id}</h4></Col>
+                                    <Col className='uploadCv_btn'>
+                                        <Button onClick={handleShowModal}>Add CV</Button>
+                                    </Col>
+                                    <UploadCvsModal showModal={showModal} handleCloseModal={handleCloseModal} />
+
+                                </Row></div>
+
         // <div class="container text-center">
         //     <div class="row justify-content-between">
         //         <div class="col-4">

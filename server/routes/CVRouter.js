@@ -2,10 +2,11 @@ const router = require('express').Router()
 const CVController = require('../controllers/CVController')
 const { verifyToken, verifyTokenAndAuth } = require('../middleware/verifyToken');
 const upload_cv = require('../Middleware/upload_cv')
+const fileFilterMiddleware = require('../Middleware/fileSizeHandler')
 const path = require('path');
 const { Router } = require('express');
 
-router.post('/createCV', upload_cv.single('CV') , CVController.createCv)
+router.post('/parse_cv', verifyToken , upload_cv.array('files') , fileFilterMiddleware, CVController.createCv)
 
 router.get('/getCV/:id?', CVController.getCV)
 

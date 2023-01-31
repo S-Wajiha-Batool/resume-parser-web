@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import JdTable from '../utilities/JdTable';
 import '../UI/AllJds.css';
-import { useNavigate } from 'react-router-dom';
 import { GlobalState } from '../../GlobalState';
 import { getAllJdsAPI, addJdAPI } from '../../API/JDAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
@@ -37,7 +36,6 @@ function AllJds() {
     const onFileChange = (e) => {
         console.log("upload")
         inputRef.current.click();
-
     };
 
     const onChangeInput = e => {
