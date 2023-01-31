@@ -22,6 +22,12 @@ const JDController = {
             console.log(user._id)
             if (!user) return res.status(404).json({ error: { code: res.statusCode, msg: 'No user found' }, data: null })
 
+            const {position, department, experience, qualification, skills, universities} = req.body
+            
+            if (Object.keys(position, department, experience, qualification).length === 0) {
+                return res.status(404).json({ error: { code: res.statusCode, msg: 'Input data missing' }, data: null })
+            }
+
             // const {position, department, experience, qualification, skills, universities} = req.body
 
             // we dont need upload date, timestamps has it
@@ -32,15 +38,15 @@ const JDController = {
             var date = year + "-" + month + "-" + day;
 
             const newJd = new JD({
-                position: req.body.position,
-                department: req.body.department,
-                experience: req.body.experience,
-                qualification: req.body.qualification,
-                skills: req.body.skills,
-                universities: req.body.universities,
+                position: position,
+                department: department,
+                experience: experience,
+                qualification: qualification,
+                skills: skills,
+                universities: universities,
                 uploaded_by: user._id
             });
-            try {
+            
                 // if (newJd(position, department, experience, qualification, skills, universities).length === 0) {
                 //     return res.status(404).json({ error: { code: res.statusCode, msg: 'Input data missing' }, data: null })
                 // }
@@ -50,9 +56,6 @@ const JDController = {
                     const savedJD = await newJd.save()
                     return res.status(200).json({ error: { code: null, msg: null }, data: { msg: "JD uploaded successfully" } });
                 }
-            } catch (err) {
-                return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
-            }
 
         } catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });

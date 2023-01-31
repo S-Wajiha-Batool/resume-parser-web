@@ -13,7 +13,7 @@ import '../UI/UploadJdModal.css'
 import { skills, departments, experience, qualification, universities } from '../../constants'
 
 function UploadJdModal({ showModal, handleCloseModal }) {
-    const [jd, setJd] = useState({ position: "", department: "HR", skills: [], experience: "None", qualification: '', universities: [] })
+    const [jd, setJd] = useState({ position: "", department: "HR", skills: [], experience: "None", qualification: 'BS-Computer Science', universities: [] })
     console.log(jd)
 
     useEffect(() => {

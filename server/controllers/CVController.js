@@ -10,7 +10,7 @@ const CV_JD = require('../models/CV_JD');
 const Users = require('../models/Users');
 
 const CVController = {
-    createCV: async (req, res) => {
+    parseCV: async (req, res) => {
         try{
         const user = await Users.findById(req.user.id)
             console.log(user._id)

@@ -6,7 +6,7 @@ const fileFilterMiddleware = require('../Middleware/fileSizeHandler')
 const path = require('path');
 const { Router } = require('express');
 
-router.post('/parse_cv', verifyToken , upload_cv.array('files') , fileFilterMiddleware, CVController.createCv)
+router.post('/parse_cv', verifyToken , upload_cv.array('files') , fileFilterMiddleware, CVController.parseCV)
 
 router.get('/getCV/:id?', CVController.getCV)
 
