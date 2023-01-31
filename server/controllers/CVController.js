@@ -6,30 +6,15 @@ const { verifyToken, verifyTokenAndAuth } = require('../middleware/verifyToken')
 const upload_cv = require('../middleware/upload_cv')
 const path = require('path');
 const JD = require('../models/JD');
-const fs = require('fs')
-
+const CV_JD = require('../models/CV_JD');
+const Users = require('../models/Users');
 
 const CVController = {
-    createCv: async (req, res) => {
-        try {
-
-        console.log(req.files)
-
-        // req.files.map((file) => {
-        //     if (file.size > (1024 * 1024)) {
-        //         return res.status(404).json({ error: { code: res.statusCode, msg:`File ${file.originalname} size is too large` }, data: null })
-        //     }
-
-        //     if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'application/msword' && file.mimetype !== 'application/pdf') {
-        //         return res.status(404).json({ error: { code: res.statusCode, msg: `File ${file.originalname} format is incorrect` }, data: null })
-        //     }
-        // })
-
-        var date_ob = new Date();
-        var day = ("0" + date_ob.getDate()).slice(-2);
-        var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-        var year = date_ob.getFullYear();
-        var date = year + "-" + month + "-" + day;
+    createCV: async (req, res) => {
+        try{
+        const user = await Users.findById(req.user.id)
+            console.log(user._id)
+            if (!user) return res.status(404).json({ error: { code: res.statusCode, msg: 'No user found' }, data: null })
 
         // const new_CV = new CV({
         //     CV: req.file.path,
@@ -47,22 +32,29 @@ const CVController = {
     },
 
     getCV: async (req, res) => {
+        try {
+            console.log(req.params.id)
 
-        if (!req.query.id) {
-            const all_cvs = await CV.find();
-            res.status(200).json({ error: {code: null, msg: null}, data: all_cvs });
-        }
-        else {
-            const selected_cv = await CV.findById({ _id: req.query.id })
-            res.status(200).json({ error: {code: null, msg: null},data: selected_cv });
-        }
+            if (!req.params.id) {
+                const all_cvs = await CV.find();
+                return res.status(200).json({ error: { code: null, msg: null }, data: { all_cvs: all_cvs } });
+            }
 
+            else {
+                console.log(req.params.id)
+                const selected_cv = await CV.findById({ _id: req.query.id })
+                return res.status(200).json({ error: { code: null, msg: null }, data: { cv: selected_cv,  cvs: null} });
+            }
+        }
+        catch (err){
+            return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
+        }
     },
 
     updatCV: async (req, res) => {
         const selected_cv = await CV.findById({ _id: req.params.id })
         if (!selected_cv) {
-            res.status(404).json({ error: {code: res.statusCode, msg: "CV not found"}, data: null })
+            return res.status(404).json({ error: {code: res.statusCode, msg: "CV not found"}, data: null })
         }
         else {
             try {
@@ -74,23 +66,34 @@ const CVController = {
                     { new: true }
                 );
 
-                res.status(200).json({ error: {code: null, msg: null}, data: updatedCV });
+                return res.status(200).json({ error: {code: null, msg: null}, data: updatedCV });
             } catch (err) {
-                res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
+                return res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
             }
         }
     },
-    getallCV: async(req, res) => {
-        try{
-            const cvs = await JD.find({ JD_ID: { $eq: req.params.id } });
-            res.status(200).json({ error: {code: null, msg: null}, data: cvs });
-        }
-        catch(err){
-            res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null})
-        }
+    
+    create_rankings: async(req, res) =>{
+        const new_CV_JD = new CV_JD({
+            JD_ID: req.body.JD_ID,
+            CV_ID: req.body.CV_ID,
+            weighted_percentage: req.body.weighted_percentage,
+            rank: req.body.rank,
+            hire_status: req.body.hire_status
+        });
 
+        try {
+            const savedCV_JD = await new_CV_JD.save()
+            return res.status(200).json({ error: {code: null, msg: null}, data: "Rank Created" });
+        } catch (err) {
+            return res.status(500).json({ error: {code: null, msg: err}, data: null });
+        }
+    },
 
+    update_rankings: async(req, res) =>{
+        
     }
+    
 
 }
 

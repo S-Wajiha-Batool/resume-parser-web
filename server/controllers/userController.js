@@ -52,9 +52,14 @@ const userController = {
     },
 
     profile: async (req, res) => {
-        const user = await User.findOne({ _id: req.user.id });
-        const { user_role, is_active, token, createdAt, updatedAt, __v, ...others } = user._doc;
-        return res.status(200).json({ error: { code: null, msg: null }, data: others })
+        try {
+            const user = await User.findOne({ _id: req.user.id });
+            const { user_role, is_active, token, createdAt, updatedAt, __v, ...others } = user._doc;
+            return res.status(200).json({ error: { code: null, msg: null }, data: others })
+        }
+        catch (err) {
+            return res.status(500).json({ error: { code: 500, msg: err }, data: null })
+        }
     },
 
     createUser: async (req, res) => {
@@ -73,66 +78,83 @@ const userController = {
                 const savedUser = await newUser.save()
                 return res.status(200).json({ error: { code: null, msg: null }, data: "Successfully Logged out" })
             } catch (err) {
-                res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
+                res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
             }
         }
         else if (loggedin_user.user_role == 1) {
             if (newUser.user_role !== 2) {
-                res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null })
+                res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
             }
             else {
                 try {
                     const savedUser = await newUser.save()
-                    res.status(200).json({ error: {code: null, msg: null}, data: "User Registered" });
+                    res.status(200).json({ error: { code: null, msg: null }, data: "User Registered" });
                 } catch (err) {
-                    res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
+                    res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
                 }
 
             }
         }
         else if (loggedin_user.user_role == 2) {
-            res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null })
+            res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
         }
     },
 
     getAllUsers: async (req, res) => {
         const user = await User.findOne({ _id: req.user.id });
         if (user.user_role == 0) {
-            if (!req?.query?.id) {
-                const all_users = await User.find();
-                res.status(200).json({ error: {code: null, msg: null}, data: all_users });
+            try{
+                if (!req?.query?.id) {
+                    const all_users = await User.find();
+                    res.status(200).json({ error: { code: null, msg: null }, data: all_users });
+                }
+                else {
+                    const selected_user = await User.findById({ _id: req.query.id });
+                    res.status(200).json({ error: { code: null, msg: null }, data: selected_user })
+                }
             }
-            else {
-                const selected_user = await User.findById({ _id: req.query.id });
-                res.status(200).json({ error: {code: null, msg: null}, data: selected_user })
+            catch(err){
+                res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
             }
         }
         else if (user.user_role == 1) {
-            if (!req?.query?.id) {
-                const all_users = await User.find({ user_role: { $eq: 2 } })
-                res.status(200).json({ error: {code: null, msg: null}, data: all_users });
-            }
-            else {
-                const selected_user = await User.findById({ _id: req.query.id });
-                if (selected_user.user_role !== 2) {
-                    res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null })
+            try{
+                if (!req?.query?.id) {
+                    const all_users = await User.find({ user_role: { $eq: 2 } })
+                    res.status(200).json({ error: { code: null, msg: null }, data: all_users });
                 }
                 else {
-                    res.status(200).json({ error: {code: null, msg: err}, data: selected_users });
+                    const selected_user = await User.findById({ _id: req.query.id });
+                    if (selected_user.user_role !== 2) {
+                        res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
+                    }
+                    else {
+                        res.status(200).json({ error: { code: null, msg: err }, data: selected_users });
+                    }
                 }
             }
+            catch(err){
+                res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
+            }
+            
         }
         else if (user.user_role == 2) {
-            if (req.query.id) {
-                res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null })
+            try{
+                if (req.query.id) {
+                    res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
+                }
+                else {
+                    const { user_role, is_active, token, createdAt, updatedAt, __v, ...others } = user._doc;
+                    res.status(200).json({ error: { code: null, msg: null }, data: others });
+                }
             }
-            else {
-                const { user_role, is_active, token, createdAt, updatedAt, __v, ...others } = user._doc;
-                res.status(200).json({ error: {code: null, msg: null}, data: others });
+            catch(err){
+                res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
             }
+            
         }
         else {
-            res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null })
+            res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
         }
     },
 
@@ -153,9 +175,9 @@ const userController = {
                     },
                     { new: true }
                 );
-                res.status(200).json({ error: {code: null, msg: null}, data: updated_user });
+                res.status(200).json({ error: { code: null, msg: null }, data: updated_user });
             } catch (err) {
-                res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
+                res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
             }
         }
         else if (loggedin_user.user_role == 1) {
@@ -163,7 +185,7 @@ const userController = {
             if (selected_user.user_role !== 2) {
                 if (req.params.id == loggedin_user.id) {
                     if (req.body.email || req.body.is_active || req.body.user_role) {
-                        res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null })
+                        res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
                     }
                     else {
                         try {
@@ -180,14 +202,14 @@ const userController = {
                                 },
                                 { new: true }
                             );
-                            res.status(200).json({ error: {code: null, msg: null}, data: updatedUsers });
+                            res.status(200).json({ error: { code: null, msg: null }, data: updatedUsers });
                         } catch (err) {
-                            res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
+                            res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
                         }
                     }
                 }
                 else {
-                    res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null })
+                    res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
                 }
             }
             else {
@@ -199,9 +221,9 @@ const userController = {
                         },
                         { new: true }
                     );
-                    res.status(200).json({ error: {code: null, msg: null}, data: updatedUsers });
+                    res.status(200).json({ error: { code: null, msg: null }, data: updatedUsers });
                 } catch (err) {
-                    res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
+                    res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
                 }
 
             }
@@ -209,7 +231,7 @@ const userController = {
         else if (loggedin_user.user_role == 2) {
             if (req.params.id == loggedin_user.id) {
                 if (req.body.email || req.body.is_active || req.body.user_role) {
-                    res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null })
+                    res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
                 }
 
                 else {
@@ -228,19 +250,19 @@ const userController = {
                             },
                             { new: true }
                         );
-                        res.status(200).json({ error: {code: null, msg: null}, data: updatedUser });
+                        res.status(200).json({ error: { code: null, msg: null }, data: updatedUser });
                     } catch (err) {
-                        res.status(500).json({ error: {code: res.statusCode, msg: err}, data: null });
+                        res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
                     }
                 }
             }
             else {
-                res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null })
+                res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
             }
 
         }
         else {
-            res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null }) 
+            res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
         }
     },
 
