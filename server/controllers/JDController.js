@@ -24,8 +24,8 @@ const JDController = {
             console.log(user._id)
             if (!user) return res.status(404).json({ error: { code: res.statusCode, msg: 'No user found' }, data: null })
 
-            const {position, department, experience, qualification, skills, universities} = req.body
-            
+            const { position, department, experience, qualification, skills, universities } = req.body
+
             if (Object.keys(position, department, experience, qualification).length === 0) {
                 return res.status(404).json({ error: { code: res.statusCode, msg: 'Input data missing' }, data: null })
             }
@@ -48,16 +48,16 @@ const JDController = {
                 universities: universities,
                 uploaded_by: user._id
             });
-            
-                // if (newJd(position, department, experience, qualification, skills, universities).length === 0) {
-                //     return res.status(404).json({ error: { code: res.statusCode, msg: 'Input data missing' }, data: null })
-                // }
-                if (!newJd)
-                    return res.status(404).json({ error: { code: res.statusCode, msg: 'Job not posted' }, data: null })
-                else {
-                    const savedJD = await newJd.save()
-                    return res.status(200).json({ error: { code: null, msg: null }, data: { msg: "JD uploaded successfully" } });
-                }
+
+            // if (newJd(position, department, experience, qualification, skills, universities).length === 0) {
+            //     return res.status(404).json({ error: { code: res.statusCode, msg: 'Input data missing' }, data: null })
+            // }
+            if (!newJd)
+                return res.status(404).json({ error: { code: res.statusCode, msg: 'Job not posted' }, data: null })
+            else {
+                const savedJD = await newJd.save()
+                return res.status(200).json({ error: { code: null, msg: null }, data: { msg: "JD uploaded successfully" } });
+            }
 
         } catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
@@ -75,13 +75,56 @@ const JDController = {
             }
 
             else {
-                console.log(req.params.id)
+                
                 const selected_jd = await JD.findById({ _id: req.params.id })
-                return res.status(200).json({ error: { code: null, msg: null }, data: { jd: selected_jd, cvs: null } });
+                const id = ObjectId(req.params.id);
+                //getCvs
+                CV_JD.aggregate([
+                    {
+                        $match: { JD_ID: id }
+                    },
+                    {
+                        $lookup: {
+                            from: "cvs",
+                            localField: "CV_ID",
+                            foreignField: "_id",
+                            as: "matchlist"
+                        }
+                    },
+                    {
+                         $unset : ["matchlist._id", "createdAt", "updatedAt"]
+                    },
+                    { $unwind: "$matchlist" },
+                    {
+                        $replaceRoot: {
+                            newRoot: {
+                                $mergeObjects: [
+                                    {
+                                        $arrayToObject: {
+                                            $filter: {
+                                                input: { "$objectToArray": "$$ROOT" },
+                                                cond: { "$not": { "$in": ["$$this.k", ["matchlist"]] } },
+                                            }
+                                        },
+                                    },
+                                    "$matchlist"
+                                ]
+                            }
+                        }
+                    },
+                ],
+                    function (err, result) {
+                        if (err) {
+                            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+                        } else {
+                            return res.status(200).json({ error: { code: null, msg: null }, data: { jd: selected_jd, cvs: result } });
+                        }
+                    });
+
             }
         }
         catch (err) {
-            return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
         }
     },
 
@@ -139,35 +182,50 @@ const JDController = {
                 return res.status(404).json({ error: { code: res.statusCode, msg: "JD not found" }, data: null });
             }
             else {
-                const JD_detail = await CV_JD.find({ JD_ID: { $eq: req.params.id } });
-                //console.log("JD_Details", JD_detail)
-                console.log(req.params.id)
-                //const id = new mongoose.Types.ObjectID(req.params.id)
-
-                const id = ObjectId(req.params.id);
 
                 CV_JD.aggregate([
                     {
                         $match: { JD_ID: id }
-                        },
+                    },
                     {
-                    $lookup: {
-                        from: "cvs",
-                        localField: "CV_ID",
-                        foreignField: "_id",
-                        as: "matchlist"
-                    }
-                }
+                        $lookup: {
+                            from: "cvs",
+                            localField: "CV_ID",
+                            foreignField: "_id",
+                            as: "matchlist"
+                        }
+                    },
+                    {
+                         $unset : ["matchlist._id", "createdAt", "updatedAt"]
+                    },
+                    { $unwind: "$matchlist" },
+                    {
+                        $replaceRoot: {
+                            newRoot: {
+                                $mergeObjects: [
+                                    {
+                                        $arrayToObject: {
+                                            $filter: {
+                                                input: { "$objectToArray": "$$ROOT" },
+                                                cond: { "$not": { "$in": ["$$this.k", ["matchlist"]] } },
+                                            }
+                                        },
+                                    },
+                                    "$matchlist"
+                                ]
+                            }
+                        }
+                    },
                 ],
-                function (err, comments) {
-                    if (err) {
-                        return res.status(404).json({ "success": false, "message": 'Error in loading comments' })
-                    } else {
-                        console.log(JSON.stringify(comments))
+                    function (err, result) {
+                        if (err) {
+                            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+                        } else {
+                            console.log(JSON.stringify(result))
 
-                        return res.status(200).json({ comments })
-                    }
-                });
+                            return res.status(200).json({ result })
+                        }
+                    });
 
                 // JD_detail.aggregate([
                 //     // {
