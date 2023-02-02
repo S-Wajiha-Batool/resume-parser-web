@@ -16,6 +16,15 @@ const mongoose = require('mongoose');
 const { ObjectId } = require('mongodb');
 //const JDController = require('../controllers/JDController')
 
+class cv_details {
+    constructor(weighted_percentage, fullname, email, upload_date) {
+        this.weighted_percentage = weighted_percentage;
+        this.fullname = fullname;
+        this.email = email;
+        this.upload_date = upload_date;
+    }
+}
+
 const JDController = {
     createJD: async (req, res) => {
         try {
@@ -24,8 +33,8 @@ const JDController = {
             console.log(user._id)
             if (!user) return res.status(404).json({ error: { code: res.statusCode, msg: 'No user found' }, data: null })
 
-            const {position, department, experience, qualification, skills, universities} = req.body
-            
+            const { position, department, experience, qualification, skills, universities } = req.body
+
             if (Object.keys(position, department, experience, qualification).length === 0) {
                 return res.status(404).json({ error: { code: res.statusCode, msg: 'Input data missing' }, data: null })
             }
@@ -48,16 +57,16 @@ const JDController = {
                 universities: universities,
                 uploaded_by: user._id
             });
-            
-                // if (newJd(position, department, experience, qualification, skills, universities).length === 0) {
-                //     return res.status(404).json({ error: { code: res.statusCode, msg: 'Input data missing' }, data: null })
-                // }
-                if (!newJd)
-                    return res.status(404).json({ error: { code: res.statusCode, msg: 'Job not posted' }, data: null })
-                else {
-                    const savedJD = await newJd.save()
-                    return res.status(200).json({ error: { code: null, msg: null }, data: { msg: "JD uploaded successfully" } });
-                }
+
+            // if (newJd(position, department, experience, qualification, skills, universities).length === 0) {
+            //     return res.status(404).json({ error: { code: res.statusCode, msg: 'Input data missing' }, data: null })
+            // }
+            if (!newJd)
+                return res.status(404).json({ error: { code: res.statusCode, msg: 'Job not posted' }, data: null })
+            else {
+                const savedJD = await newJd.save()
+                return res.status(200).json({ error: { code: null, msg: null }, data: { msg: "JD uploaded successfully" } });
+            }
 
         } catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
@@ -149,25 +158,48 @@ const JDController = {
                 CV_JD.aggregate([
                     {
                         $match: { JD_ID: id }
-                        },
+                    },
                     {
-                    $lookup: {
-                        from: "cvs",
-                        localField: "CV_ID",
-                        foreignField: "_id",
-                        as: "matchlist"
+                        $lookup: {
+                            from: "cvs",
+                            localField: "CV_ID",
+                            foreignField: "_id",
+                            as: "matchlist"
+                        }
                     }
-                }
                 ],
-                function (err, comments) {
-                    if (err) {
-                        return res.status(404).json({ "success": false, "message": 'Error in loading comments' })
-                    } else {
-                        console.log(JSON.stringify(comments))
+                    async function async(err, comments) {
+                        if (err) {
+                            return res.status(404).json({ error: { code: res.statusCode, msg: 'Error in loading comments' }, data: null })
+                        } else {
+                            console.log(comments.length)
+                            const temp_list = [];
+                            for (var i = 0; i < comments.length; i++) {
+                               // for (var j = 0; j < comments[i].matchlist.length; j++) {
+                                    console.log(comments[i].matchlist.length)
+                                    const new_comments = new cv_details({
+                                        weighted_percentage: comments[i].weighted_percentage,
+                                        fullname: comments[i].matchlist[0].full_name,
+                                        email: comments[i].matchlist[0].email,
+                                        upload_date: comments[i].matchlist[0].createdAt
+                                    });
+                                    //const job = await new_comments.save();
+                                    temp_list.push(new_comments)
+                                    // console.log(comments[i].weighted_percentage)
+                                    // console.log(comments[i].matchlist[i].full_name)
+                                    console.log(temp_list)
+                                //}
 
-                        return res.status(200).json({ comments })
-                    }
-                });
+                            }
+
+                            // const new_comments = new cv_details({
+                            //     weighted_percentage : 
+                            // });
+                            //console.log(JSON.stringify(comments.matchlist))
+
+                            return res.status(200).json({ comments })
+                        }
+                    });
 
                 // JD_detail.aggregate([
                 //     // {
