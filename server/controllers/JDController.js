@@ -84,13 +84,56 @@ const JDController = {
             }
 
             else {
-                console.log(req.params.id)
+                
                 const selected_jd = await JD.findById({ _id: req.params.id })
-                return res.status(200).json({ error: { code: null, msg: null }, data: { jd: selected_jd, cvs: null } });
+                const id = ObjectId(req.params.id);
+                //getCvs
+                CV_JD.aggregate([
+                    {
+                        $match: { JD_ID: id }
+                    },
+                    {
+                        $lookup: {
+                            from: "cvs",
+                            localField: "CV_ID",
+                            foreignField: "_id",
+                            as: "matchlist"
+                        }
+                    },
+                    {
+                         $unset : ["matchlist._id", "createdAt", "updatedAt"]
+                    },
+                    { $unwind: "$matchlist" },
+                    {
+                        $replaceRoot: {
+                            newRoot: {
+                                $mergeObjects: [
+                                    {
+                                        $arrayToObject: {
+                                            $filter: {
+                                                input: { "$objectToArray": "$$ROOT" },
+                                                cond: { "$not": { "$in": ["$$this.k", ["matchlist"]] } },
+                                            }
+                                        },
+                                    },
+                                    "$matchlist"
+                                ]
+                            }
+                        }
+                    },
+                ],
+                    function (err, result) {
+                        if (err) {
+                            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+                        } else {
+                            return res.status(200).json({ error: { code: null, msg: null }, data: { jd: selected_jd, cvs: result } });
+                        }
+                    });
+
             }
         }
         catch (err) {
-            return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
         }
     },
 
@@ -148,12 +191,6 @@ const JDController = {
                 return res.status(404).json({ error: { code: res.statusCode, msg: "JD not found" }, data: null });
             }
             else {
-                const JD_detail = await CV_JD.find({ JD_ID: { $eq: req.params.id } });
-                //console.log("JD_Details", JD_detail)
-                console.log(req.params.id)
-                //const id = new mongoose.Types.ObjectID(req.params.id)
-
-                const id = ObjectId(req.params.id);
 
                 CV_JD.aggregate([
                     {
@@ -166,38 +203,36 @@ const JDController = {
                             foreignField: "_id",
                             as: "matchlist"
                         }
-                    }
-                ],
-                    async function async(err, comments) {
-                        if (err) {
-                            return res.status(404).json({ error: { code: res.statusCode, msg: 'Error in loading comments' }, data: null })
-                        } else {
-                            console.log(comments.length)
-                            const temp_list = [];
-                            for (var i = 0; i < comments.length; i++) {
-                               // for (var j = 0; j < comments[i].matchlist.length; j++) {
-                                    console.log(comments[i].matchlist.length)
-                                    const new_comments = new cv_details({
-                                        weighted_percentage: comments[i].weighted_percentage,
-                                        fullname: comments[i].matchlist[0].full_name,
-                                        email: comments[i].matchlist[0].email,
-                                        upload_date: comments[i].matchlist[0].createdAt
-                                    });
-                                    //const job = await new_comments.save();
-                                    temp_list.push(new_comments)
-                                    // console.log(comments[i].weighted_percentage)
-                                    // console.log(comments[i].matchlist[i].full_name)
-                                    console.log(temp_list)
-                                //}
-
+                    },
+                    {
+                         $unset : ["matchlist._id", "createdAt", "updatedAt"]
+                    },
+                    { $unwind: "$matchlist" },
+                    {
+                        $replaceRoot: {
+                            newRoot: {
+                                $mergeObjects: [
+                                    {
+                                        $arrayToObject: {
+                                            $filter: {
+                                                input: { "$objectToArray": "$$ROOT" },
+                                                cond: { "$not": { "$in": ["$$this.k", ["matchlist"]] } },
+                                            }
+                                        },
+                                    },
+                                    "$matchlist"
+                                ]
                             }
+                        }
+                    },
+                ],
+                    function (err, result) {
+                        if (err) {
+                            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+                        } else {
+                            console.log(JSON.stringify(result))
 
-                            // const new_comments = new cv_details({
-                            //     weighted_percentage : 
-                            // });
-                            //console.log(JSON.stringify(comments.matchlist))
-
-                            return res.status(200).json({ comments })
+                            return res.status(200).json({ result })
                         }
                     });
 

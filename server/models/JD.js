@@ -28,11 +28,11 @@ const JDsSchema = new mongoose.Schema({
         required: true
     },
     skills:{
-        type: [String],
+        type: [Object],
         required: true
     },
     experience:{
-        type: Number,
+        type: String,
         required: true
     },
     qualification:{
