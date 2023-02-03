@@ -1,28 +1,16 @@
 const mongoose = require("mongoose")
 const User = require("../models/Users")
 const CVsSchema = new mongoose.Schema({
-	cv_url:{
+	cv_path:{
 	  type: String,
 	  required: true
-    },
-	position:{
-	  type: String,
-	  required: true
-    },
-    // upload_date:{
-    //     type: Date,
-    //     required: true
-    // },
-    department:{
-        type: String,
-        required: true
     },
     skills:{
         type: [String],
         required: true
     },
-    experiance:{
-        type: Number,
+    experience:{
+        type: String,
         required: true
     },
     qualification:{
@@ -33,11 +21,10 @@ const CVsSchema = new mongoose.Schema({
         type: [String],
         required: false 
     },
-    email:{
-        type: String,
-        required: true,
-        unique: true,
-      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+    emails:{
+        type: [String],
+        required: true
+      //match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'This is not a valid email address'
     },
     phone_number:{
         type: String,
@@ -50,6 +37,10 @@ const CVsSchema = new mongoose.Schema({
     uploaded_by:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
+        required: true
+    },
+    universities:{
+        type: [String],
         required: true
     }
 },

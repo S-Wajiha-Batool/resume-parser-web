@@ -155,11 +155,19 @@ def parse_cv():
         emails = extract_emails(text)
         #skills = skill_extractor.annotate(text)
         #print(skills)
-        skills= [] # calculate the sum
-        result.append({"name": name_modified, "number": phone_number, "emails": emails, "skills": skills})
+        
+        ### to be done
+
+        skills= [] 
+        experience = '2 years'
+        qualification = 'Bs-CS'
+        links = []
+        universities = []
+
+        result.append({"full_name": name_modified, "phone_number": phone_number, "emails": emails, "skills": skills, "experience": experience, "qualification": qualification, "links": links, "universities": universities })
     # Return data in json format 
     print(result)
     return json.dumps(result)
    
 if __name__ == "__main__": 
-    app.run(port=5000)
+    app.run(port=5000, debug=True)
