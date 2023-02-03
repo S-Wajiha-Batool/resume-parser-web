@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { GlobalState } from '../../GlobalState';
 import { getJdAPI } from '../../API/JDAPI'
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
-import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Button, Spinner, Card } from 'react-bootstrap';
 import '../UI/JdDetails.css'
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import UploadCvsModal from '../utilities/UploadCvsModal';
@@ -18,7 +18,6 @@ function JdDetails() {
     const [isLoading, setIsLoading] = useState(true);
     const [success, setSuccess] = useState(false);
     const { id } = useParams()
-console.log(id)
 
     useEffect(() => {
         if (token) {
@@ -52,23 +51,41 @@ console.log(id)
             success ?
                 <> <Container>
                     <div>
-                        {jd.length !== 0 &&
                             <>
-                                
-                            </>}
-                        {jd.length === 0 &&
-                            <div>JD not found</div>}
-                    </div>
-                </Container>
-                </>
-                : <div>Jd not found<Row>
-                                    <Col><h4>Job Description # {id}</h4></Col>
+                                <Row>
+                                    <Col><h4>Job Description</h4></Col>
                                     <Col className='uploadCv_btn'>
                                         <Button onClick={handleShowModal}>Add CV</Button>
                                     </Col>
                                     <UploadCvsModal showModal={showModal} handleCloseModal={handleCloseModal} />
-
-                                </Row></div>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                    <Card
+          bg='light'
+          text='dark'
+          style={{ width: '18rem' }}
+          className="mb-2"
+        >
+          <Card.Header>Header</Card.Header>
+          <Card.Body>
+            <Card.Title> Card Title </Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </Card.Text>
+          </Card.Body>
+        </Card>
+                                    </Col>
+                                    <Col>
+                                    Cv table
+                                    </Col>
+                                </Row>
+                            </>
+                    </div>
+                </Container>
+                </>
+                : <div>Jd not found</div>
 
         // <div class="container text-center">
         //     <div class="row justify-content-between">

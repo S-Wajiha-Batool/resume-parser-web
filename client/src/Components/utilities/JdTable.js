@@ -1,12 +1,25 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody, TableSortLabel } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 
 const JdTable = (props) => {
     const { data } = props;
     const navigate = useNavigate();
-    const headers = Object.keys(data[0]);
+    //const headers = Object.keys(data[0]);
+    const headers = ['_id', 'position', 'is_active', 'department', 'uploaded_by', 'skills', 'experience', 'qualification', 'universities', 'createdAt', 'updatedAt', '__v']
+    console.log(headers)
+    const labels = ['Title', 'Department', 'Skills', 'Experience', 'Qualification', 'Universities', 'Posted By', 'Posted On']
+    //const headers_key = ['position', 'department', 'skills.skill_name','experience']
     const [sortType, setSortType] = React.useState({column:null, order:'asc'});
+
+
+    const getSkills = (skills) => {
+        var a = [];
+        skills.map(s => {
+            a.push(s.skill_name)
+        })
+        return a;
+    }
 
     const handleSort = (column) => {
         if(column === sortType.column) {
@@ -15,6 +28,8 @@ const JdTable = (props) => {
             setSortType({column:column, order: 'asc' });
         }
     }
+
+    
 
     //sorting function
     const stableSort = (array, cmp) => {
@@ -49,12 +64,12 @@ const JdTable = (props) => {
                 <TableRow>
                     {headers.map((header, index) => (
                         <TableCell key={index}>
-                            <TableSortLabel
+<TableSortLabel
                                 active={sortType.column === header}
                                 direction={sortType.order}
                                 onClick={() => handleSort(header)}
                             >
-                                {header}
+                                {labels[index]}
                             </TableSortLabel>
                         </TableCell>
                     ))}
@@ -66,11 +81,15 @@ const JdTable = (props) => {
                     onClick={() => {
                         navigate(`/jd/${item._id}`)
                     }}>
-                        {headers.map((header, index) => (
-                            <TableCell key={index}>
-                                {item[header]}
-                            </TableCell>
-                        ))}
+                            <TableCell >{item['position']}</TableCell>
+                            <TableCell >{item['department']}</TableCell>
+                            <TableCell >{getSkills(item['skills']).join(',\r\n')}</TableCell>
+                            <TableCell >{item['experience']}</TableCell>
+                            <TableCell >{item['qualification']}</TableCell>
+                            <TableCell >{item['universities'].join(',\r\n')}</TableCell>
+                            <TableCell >{item['uploaded_by']}</TableCell>
+                            <TableCell >{item['createdAt']}</TableCell>
+
                     </TableRow>
                 ))}
             </TableBody>

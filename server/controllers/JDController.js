@@ -52,13 +52,13 @@ const JDController = {
             // if (newJd(position, department, experience, qualification, skills, universities).length === 0) {
             //     return res.status(404).json({ error: { code: res.statusCode, msg: 'Input data missing' }, data: null })
             // }
-            if (!newJd)
-                return res.status(404).json({ error: { code: res.statusCode, msg: 'Job not posted' }, data: null })
-            else {
+        
                 const savedJD = await newJd.save()
+                if (!savedJD)
+                return res.status(404).json({ error: { code: res.statusCode, msg: 'Job not posted' }, data: null })
+                
                 return res.status(200).json({ error: { code: null, msg: null }, data: { msg: "JD uploaded successfully" } });
-            }
-
+        
         } catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
         }
