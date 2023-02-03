@@ -77,6 +77,7 @@ const JDController = {
     getJD: async (req, res) => {
         try {
             console.log(req.params.id)
+            //const uploaded_by = await Users.find()
 
             if (!req.params.id) {
                 const all_jds = await JD.find();
