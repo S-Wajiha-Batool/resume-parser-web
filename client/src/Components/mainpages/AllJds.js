@@ -22,7 +22,7 @@ function AllJds() {
     const [showModal, setShowModal] = useState(false);
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
-
+    
     // for upload jd ----
     const inputRef = useRef();
     const [callback, setCallback] = state.JDAPI.callback;
@@ -110,6 +110,9 @@ function AllJds() {
                             <JdTable
                                 className='table'
                                 data={allJDs}
+                                showModal={showModal}
+                                handleCloseModal={handleCloseModal}
+                                handleShowModal={handleShowModal}
                             />}
 
                         {allJDs.length === 0 &&

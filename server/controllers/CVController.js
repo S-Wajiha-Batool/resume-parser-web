@@ -49,6 +49,7 @@ const CVController = {
                     });
             })
 
+            var ids = [];
             //uploading data to mongoDB
             const promisess = data.map(async (cv, index) => new Promise(async (resolve, reject) => {
                 const new_CV = new CV({
@@ -67,12 +68,13 @@ const CVController = {
                 // if (newJd(position, department, experience, qualification, skills, universities).length === 0) {
                 //     return res.status(404).json({ error: { code: res.statusCode, msg: 'Input data missing' }, data: null })
                 // }
-                resolve(await new_CV.save())
+                const saved_CV = await new_CV.save();
+                resolve(ids.push(saved_CV._id))
             }))
 
             await Promise.all(promisess)
 
-            return res.status(200).json({ error: { code: null, msg: null }, data: { msg: "CVs parsed successfully" } });
+            return res.status(200).json({ error: { code: null, msg: null }, data: { ids: ids } });
 
 
             // const childPython = spawn('python', ['./parse_cv.py', '1675098578460.pdf']);
