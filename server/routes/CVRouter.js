@@ -8,7 +8,7 @@ const { Router } = require('express');
 
 router.post('/parse_cv', verifyToken , upload_cv.array('files') , fileFilterMiddleware, CVController.parseCV)
 
-router.get('/getCV/:id?', CVController.getCV)
+router.get('/get_cv/:id?', CVController.getCv)
 
 router.put('/updateCV/:id', CVController.updatCV)
 

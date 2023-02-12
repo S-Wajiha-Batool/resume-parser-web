@@ -28,7 +28,6 @@ function AllJds() {
     const [callback, setCallback] = state.JDAPI.callback;
 
     const [jd, setJd] = useState({ position: "", department: "HR", file: null })
-    console.log(jd)
     const [uploadedFileName, setUploadedFileName] = useState(null);
 
     const departments = ["HR", "IT", "Finance", "Marketing", "Software Engineering"]

@@ -52,6 +52,7 @@ const CVController = {
             var ids = [];
             //uploading data to mongoDB
             const promisess = data.map(async (cv, index) => new Promise(async (resolve, reject) => {
+                console.log(req.files[index].name)
                 const new_CV = new CV({
                     uploaded_by: user._id,
                     full_name: cv.full_name,
@@ -62,7 +63,9 @@ const CVController = {
                     skills: cv.skills,
                     universities: cv.universities,
                     links: cv.links,
-                    cv_path: req.files[index].path
+                    cv_path: req.files[index].path,
+                    cv_original_name: req.files[index].originalname
+                    //cv_name: req.files[index].name
                 });
 
                 // if (newJd(position, department, experience, qualification, skills, universities).length === 0) {
@@ -112,10 +115,8 @@ const CVController = {
 
     },
 
-    getCV: async (req, res) => {
+    getCv: async (req, res) => {
         try {
-            console.log(req.params.id)
-
             if (!req.params.id) {
                 const all_cvs = await CV.find();
                 return res.status(200).json({ error: { code: null, msg: null }, data: { all_cvs: all_cvs } });
@@ -128,7 +129,7 @@ const CVController = {
             }
         }
         catch (err) {
-            return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
         }
     },
 

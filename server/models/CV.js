@@ -5,6 +5,10 @@ const CVsSchema = new mongoose.Schema({
 	  type: String,
 	  required: true
     },
+    cv_original_name:{
+        type: String,
+        required: true
+      },
     skills:{
         type: [String],
         required: true

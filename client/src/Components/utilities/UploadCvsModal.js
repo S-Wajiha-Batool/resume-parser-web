@@ -1,23 +1,59 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom'
 import { Modal, Tabs, Tab, Button, Spinner, Form, Col, Row } from 'react-bootstrap'
+import { Checkbox, TextField, Autocomplete } from '@mui/material';
 import { GlobalState } from '../../GlobalState';
 import { parseCvsAPI } from '../../API/CVAPI';
+import { getCvsAPI } from '../../API/CVAPI';
 import { showErrorToast } from './Toasts';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import '../UI/UploadCvsModal.css'
+//import samplePDF1 from '../../../../server/uploaded_CVs/1675098578460.pdf'
 var FormData = require('form-data')
 
 function UploadCvsModal({ showModal, handleCloseModal }) {
 
     const state = useContext(GlobalState);
     const [token] = state.UserAPI.token;
+    const [allCvs, setAllCvs] = state.CVAPI.allCvs;
+    const [callback, setCallback] = state.CVAPI.callback;
     const [cvs, setCvs] = useState({ files: [] })
     const [isParsing, setIsParsing] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [loading, setIsLoading] = useState(true);
     const [isUploadingCvs, setIsUploadingCvs] = useState(false);
     const inputRef = useRef();
     const { id } = useParams()
+    const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+    const checkedIcon = <CheckBoxIcon fontSize="small" />;
+    console.log(Object.values(Object.values(allCvs)))
+    var selectedOld = []; 
+    const getFileName = async (option) => {
+        //console.log('../../../../server/uploaded_CVs/' + option.cv_path.replace(/^.*[\\\/]/, ''));
+        return  '../../../../server/uploaded_CVs/' + option.cv_path.replace(/^.*[\\\/]/, '')
+    };
 
+    useEffect (() => {
+        if (token) {
+            const getAllCvs = async () => {
+                getCvsAPI(token)
+                    .then(res => {
+                        console.log(res.data)
+                        setAllCvs(res.data.data.all_cvs)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        showErrorToast(err.response.data.error.msg)
+                    })
+                    .finally(() => {
+                        setIsLoading(false);
+                    })
+            }
+            getAllCvs()
+        }
+
+    }, [token, callback]);
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -40,6 +76,7 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
                 })
                 .finally(() => {
                     setIsParsing(false);
+                    setCallback(!callback);
                 })
         } catch (err) {
             showErrorToast(err)
@@ -90,6 +127,8 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
         }
         return <div>{rows}</div>
     }
+
+
     return (
         <Modal show={showModal} onHide={handleCloseModal}>
             <Modal.Header closeButton>
@@ -136,7 +175,44 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
                         </Form>
                     </Tab>
                     <Tab eventKey="server" title="From Server">
-                        hh
+
+                        {!loading && <Autocomplete
+                            isOptionEqualToValue={(option, value) => option._id === value._id}
+                            multiple
+                            id="checkboxes-tags-demo"
+                            size="small"
+                            options={allCvs}
+                            disableCloseOnSelect
+                            getOptionLabel={(option) => option._id}
+                            //onChange={onChangeUniversities}
+                            //id="disable-clearable"
+                            disableClearable
+                            
+                            renderTags={() => null}
+                            onChange={(event, newValue) => {
+                                console.log(newValue)
+                            }}
+                            renderOption={(props, option, { selected }) => (
+                                <li {...props}>
+                                    <Checkbox
+                                        icon={icon}
+                                        checkedIcon={checkedIcon}
+                                        style={{ marginRight: 8 }}
+                                        checked={selected}                                        
+                                    />
+                                    {console.log(props)}
+                                    <div>{option.cv_original_name}
+                                    </div>
+                                    <a href={require(`../../../../server/uploaded_CVs/${option.cv_path.replace(/^.*[\\\/]/, '')}`)} target="_blank"
+                                        rel="noreferrer">View    
+                                    </a>
+                                </li>
+                            )}
+                            style={{ width: 500 }}
+                            renderInput={(params) => (
+                                <TextField required {...params} placeholder="Universities" />
+                            )}
+                        />}
                     </Tab>
 
                 </Tabs>

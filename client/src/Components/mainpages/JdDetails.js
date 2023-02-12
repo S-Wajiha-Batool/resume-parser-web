@@ -16,6 +16,7 @@ function JdDetails() {
     const handleShowModal = () => setShowModal(true);
     const [token] = state.UserAPI.token;
     const [jd, setJd] = useState([]);
+    const [allCvs, setAllCvs] = state.CVAPI.allCvs;
     const [cvs, setCvs] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [success, setSuccess] = useState(false);
@@ -47,6 +48,8 @@ function JdDetails() {
             getJd()
         }
     }, [token])
+
+    
 
     return (
         isLoading ?
