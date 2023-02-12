@@ -16,6 +16,19 @@ const mongoose = require('mongoose');
 const { ObjectId } = require('mongodb');
 //const JDController = require('../controllers/JDController')
 
+class cv_details {
+    // weighted_percentage = 0;
+    // full_name = "";
+    // emails = [];
+    // uploaded_by = ObjectId;
+    constructor(weighted_percentage, full_name, emails, uploaded_by) {
+        this.weighted_percentage = weighted_percentage;
+        this.full_name = full_name;
+        this.emails = emails;
+        this.uploaded_by = uploaded_by;
+    }
+}
+
 const JDController = {
     createJD: async (req, res) => {
         try {
@@ -52,13 +65,13 @@ const JDController = {
             // if (newJd(position, department, experience, qualification, skills, universities).length === 0) {
             //     return res.status(404).json({ error: { code: res.statusCode, msg: 'Input data missing' }, data: null })
             // }
-        
-                const savedJD = await newJd.save()
-                if (!savedJD)
+
+            const savedJD = await newJd.save()
+            if (!savedJD)
                 return res.status(404).json({ error: { code: res.statusCode, msg: 'Job not posted' }, data: null })
-                
-                return res.status(200).json({ error: { code: null, msg: null }, data: { msg: "JD uploaded successfully" } });
-        
+
+            return res.status(200).json({ error: { code: null, msg: null }, data: { msg: "JD uploaded successfully" } });
+
         } catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
         }
@@ -68,14 +81,17 @@ const JDController = {
     getJD: async (req, res) => {
         try {
             console.log(req.params.id)
+            //const uploaded_by = await Users.find(req.params.id)
+            //console.log(ObjectId(uploaded_by))
 
             if (!req.params.id) {
-                const all_jds = await JD.find();
+                const all_jds = await JD.find({is_active: { $eq: true}});
+
                 return res.status(200).json({ error: { code: null, msg: null }, data: { all_jds: all_jds } });
             }
 
             else {
-                
+
                 const selected_jd = await JD.findById({ _id: req.params.id })
                 const id = ObjectId(req.params.id);
                 //getCvs
@@ -92,7 +108,7 @@ const JDController = {
                         }
                     },
                     {
-                         $unset : ["matchlist._id", "createdAt", "updatedAt"]
+                        $unset: ["matchlist._id", "createdAt", "updatedAt"]
                     },
                     { $unwind: "$matchlist" },
                     {
@@ -113,10 +129,61 @@ const JDController = {
                         }
                     },
                 ],
-                    function (err, result) {
+                    async function (err, result) {
+                        //const cv_uploaders = result.cvs.uploaded_by
+                        // for(var i = 0; i<result.length; i++){
+                        //     console.log(result[i].cvs.uploaded_by)
+                        // }
+                        // const all_users = await Users.find();
+
+                        // var dict = []; // create an empty array
+                        // for(var i = 0; i<all_users.length; i++){
+                        //     dict.push({
+                        //         user_id: all_users[i]._id,
+                        //         name: all_users[i].first_name + all_users[i].last_name
+                        //     });    
+                        // }
+                        // console.log(dict)
+                        //console.log(dict["6353ff07012055c7040c7079"])
+                        
+                        // const x = dict.forEach(user =>{
+                        //     if(user.user_id === ObjectId("635553aa4d179bb2271ce675")){
+                        //         console.log("matched")              
+                        //     }        
+                        //     else
+                        //         null
+                        // })
+
+                        //console.log(x)
+                        // let cv_list = [];
+                        // result.forEach(element => {
+                        //     cv_list.push(new cv_details({
+                        //         weighted_percentage: element.weighted_percentage,
+                        //         full_name: element.full_name,
+                        //         emails: element.emails,
+                        //         uploaded_by: dict.forEach(users =>{
+                        //             if(users.user_id === element.uploaded_by){
+                        //                 users.user_id 
+                        //                 console.log("matched")                       
+                        //             }        
+                        //             else
+                        //                 null
+                        //         })
+                        //     }))
+                        // });
+                        // console.log(cv_list)
+                        
+
                         if (err) {
                             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
                         } else {
+                            JSON.stringify(result.sort(function (x, y) {
+                                return y.weighted_percentage - x.weighted_percentage;
+                            }))
+                            // result = JSON.stringify(result.sort(function (x, y) {
+                            //     return y.weighted_percentage - x.weighted_percentage;
+                            // }))
+                            //console.log(result.weighted_percentage)
                             return res.status(200).json({ error: { code: null, msg: null }, data: { jd: selected_jd, cvs: result } });
                         }
                     });
@@ -167,7 +234,7 @@ const JDController = {
                             $set: req.body,
                         },
                         { new: true }
-                    );
+                    ); 
                     res.status(200).json({ error: { code: null, msg: null }, data: updatedJD });
                 }
             } catch (err) {
@@ -196,7 +263,7 @@ const JDController = {
                         }
                     },
                     {
-                         $unset : ["matchlist._id", "createdAt", "updatedAt"]
+                        $unset: ["matchlist._id", "createdAt", "updatedAt"]
                     },
                     { $unwind: "$matchlist" },
                     {
@@ -220,8 +287,10 @@ const JDController = {
                     function (err, result) {
                         if (err) {
                             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
-                        } else {
-                            console.log(JSON.stringify(result))
+                        } else{
+                            console.log(JSON.stringify(result.sort(function (x, y) {
+                                return y.weighted_percentage - x.weighted_percentage;
+                            })))
 
                             return res.status(200).json({ result })
                         }
