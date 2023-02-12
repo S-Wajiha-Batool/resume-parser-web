@@ -4,7 +4,6 @@ import { Container, Row, Col, Modal, Button, Form, FormLabel, Spinner } from 're
 import { Checkbox, TextField, Autocomplete } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import { StyledEngineProvider } from '@mui/material/styles';
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { addJdAPI } from '../../API/JDAPI'
@@ -24,13 +23,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
 
     const [isUploadingJd, setIsUploadingJd] = useState(false)
 
-    const map = () => {
-        var a = [];
-        jd.skills.map(s => {
-            a.push(s.skill_name)
-        })
-        console.log(a)
-    }
+    
 
     const top100Films = [
         { title: 'The Shawshank Redemption', year: 1994 },
@@ -193,7 +186,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                     <br />
                     <Row>
                         <Form.Label>Skills</Form.Label>
-                        <StyledEngineProvider injectFirst>
+                        {/* <StyledEngineProvider injectFirst> */}
                             <Autocomplete
                                 isOptionEqualToValue={(option, value) => option.skill_name === value.skill_name}
                                 multiple
@@ -220,12 +213,12 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                                     <TextField required {...params} placeholder="Skills" />
                                 )}
                             />
-                        </StyledEngineProvider>
+                        {/* </StyledEngineProvider> */}
                     </Row>
                     <br />
                     <Row>
                         <Form.Label>Universities</Form.Label>
-                        <StyledEngineProvider injectFirst>
+                        {/* <StyledEngineProvider injectFirst> */}
                             <Autocomplete
                                 isOptionEqualToValue={(option, value) => option === value}
                                 multiple
@@ -251,7 +244,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                                     <TextField required {...params} placeholder="Universities" />
                                 )}
                             />
-                        </StyledEngineProvider>
+                        {/* </StyledEngineProvider> */}
                     </Row>
                     <br />
                 </Modal.Body>

@@ -7,6 +7,7 @@ import { Container, Row, Col, Button, Spinner, Card } from 'react-bootstrap';
 import '../UI/JdDetails.css'
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import UploadCvsModal from '../utilities/UploadCvsModal';
+import CvTable from '../utilities/CvTable';
 
 function JdDetails() {
     const state = useContext(GlobalState);
@@ -15,6 +16,7 @@ function JdDetails() {
     const handleShowModal = () => setShowModal(true);
     const [token] = state.UserAPI.token;
     const [jd, setJd] = useState([]);
+    const [cvs, setCvs] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [success, setSuccess] = useState(false);
     const { id } = useParams()
@@ -27,6 +29,7 @@ function JdDetails() {
                         .then(res => {
                             console.log(res.data)
                             setJd(res.data.data.jd)
+                            setCvs(res.data.data.cvs)
                             console.log(jd)
                             setSuccess(true);
                         })
@@ -69,7 +72,7 @@ function JdDetails() {
         >
           <Card.Header>Header</Card.Header>
           <Card.Body>
-            <Card.Title> Card Title </Card.Title>
+            <Card.Title> Details </Card.Title>
             <Card.Text>
               Some quick example text to build on the card title and make up the
               bulk of the card's content.
@@ -78,7 +81,16 @@ function JdDetails() {
         </Card>
                                     </Col>
                                     <Col>
-                                    Cv table
+                                    <div>
+                        {cvs.length !== 0 &&
+                            <CvTable
+                                className='table'
+                                data={cvs}
+                            />}
+
+                        {cvs.length === 0 &&
+                            <div>No JDs found</div>}
+                    </div>
                                     </Col>
                                 </Row>
                             </>
