@@ -9,7 +9,6 @@ import { showErrorToast } from './Toasts';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import '../UI/UploadCvsModal.css'
-//import samplePDF1 from '../../../../server/uploaded_CVs/1675098578460.pdf'
 var FormData = require('form-data')
 
 function UploadCvsModal({ showModal, handleCloseModal }) {
@@ -19,6 +18,8 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
     const [allCvs, setAllCvs] = state.CVAPI.allCvs;
     const [callback, setCallback] = state.CVAPI.callback;
     const [cvs, setCvs] = useState({ files: [] })
+    const [cvsServer, setCvsServer] = useState([])
+    console.log('cvs', cvsServer)
     const [isParsing, setIsParsing] = useState(false);
     const [success, setSuccess] = useState(false);
     const [loading, setIsLoading] = useState(true);
@@ -28,13 +29,13 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
     const checkedIcon = <CheckBoxIcon fontSize="small" />;
     console.log(Object.values(Object.values(allCvs)))
-    var selectedOld = []; 
+    var selectedOld = [];
     const getFileName = async (option) => {
         //console.log('../../../../server/uploaded_CVs/' + option.cv_path.replace(/^.*[\\\/]/, ''));
-        return  '../../../../server/uploaded_CVs/' + option.cv_path.replace(/^.*[\\\/]/, '')
+        return '../../../../server/uploaded_CVs/' + option.cv_path.replace(/^.*[\\\/]/, '')
     };
 
-    useEffect (() => {
+    useEffect(() => {
         if (token) {
             const getAllCvs = async () => {
                 getCvsAPI(token)
@@ -83,20 +84,22 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
         }
     }
 
-    const onFileChange = (e) => {
-        console.log("upload")
+    const onFileChangeFromPC = (e) => {
         inputRef.current.click();
     };
 
+    const onFileChangeFromServer = (option) => {
+        console.log('in', option);
+        setCvsServer(option)
+    }
 
     const handleDisplayFileDetails = (e) => {
         inputRef.current?.files &&
             setCvs({ ...cvs, files: e.target.files });
     };
 
-    const handleRemoveFiles = (index) => {
+    const handleRemoveFilesFromPC = (index) => {
         console.log('in')
-
         const dt = new DataTransfer()
         const input = document.getElementById('files')
         const { files } = input
@@ -113,14 +116,18 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
 
     }
 
-    const getFileNames = () => {
+    const handleRemoveFilesFromServer = (file) => {
+        setCvsServer(cvs => cvs.filter(item => item._id !== file._id))
+    }
+
+    const getFileNamesFromPC = () => {
         let rows = [];
         for (let i = 0; i < cvs.files.length; i++) {
             rows.push(<div className='file_row'>
                 <span>
                     {cvs.files[i].name}
                 </span>
-                <span className='remove_action' onClick={() => handleRemoveFiles(i)}>
+                <span className='remove_action' onClick={() => handleRemoveFilesFromPC(i)}>
                     Remove
                 </span>
             </div>)
@@ -128,6 +135,35 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
         return <div>{rows}</div>
     }
 
+    const getFileNamesFromServer = () => {
+        let rows = [];
+        for (let i = 0; i < cvsServer.length; i++) {
+            rows.push(<div className='file_row'>
+                <span>
+                    {cvsServer[i].cv_original_name}
+                </span>
+                <span className='remove_action' onClick={() => handleRemoveFilesFromServer(cvsServer[i])}>
+                    Remove
+                </span>
+            </div>)
+        }
+        return <div>{rows}</div>
+    }
+
+    const resetCvsOnClickingView = (option) => {
+        //var contains = false;
+        var contains = cvsServer.includes(option);
+        console.log(contains)
+        if (contains) {
+            cvsServer.push(option)
+        }
+        else {
+            console.log('inn', cvsServer)
+            cvsServer.push(option)
+            setCvsServer(cvs => cvs.filter(item => item._id !== option._id))
+
+        }
+    }
 
     return (
         <Modal show={showModal} onHide={handleCloseModal}>
@@ -155,11 +191,20 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
                                     accept="application/msword, application/pdf"
                                 />
                                 <div className="file-box">
-                                    <Button type="button" onClick={onFileChange}>
-                                        Upload File
-                                    </Button>
+                                    <div className="file_row">
+                                        <span>
+                                            {cvs.files.length == 0 && 'No files chosen'}
+                                            {cvs.files.length != 0 && `${cvs.files.length} files chosen`}
+                                        </span>
+                                        <span><Button type="button" onClick={onFileChangeFromPC}>
+                                            Upload File
+                                        </Button>
+                                        </span>
+                                    </div>
+
+
                                     {
-                                        getFileNames()
+                                        getFileNamesFromPC()
                                     }
 
                                     {/* {
@@ -175,22 +220,22 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
                         </Form>
                     </Tab>
                     <Tab eventKey="server" title="From Server">
-
                         {!loading && <Autocomplete
                             isOptionEqualToValue={(option, value) => option._id === value._id}
                             multiple
                             id="checkboxes-tags-demo"
                             size="small"
+                            value={cvsServer || null}
                             options={allCvs}
                             disableCloseOnSelect
                             getOptionLabel={(option) => option._id}
                             //onChange={onChangeUniversities}
                             //id="disable-clearable"
                             disableClearable
-                            
                             renderTags={() => null}
                             onChange={(event, newValue) => {
                                 console.log(newValue)
+                                onFileChangeFromServer(newValue)
                             }}
                             renderOption={(props, option, { selected }) => (
                                 <li {...props}>
@@ -198,21 +243,24 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
                                         icon={icon}
                                         checkedIcon={checkedIcon}
                                         style={{ marginRight: 8 }}
-                                        checked={selected}                                        
+                                        checked={selected}
                                     />
-                                    {console.log(props)}
+                                    {console.log(selected)}
                                     <div>{option.cv_original_name}
                                     </div>
-                                    <a href={require(`../../../../server/uploaded_CVs/${option.cv_path.replace(/^.*[\\\/]/, '')}`)} target="_blank"
-                                        rel="noreferrer">View    
+                                    <a onClick={() => resetCvsOnClickingView(option)} href={require(`../../../../server/uploaded_CVs/${option.cv_path.replace(/^.*[\\\/]/, '')}`)} target="_blank"
+                                        rel="noreferrer">View
                                     </a>
                                 </li>
                             )}
                             style={{ width: 500 }}
                             renderInput={(params) => (
-                                <TextField required {...params} placeholder="Universities" />
+                                <TextField required {...params} placeholder="Cvs" />
                             )}
                         />}
+                        {
+                            getFileNamesFromServer()
+                        }
                     </Tab>
 
                 </Tabs>
