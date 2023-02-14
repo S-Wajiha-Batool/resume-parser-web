@@ -19,7 +19,6 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
     const [callback, setCallback] = state.CVAPI.callback;
     const [cvs, setCvs] = useState({ files: [] })
     const [cvsServer, setCvsServer] = useState([])
-    console.log('cvs', cvsServer)
     const [isParsing, setIsParsing] = useState(false);
     const [success, setSuccess] = useState(false);
     const [loading, setIsLoading] = useState(true);
@@ -201,8 +200,6 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
                                         </Button>
                                         </span>
                                     </div>
-
-
                                     {
                                         getFileNamesFromPC()
                                     }
@@ -220,6 +217,8 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
                         </Form>
                     </Tab>
                     <Tab eventKey="server" title="From Server">
+                        <Row>
+                          
                         {!loading && <Autocomplete
                             isOptionEqualToValue={(option, value) => option._id === value._id}
                             multiple
@@ -258,6 +257,7 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
                                 <TextField required {...params} placeholder="Cvs" />
                             )}
                         />}
+                          </Row>
                         {
                             getFileNamesFromServer()
                         }

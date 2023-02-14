@@ -26,6 +26,8 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 //import { Delete, Edit } from '@mui/icons-material';
 
 const JdTable = (props) => {
+    var moment = require('moment')
+
     const defaultMaterialTheme = createTheme();
     const { data, showModal, handleCloseModal, handleShowModal } = props;
     const navigate = useNavigate();
@@ -51,7 +53,7 @@ const JdTable = (props) => {
         { title: "Qualification", field: "qualification", searchable: true, export: true },
         { title: "Universities", field: "city", filterPlaceholder: "filter", searchable: true, export: true },
         { title: "Posted By", field: "uploaded_by", },
-        { title: "Posted On", field: "createdAt" },
+        { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
     ]
 
     const tableIcons = {
@@ -88,6 +90,11 @@ const JdTable = (props) => {
         return a;
     }
 
+    const getDate = (d) => {
+        var date = new Date(d)
+        //return date.toLocaleString('en-GB', {day:'numeric', month: 'long', year:'numeric'})
+        return moment(d).format("Do MMMM YYYY")
+    }
 
     return (
         <ThemeProvider theme={defaultMaterialTheme}>
