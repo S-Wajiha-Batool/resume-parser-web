@@ -4,35 +4,32 @@ import { Modal, Tabs, Tab, Button, Spinner, Form, Col, Row } from 'react-bootstr
 import { Checkbox, TextField, Autocomplete } from '@mui/material';
 import { GlobalState } from '../../GlobalState';
 import { parseCvsAPI } from '../../API/CVAPI';
-import { getCvsAPI } from '../../API/CVAPI';
+import { getCvsAPI, matchCvsAPI } from '../../API/CVAPI';
 import { showErrorToast } from './Toasts';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import '../UI/UploadCvsModal.css'
 var FormData = require('form-data')
 
-function UploadCvsModal({ showModal, handleCloseModal }) {
+function UploadCvsModal({ jd, showModal, handleCloseModal }) {
 
     const state = useContext(GlobalState);
     const [token] = state.UserAPI.token;
     const [allCvs, setAllCvs] = state.CVAPI.allCvs;
     const [callback, setCallback] = state.CVAPI.callback;
-    const [cvs, setCvs] = useState({ files: [] })
+    const [cvsPC, setCvsPC] = useState({ files: [] })
     const [cvsServer, setCvsServer] = useState([])
     const [isParsing, setIsParsing] = useState(false);
-    const [success, setSuccess] = useState(false);
+    const [isMatching, setIsMatching] = useState(false);
     const [loading, setIsLoading] = useState(true);
-    const [isUploadingCvs, setIsUploadingCvs] = useState(false);
+    const [parsedCvsFromAPI, setParsedCvsFromAPI] = useState([]);
     const inputRef = useRef();
     const { id } = useParams()
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
     const checkedIcon = <CheckBoxIcon fontSize="small" />;
+    const [activeKey, setActiveKey] = useState("pc");
     console.log(Object.values(Object.values(allCvs)))
-    var selectedOld = [];
-    const getFileName = async (option) => {
-        //console.log('../../../../server/uploaded_CVs/' + option.cv_path.replace(/^.*[\\\/]/, ''));
-        return '../../../../server/uploaded_CVs/' + option.cv_path.replace(/^.*[\\\/]/, '')
-    };
+    console.log(document.getElementById("cv_tab"))
 
     useEffect(() => {
         if (token) {
@@ -55,28 +52,67 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
 
     }, [token, callback]);
 
-    const handleSubmit = (e) => {
+    const handleUploadPC = (e) => {
         e.preventDefault()
         let formdata = new FormData();
-        for (let i = 0; i < cvs.files.length; i++) {
-            formdata.append(`files`, cvs.files[i])
+        for (let i = 0; i < cvsPC.files.length; i++) {
+            formdata.append(`files`, cvsPC.files[i])
         }
         try {
             setIsParsing(true)
             parseCvsAPI(formdata, token)
                 .then(res => {
                     console.log(res.data)
-                    //setJd(res.data.data.jd)
-                    //console.log(jd)
-                    //setSuccess(true);
+                    setParsedCvsFromAPI(res.data.cvs)
+                    setIsParsing(false);
+                })
+                .then(() => {
+                    try {
+                        setIsMatching(true)
+                        matchCvsAPI(jd, parsedCvsFromAPI, token)
+                            .then(res => {
+                                console.log(res.data)
+                                setIsMatching(false);
+                            })
+                            .catch(err => {
+                                console.log(err.response.data.error.msg)
+                                if(err.response.data.error.code == 500){
+                                    showErrorToast("CV Matching failed")
+                                }
+                            })
+                    } catch (err) {
+                        showErrorToast(err)
+                    };
                 })
                 .catch(err => {
                     console.log(err)
                     showErrorToast(err.response.data.error.msg)
                 })
                 .finally(() => {
-                    setIsParsing(false);
                     setCallback(!callback);
+                    setCvsPC({ ...cvsPC, files: [] });
+                })
+        } catch (err) {
+            showErrorToast(err)
+        }
+    }
+
+    const handleUploadServer = (e) => {
+        e.preventDefault()
+        try {
+            setIsMatching(true)
+            matchCvsAPI(jd, cvsServer, token)
+                .then(res => {
+                    console.log(res.data)
+                })
+                .catch(err => {
+                    console.log(err)
+                    showErrorToast(err.response.data.error.msg)
+                })
+                .finally(() => {
+                    setIsMatching(false);
+                    setCallback(!callback);
+                    setCvsServer([]);
                 })
         } catch (err) {
             showErrorToast(err)
@@ -88,13 +124,13 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
     };
 
     const onFileChangeFromServer = (option) => {
-        console.log('in', option);
         setCvsServer(option)
     }
 
+
     const handleDisplayFileDetails = (e) => {
         inputRef.current?.files &&
-            setCvs({ ...cvs, files: e.target.files });
+            setCvsPC({ ...cvsPC, files: e.target.files });
     };
 
     const handleRemoveFilesFromPC = (index) => {
@@ -111,20 +147,20 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
         }
         input.files = dt.files
         console.log(input.files)
-        setCvs({ ...cvs, files: input.files });
+        setCvsPC({ ...cvsPC, files: input.files });
 
     }
 
     const handleRemoveFilesFromServer = (file) => {
-        setCvsServer(cvs => cvs.filter(item => item._id !== file._id))
+        setCvsServer(cvsPC => cvsPC.filter(item => item._id !== file._id))
     }
 
     const getFileNamesFromPC = () => {
         let rows = [];
-        for (let i = 0; i < cvs.files.length; i++) {
+        for (let i = 0; i < cvsPC.files.length; i++) {
             rows.push(<div className='file_row'>
                 <span>
-                    {cvs.files[i].name}
+                    {cvsPC.files[i].name}
                 </span>
                 <span className='remove_action' onClick={() => handleRemoveFilesFromPC(i)}>
                     Remove
@@ -132,6 +168,10 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
             </div>)
         }
         return <div>{rows}</div>
+    }
+
+    const getFileNamesWithScores = () => {
+
     }
 
     const getFileNamesFromServer = () => {
@@ -149,7 +189,7 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
         return <div>{rows}</div>
     }
 
-    const resetCvsOnClickingView = (option) => {
+    const resetCvsPCOnClickingView = (option) => {
         //var contains = false;
         var contains = cvsServer.includes(option);
         console.log(contains)
@@ -159,7 +199,7 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
         else {
             console.log('inn', cvsServer)
             cvsServer.push(option)
-            setCvsServer(cvs => cvs.filter(item => item._id !== option._id))
+            setCvsServer(cvsPC => cvsPC.filter(item => item._id !== option._id))
 
         }
     }
@@ -172,7 +212,7 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
             <Modal.Body>
                 <Tabs
                     defaultActiveKey="pc"
-                    id="justify-tab-example"
+                    id="cv_tab"
                     className="mb-3"
                     justify
                 >
@@ -192,8 +232,8 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
                                 <div className="file-box">
                                     <div className="file_row">
                                         <span>
-                                            {cvs.files.length == 0 && 'No files chosen'}
-                                            {cvs.files.length != 0 && `${cvs.files.length} files chosen`}
+                                            {cvsPC.files.length == 0 && 'No files chosen'}
+                                            {cvsPC.files.length != 0 && `${cvsPC.files.length} files chosen`}
                                         </span>
                                         <span><Button type="button" onClick={onFileChangeFromPC}>
                                             Upload File
@@ -205,7 +245,7 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
                                     }
 
                                     {/* {
-                                            cvs.files.length !==0 && cvs.files.map((file, index) => {
+                                            cvsPC.files.length !==0 && cvsPC.files.map((file, index) => {
                                                 <div style={{ paddingLeft: "10px", marginTop: "5px" }}>
                                             {file.name}
                                         </div>
@@ -215,6 +255,19 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
                                 </div>
                             </Form.Group>
                         </Form>
+                        <Modal.Footer>
+                        <Button variant='primary' type='submit' disabled={isParsing && isMatching} onClick={!isParsing && !isMatching? handleUploadPC : null}>
+                    {isParsing || isMatching && <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                    />
+                    }
+                    {isParsing ? " Parsing Cvs..." : isMatching ? " Scoring Cvs" : "Done"}
+                </Button>
+                    </Modal.Footer>
                     </Tab>
                     <Tab eventKey="server" title="From Server">
                         <Row>
@@ -247,7 +300,7 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
                                     {console.log(selected)}
                                     <div>{option.cv_original_name}
                                     </div>
-                                    <a onClick={() => resetCvsOnClickingView(option)} href={require(`../../../../server/uploaded_CVs/${option.cv_path.replace(/^.*[\\\/]/, '')}`)} target="_blank"
+                                    <a onClick={() => resetCvsPCOnClickingView(option)} href={require(`../../../../server/uploaded_CVs/${option.cv_path.replace(/^.*[\\\/]/, '')}`)} target="_blank"
                                         rel="noreferrer">View
                                     </a>
                                 </li>
@@ -261,22 +314,23 @@ function UploadCvsModal({ showModal, handleCloseModal }) {
                         {
                             getFileNamesFromServer()
                         }
-                    </Tab>
-
-                </Tabs>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant='primary' type='submit' disabled={isParsing} onClick={!isParsing ? handleSubmit : null}>
-                    {isParsing && <Spinner
+                        <Modal.Footer>
+                        <Button variant='primary' type='submit' disabled={isMatching} onClick={!isMatching ? handleUploadServer : null}>
+                    {isMatching && <Spinner
                         as="span"
                         animation="border"
                         size="sm"
                         role="status"
                         aria-hidden="true"
-                    />}
-                    {isParsing ? " Parsing Cvs..." : "Done"}
+                    />
+                    }
+                    {isMatching ? " Scoring Cvs" : "Done"}
                 </Button>
-            </Modal.Footer>
+                </Modal.Footer>
+                </Tab>
+                </Tabs>
+                
+            </Modal.Body>
         </Modal>
     )
 }

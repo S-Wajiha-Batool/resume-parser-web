@@ -101,16 +101,14 @@ function AllJds() {
             success ?
                 <> <Container>
                     <Row >
-                        <Col><h3>Job Descriptions</h3></Col>
-                        <Col className='uploadJd_btn'><Button onClick={handleShowModal}>Add JD</Button></Col>
+                        {/* <Col><h3>Job Descriptions</h3></Col>
+                        <Col className='uploadJd_btn'><Button onClick={handleShowModal}>Add JD</Button></Col> */}
                     </Row>
                     <div>
                         {allJDs.length !== 0 &&
                             <JdTable
                                 className='table'
                                 data={allJDs}
-                                showModal={showModal}
-                                handleCloseModal={handleCloseModal}
                                 handleShowModal={handleShowModal}
                             />}
 
@@ -119,85 +117,6 @@ function AllJds() {
                     </div>
                 </Container>
                     <UploadJdModal showModal={showModal} handleCloseModal={handleCloseModal} />
-                    {/* <Modal show={show} onHide={handleClose}>
-                        <Form onSubmit={handleSubmit}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Add Job Description</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <Form.Group >
-                                    <Form.Label>Position</Form.Label>
-                                    <Form.Control type='text'
-                                        name='position'
-                                        placeholder='Position'
-                                        value={jd.position}
-                                        required
-                                        onChange={onChangeInput} />
-                                </Form.Group>
-                                <br />
-                                <Form.Group>
-                                    <Form.Label>
-                                        Department</Form.Label>
-                                    <select className="form-control"
-                                        name='department'
-                                        value={jd.department}
-                                        onChange={onChangeInput}>
-                                        {departments.map((d, key) => {
-                                            return <option className='option' key={key} value={d}>{d}</option>;
-                                        })}
-                                    </select>
-                                </Form.Group>
-
-                                <br />
-                                <Form.Group>
-                                    // <label className='mainLabel'> File</label>
-                                //<div className=''>FileName</div>
-                                //<input className='file_up' type='file' name='file' required accept='image/*' onChange={onFileChange("file")}></input> 
-                                    <input
-                                        ref={inputRef}
-                                        required
-                                        onChange={handleDisplayFileDetails}
-                                        className="d-none"
-                                        type="file"
-                                        accept="application/msword, application/pdf"
-                                    />
-                                    <Button
-                                        name='file'
-                                        onClick={onFileChange}
-                                        variant={`outline-${uploadedFileName ? "success" : "primary"
-                                            }`}
-                                    >
-                                        {uploadedFileName ? uploadedFileName : "Upload"}
-                                    </Button>
-                                </Form.Group>
-
-                                <Form.Group as={Col} md="12" controlId="photo">
-                                    <input
-                                        type="file"
-                                        ref={inputRef}
-                                        name="file"
-                                        style={{ display: "none" }}
-                                        onChange={handleDisplayFileDetails}
-                                        accept="application/msword, application/pdf"
-                                    />
-                                    <div className="file-box">
-                                        <Button type="button" onClick={onFileChange}>
-                                            Upload File
-                                        </Button>
-                                        <span style={{ paddingLeft: "10px", marginTop: "5px" }}>
-                                            {uploadedFileName}
-                                        </span>
-                                    </div>
-                                </Form.Group>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button className='primary-button' type='submit' onClick={handleSubmit}>
-                                    DONE
-                                </Button>
-                            </Modal.Footer>
-                        </Form>
-
-                    </Modal> */}
                 </>
                 : "No Jds found"
     )

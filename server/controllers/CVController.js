@@ -12,10 +12,28 @@ const { spawn } = require("child_process");
 var request = require('request-promise');
 
 const CVController = {
+
+    getCv: async (req, res) => {
+        try {
+            if (!req.params.id) {
+                const all_cvs = await CV.find();
+                return res.status(200).json({ error: { code: null, msg: null }, data: { all_cvs: all_cvs } });
+            }
+
+            else {
+                console.log(req.params.id)
+                const selected_cv = await CV.findById({ _id: req.query.id })
+                return res.status(200).json({ error: { code: null, msg: null }, data: { cv: selected_cv, cvs: null } });
+            }
+        }
+        catch (err) {
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
+        }
+    },
+
     parseCV: async (req, res) => {
         try {
             const user = await Users.findById(req.user.id)
-            console.log(user._id)
             if (!user) return res.status(404).json({ error: { code: res.statusCode, msg: 'No user found' }, data: null })
 
             var data = []//parsedcv
@@ -49,7 +67,7 @@ const CVController = {
                     });
             })
 
-            var ids = [];
+            var saved_CVs = [];
             //uploading data to mongoDB
             const promisess = data.map(async (cv, index) => new Promise(async (resolve, reject) => {
                 console.log(req.files[index].name)
@@ -72,12 +90,12 @@ const CVController = {
                 //     return res.status(404).json({ error: { code: res.statusCode, msg: 'Input data missing' }, data: null })
                 // }
                 const saved_CV = await new_CV.save();
-                resolve(ids.push(saved_CV._id))
+                resolve(saved_CVs.push(saved_CV))
             }))
 
             await Promise.all(promisess)
 
-            return res.status(200).json({ error: { code: null, msg: null }, data: { ids: ids } });
+            return res.status(200).json({ error: { code: null, msg: null }, data: { cvs: saved_CVs } });
 
 
             // const childPython = spawn('python', ['./parse_cv.py', '1675098578460.pdf']);
@@ -115,20 +133,46 @@ const CVController = {
 
     },
 
-    getCv: async (req, res) => {
-        try {
-            if (!req.params.id) {
-                const all_cvs = await CV.find();
-                return res.status(200).json({ error: { code: null, msg: null }, data: { all_cvs: all_cvs } });
-            }
 
-            else {
-                console.log(req.params.id)
-                const selected_cv = await CV.findById({ _id: req.query.id })
-                return res.status(200).json({ error: { code: null, msg: null }, data: { cv: selected_cv, cvs: null } });
-            }
-        }
-        catch (err) {
+    matchCV: async (req, res) => {
+        try {
+        var data = [] //array for scores after matching
+        console.log('body',req.body)
+        const jd = req.body.jd
+        const cvs = req.body.cvs
+        var options = {
+            method: 'POST',
+            uri: 'http://127.0.0.1:5000/match_cv',
+            body: {jd,cvs},
+            json: true
+        };
+
+        //api call to flask to get scores
+        await new Promise(async (resolve, reject) => {
+            await request(options)
+                .then(function (scores) {
+                    console.log(scores);
+                    resolve(data = scores)
+                })
+                .catch(function (err) {
+                    console.log(err)
+                    return res.status(500).json({ error: { code: res.statusCode, msg: "Error in CV matching" }, data: null })
+                });
+        })
+
+        const promises = cvs.map(async (cv, index) => new Promise(async (resolve, reject) => {
+            const new_CV_JD = new CV_JD({
+                JD_ID: jd._id,
+                CV_ID: cv._id,
+                weighted_percentage: data[index]
+            });
+                resolve(await new_CV_JD.save())
+        }))
+
+            await Promise.all(promises)
+            return res.status(200).json({ error: { code: res.statusCode, msg: null }, data: data });
+
+        } catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
         }
     },
@@ -155,22 +199,7 @@ const CVController = {
         }
     },
 
-    create_rankings: async (req, res) => {
-        const new_CV_JD = new CV_JD({
-            JD_ID: req.body.JD_ID,
-            CV_ID: req.body.CV_ID,
-            weighted_percentage: req.body.weighted_percentage,
-            rank: req.body.rank,
-            hire_status: req.body.hire_status
-        });
-
-        try {
-            const savedCV_JD = await new_CV_JD.save()
-            return res.status(200).json({ error: { code: null, msg: null }, data: "Rank Created" });
-        } catch (err) {
-            return res.status(500).json({ error: { code: null, msg: err }, data: null });
-        }
-    },
+   
 
     update_rankings: async (req, res) => {
 
