@@ -23,6 +23,12 @@ export const getCvsAPI = async (token) => {
     })
 }
 
+export const getCvAPI = async (id, token) => {
+    return await axios.get(`/api/cv/get_cv/${id}`, {
+        headers: {token: `Bearer ${token}`}
+    })
+}
+
 export const matchCvsAPI = async (jd, cvs, token) => {
     console.log(jd, cvs, token)
     return await axios.post(`/api/cv/match_cv`, {jd, cvs}, {

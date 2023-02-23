@@ -32,7 +32,6 @@ const JdTable = (props) => {
                 {rowData.universities.map(name => <li>{name}</li>)}
             </ul>, filterPlaceholder: "filter", searchable: true, export: true
         },
-        { title: "Posted By", field: "uploaded_by", },
         { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
     ]
 

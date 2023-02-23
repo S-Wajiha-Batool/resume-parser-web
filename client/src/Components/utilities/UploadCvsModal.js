@@ -12,7 +12,6 @@ import '../UI/UploadCvsModal.css'
 var FormData = require('form-data')
 
 function UploadCvsModal({ jd, showModal, handleCloseModal }) {
-
     const state = useContext(GlobalState);
     const [token] = state.UserAPI.token;
     const [allCvs, setAllCvs] = state.CVAPI.allCvs;
@@ -22,14 +21,19 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
     const [isParsing, setIsParsing] = useState(false);
     const [isMatching, setIsMatching] = useState(false);
     const [loading, setIsLoading] = useState(true);
+    const [callbackJdDetails, setCallbackJdDetails] = state.JDAPI.callbackJdDetails;
     const [parsedCvsFromAPI, setParsedCvsFromAPI] = useState([]);
+    const [fileNamesPC, setFileNamesPC] = useState([]);
+    const [scoresPC, setScoresPC] = useState([]);
+    const [scoresServer, setScoresServer] = useState([]);
+    const [matchingDonePC, setMatchingDonePC] = useState(false);
+    const [matchingDoneServer, setMatchingDoneServer] = useState(false);
+    const [fileLimit, setFileLimit] = useState(false);
     const inputRef = useRef();
     const { id } = useParams()
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
     const checkedIcon = <CheckBoxIcon fontSize="small" />;
-    const [activeKey, setActiveKey] = useState("pc");
-    console.log(Object.values(Object.values(allCvs)))
-    console.log(document.getElementById("cv_tab"))
+    //console.log(Object.values(Object.values(allCvs)))
 
     useEffect(() => {
         if (token) {
@@ -73,10 +77,11 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
                             .then(res => {
                                 console.log(res.data)
                                 setIsMatching(false);
+                                setScoresPC(res.data.data);
                             })
                             .catch(err => {
                                 console.log(err.response.data.error.msg)
-                                if(err.response.data.error.code == 500){
+                                if (err.response.data.error.code == 500) {
                                     showErrorToast("CV Matching failed")
                                 }
                             })
@@ -90,7 +95,9 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
                 })
                 .finally(() => {
                     setCallback(!callback);
-                    setCvsPC({ ...cvsPC, files: [] });
+                    //setCvsPC({ ...cvsPC, files: [] });
+                    setCallbackJdDetails(!callbackJdDetails)
+                    setMatchingDonePC(true)
                 })
         } catch (err) {
             showErrorToast(err)
@@ -104,6 +111,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
             matchCvsAPI(jd, cvsServer, token)
                 .then(res => {
                     console.log(res.data)
+                    setScoresServer(res.data.data)
                 })
                 .catch(err => {
                     console.log(err)
@@ -112,25 +120,59 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
                 .finally(() => {
                     setIsMatching(false);
                     setCallback(!callback);
-                    setCvsServer([]);
+                    setCallbackJdDetails(!callbackJdDetails)
+                    setMatchingDoneServer(true)
                 })
         } catch (err) {
             showErrorToast(err)
         }
     }
 
-    const onFileChangeFromPC = (e) => {
-        inputRef.current.click();
-    };
+    // const onFileChangeFromPC = (e) => {
+        
+    //     inputRef.current.click();
+    // };
 
     const onFileChangeFromServer = (option) => {
+        setMatchingDoneServer(false)
         setCvsServer(option)
     }
 
-
     const handleDisplayFileDetails = (e) => {
-        inputRef.current?.files &&
-            setCvsPC({ ...cvsPC, files: e.target.files });
+        setMatchingDonePC(false)
+        // const files = Array.prototype.slice.call(e.target.files)
+        // const uploaded = [...cvsPC.files]
+        // console.log(uploaded);
+        // var MAX_COUNT = 5
+        // let limitExceeded = false;
+        // files.some((file) => {
+        //     if (uploaded.findIndex((f) => f.name === file.name) === -1) {
+        //         uploaded.push(file);
+        //         if (uploaded.length === MAX_COUNT) setFileLimit(true);
+        //         if (uploaded.length > MAX_COUNT) {
+        //             showErrorToast(`You can only add a maximum of ${MAX_COUNT} files`);
+        //             setFileLimit(false);
+        //             limitExceeded = true;
+        //             return true;
+        //         }
+        //     }
+        // })
+        // if (!limitExceeded){
+        //     setCvsPC({ ...cvsPC, files: uploaded });
+        // }
+
+        // const input = document.getElementById('files')
+        // input.value = cvsPC.files;
+        // inputRef.current?.files &&
+        //     setCvsPC({ ...cvsPC, files: e.target.files });
+
+        setCvsPC({ ...cvsPC, files: e.target.files });
+
+        // const newArr = []
+        // for (var i = 0; i < cvsPC.files.length; i++) {
+        //     newArr.push(cvsPC.files[i].name)
+        // }
+        // setFileNamesPC([...fileNamesPC, ...newArr])
     };
 
     const handleRemoveFilesFromPC = (index) => {
@@ -149,11 +191,19 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
         console.log(input.files)
         setCvsPC({ ...cvsPC, files: input.files });
 
+        //remove filenames too
+        // const newArr = []
+        // for (var i = 0; i < cvsPC.files.length; i++) {
+        //     newArr.push(cvsPC.files[i].name)
+        // }
+        // setFileNamesPC([...fileNamesPC, ...newArr])
+
     }
 
     const handleRemoveFilesFromServer = (file) => {
         setCvsServer(cvsPC => cvsPC.filter(item => item._id !== file._id))
     }
+
 
     const getFileNamesFromPC = () => {
         let rows = [];
@@ -162,16 +212,15 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
                 <span>
                     {cvsPC.files[i].name}
                 </span>
-                <span className='remove_action' onClick={() => handleRemoveFilesFromPC(i)}>
+                {matchingDonePC && <span>
+                    {scoresPC[i]}
+                </span>}
+                {!matchingDonePC && <span className='remove_action' onClick={() => handleRemoveFilesFromPC(i)}>
                     Remove
-                </span>
+                </span>}
             </div>)
         }
         return <div>{rows}</div>
-    }
-
-    const getFileNamesWithScores = () => {
-
     }
 
     const getFileNamesFromServer = () => {
@@ -181,9 +230,12 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
                 <span>
                     {cvsServer[i].cv_original_name}
                 </span>
-                <span className='remove_action' onClick={() => handleRemoveFilesFromServer(cvsServer[i])}>
+                {matchingDoneServer && <span>
+                    {scoresServer[i]}
+                </span>}
+                {!matchingDoneServer && <span className='remove_action' onClick={() => handleRemoveFilesFromServer(cvsServer[i])}>
                     Remove
-                </span>
+                </span>}
             </div>)
         }
         return <div>{rows}</div>
@@ -222,7 +274,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
                                 <input
                                     id='files'
                                     type="file"
-                                    ref={inputRef}
+                                    // ref={inputRef}
                                     multiple
                                     name="file"
                                     style={{ display: "none" }}
@@ -235,9 +287,12 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
                                             {cvsPC.files.length == 0 && 'No files chosen'}
                                             {cvsPC.files.length != 0 && `${cvsPC.files.length} files chosen`}
                                         </span>
-                                        <span><Button type="button" onClick={onFileChangeFromPC}>
-                                            Upload File
-                                        </Button>
+                                        <span>
+                                            <label htmlFor = 'files'>
+                                            <a  className={`btn btn-primary ${!fileLimit ? '' : 'disabled' } `}>Upload Files</a>
+                                                {/* <Button type="button">Upload File</Button> */}
+                                            </label>
+                                        
                                         </span>
                                     </div>
                                     {
@@ -256,80 +311,88 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
                             </Form.Group>
                         </Form>
                         <Modal.Footer>
-                        <Button variant='primary' type='submit' disabled={isParsing && isMatching} onClick={!isParsing && !isMatching? handleUploadPC : null}>
-                    {isParsing || isMatching && <Spinner
-                        as="span"
-                        animation="border"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                    />
-                    }
-                    {isParsing ? " Parsing Cvs..." : isMatching ? " Scoring Cvs" : "Done"}
-                </Button>
-                    </Modal.Footer>
+                            <Button variant='primary' type='submit' disabled={isParsing || isMatching || matchingDonePC} onClick={!isParsing && !isMatching ? handleUploadPC : null}>
+                                {isParsing && <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                                }
+                                {isMatching && <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                                }
+                                {isParsing ? " Parsing Cvs..." : isMatching ? " Scoring Cvs" : "Done"}
+                            </Button>
+                        </Modal.Footer>
                     </Tab>
                     <Tab eventKey="server" title="From Server">
                         <Row>
-                          
-                        {!loading && <Autocomplete
-                            isOptionEqualToValue={(option, value) => option._id === value._id}
-                            multiple
-                            id="checkboxes-tags-demo"
-                            size="small"
-                            value={cvsServer || null}
-                            options={allCvs}
-                            disableCloseOnSelect
-                            getOptionLabel={(option) => option._id}
-                            //onChange={onChangeUniversities}
-                            //id="disable-clearable"
-                            disableClearable
-                            renderTags={() => null}
-                            onChange={(event, newValue) => {
-                                console.log(newValue)
-                                onFileChangeFromServer(newValue)
-                            }}
-                            renderOption={(props, option, { selected }) => (
-                                <li {...props}>
-                                    <Checkbox
-                                        icon={icon}
-                                        checkedIcon={checkedIcon}
-                                        style={{ marginRight: 8 }}
-                                        checked={selected}
-                                    />
-                                    {console.log(selected)}
-                                    <div>{option.cv_original_name}
-                                    </div>
-                                    <a onClick={() => resetCvsPCOnClickingView(option)} href={require(`../../../../server/uploaded_CVs/${option.cv_path.replace(/^.*[\\\/]/, '')}`)} target="_blank"
-                                        rel="noreferrer">View
-                                    </a>
-                                </li>
-                            )}
-                            style={{ width: 500 }}
-                            renderInput={(params) => (
-                                <TextField required {...params} placeholder="Cvs" />
-                            )}
-                        />}
-                          </Row>
+
+                            {!loading && <Autocomplete
+                                isOptionEqualToValue={(option, value) => option._id === value._id}
+                                multiple
+                                id="checkboxes-tags-demo"
+                                size="small"
+                                value={cvsServer || null}
+                                options={allCvs}
+                                disableCloseOnSelect
+                                getOptionLabel={(option) => option._id}
+                                //onChange={onChangeUniversities}
+                                //id="disable-clearable"
+                                disableClearable
+                                renderTags={() => null}
+                                onChange={(event, newValue) => {
+                                    console.log(newValue)
+                                    onFileChangeFromServer(newValue)
+                                }}
+                                renderOption={(props, option, { selected }) => (
+                                    <li {...props}>
+                                        <Checkbox
+                                            icon={icon}
+                                            checkedIcon={checkedIcon}
+                                            style={{ marginRight: 8 }}
+                                            checked={selected}
+                                        />
+                                        {console.log(selected)}
+                                        <div>{option.cv_original_name}
+                                        </div>
+                                        <a onClick={() => resetCvsPCOnClickingView(option)} href={require(`../../../../server/uploaded_CVs/${option.cv_path.replace(/^.*[\\\/]/, '')}`)} target="_blank"
+                                            rel="noreferrer">View
+                                        </a>
+                                    </li>
+                                )}
+                                style={{ width: 500 }}
+                                renderInput={(params) => (
+                                    <TextField required {...params} placeholder="Cvs" />
+                                )}
+                            />}
+                        </Row>
                         {
                             getFileNamesFromServer()
                         }
                         <Modal.Footer>
-                        <Button variant='primary' type='submit' disabled={isMatching} onClick={!isMatching ? handleUploadServer : null}>
-                    {isMatching && <Spinner
-                        as="span"
-                        animation="border"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                    />
-                    }
-                    {isMatching ? " Scoring Cvs" : "Done"}
-                </Button>
-                </Modal.Footer>
-                </Tab>
+                            <Button variant='primary' type='submit' disabled={isMatching || matchingDoneServer} onClick={!isMatching ? handleUploadServer : null}>
+                                {isMatching && <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                                }
+                                {isMatching ? " Scoring Cvs" : "Done"}
+                            </Button>
+                        </Modal.Footer>
+                    </Tab>
                 </Tabs>
-                
+
             </Modal.Body>
         </Modal>
     )

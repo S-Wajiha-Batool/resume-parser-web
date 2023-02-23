@@ -4,10 +4,13 @@ import { useState, useEffect, useCallback } from 'react'
 export default function JDAPI() {
     const [allJDs, setAllJDs] = useState([]);
     const [callback, setCallback] = useState(false);
+    const [callbackJdDetails, setCallbackJdDetails] = useState(false)
     
     return {
         allJDs : [allJDs, setAllJDs],
-        callback: [callback, setCallback]
+        callback: [callback, setCallback],
+        callbackJdDetails: [callbackJdDetails, setCallbackJdDetails]
+
     }
 }
 

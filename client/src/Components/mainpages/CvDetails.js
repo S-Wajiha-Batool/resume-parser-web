@@ -1,39 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom'
 import { GlobalState } from '../../GlobalState';
-import { getJdAPI } from '../../API/JDAPI'
+import { getCvAPI } from '../../API/CVAPI'
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { Container, Row, Col, Button, Spinner, Card } from 'react-bootstrap';
-import '../UI/JdDetails.css'
 import LoadingSpinner from '../utilities/LoadingSpinner';
-import UploadCvsModal from '../utilities/UploadCvsModal';
 import CvTable from '../utilities/CvTable';
 
-function JdDetails() {
+function CvDetails() {
     var moment = require('moment')
     const state = useContext(GlobalState);
-    const [showModal, setShowModal] = useState(false);
-    const handleCloseModal = () => setShowModal(false);
-    const handleShowModal = () => setShowModal(true);
     const [token] = state.UserAPI.token;
-    const [jd, setJd] = useState([]);
-    const [allCvs, setAllCvs] = state.CVAPI.allCvs;
-    const [cvs, setCvs] = useState([]);
+    const [cv, setCv] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [success, setSuccess] = useState(false);
-    const [callbackJdDetails, setCallbackJdDetails] = state.JDAPI.callbackJdDetails;
     const { id } = useParams()
 
     useEffect(() => {
         if (token) {
             const getJd = async () => {
                 try {
-                    getJdAPI(id, token)
+                    getCvAPI(id, token)
                         .then(res => {
                             console.log(res.data)
-                            setJd(res.data.data.jd)
-                            setCvs(res.data.data.cvs)
-                            console.log(jd)
+                            setCv(res.data.data.cv)
                             setSuccess(true);
                         })
                         .catch(err => {
@@ -49,16 +39,7 @@ function JdDetails() {
             }
             getJd()
         }
-    }, [token, callbackJdDetails])
-
-    const getSkills = (skills) => {
-        console.log(skills)
-        var a = [];
-        skills.map(s => {
-            a.push(s.skill_name)
-        })
-        return a;
-    }
+    }, [token, callbackCvDetails])
 
     const getDate = (d) => {
         return moment(d).format("Do MMMM YYYY")
@@ -75,8 +56,10 @@ function JdDetails() {
                                 <Col className='uploadCv_btn'>
                                     <Button onClick={handleShowModal}>Add CV</Button>
                                 </Col> */}
-                                <UploadCvsModal jd = {jd} showModal={showModal} handleCloseModal={handleCloseModal} />
                             <Row>
+                                <Col>
+                                    display cv
+                                </Col>
                                 <Col>
                                     <Card
                                         bg='light'
@@ -84,23 +67,26 @@ function JdDetails() {
                                         style={{ width: '18rem' }}
                                         className="mb-2"
                                     >
-                                        <Card.Header>{jd.position}</Card.Header>
+                                        <Card.Header>{jd.full_name}</Card.Header>
                                         <Card.Body>
-                                            <Card.Title>  </Card.Title>
-                                            <Card.Subtitle>Department</Card.Subtitle>
-                                            <Card.Text>{jd.department}</Card.Text>
+                                            <Card.Title>{cv.score}</Card.Title>
+                                            <Card.Subtitle>Contact #</Card.Subtitle>
+                                            <Card.Text>{cv.phone_number}</Card.Text>
 
                                             <Card.Subtitle>Experience</Card.Subtitle>
-                                            <Card.Text>{jd.experience}</Card.Text>
+                                            <Card.Text>{cv.experience}</Card.Text>
 
                                             <Card.Subtitle>Qualification</Card.Subtitle>
-                                            <Card.Text>{jd.qualification}</Card.Text>
+                                            <Card.Text>{cv.qualification}</Card.Text>
 
                                             <Card.Subtitle>Universities</Card.Subtitle>
                                             <Card.Text>{jd.universities.map(name => <li>{name}</li>)}</Card.Text>
 
                                             <Card.Subtitle>Skills</Card.Subtitle>
-                                            <Card.Text>{getSkills(jd.skills).map(name => <li key="{name}">{name}</li>)}</Card.Text>
+                                            <Card.Text>{getSkills(cv.skills).map(name => <li key="{name}">{name}</li>)}</Card.Text>
+
+                                            <Card.Subtitle>Status</Card.Subtitle>
+                                            <Card.Text>{jd.status}</Card.Text>
 
                                             <Card.Subtitle>Posted By</Card.Subtitle>
                                             <Card.Text>{jd.uploaded_by}</Card.Text>
@@ -133,4 +119,4 @@ function JdDetails() {
 
 }
 
-export default JdDetails
+export default CvDetails

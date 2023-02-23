@@ -23,7 +23,7 @@ const CVController = {
             else {
                 console.log(req.params.id)
                 const selected_cv = await CV.findById({ _id: req.query.id })
-                return res.status(200).json({ error: { code: null, msg: null }, data: { cv: selected_cv, cvs: null } });
+                return res.status(200).json({ error: { code: null, msg: null }, data: { cv: selected_cv }});
             }
         }
         catch (err) {
