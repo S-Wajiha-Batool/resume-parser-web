@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
+import * as fs from "fs";
 import { useParams } from 'react-router-dom'
 import { Modal, Tabs, Tab, Button, Spinner, Form, Col, Row } from 'react-bootstrap'
 import { Checkbox, TextField, Autocomplete } from '@mui/material';
@@ -33,7 +34,8 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
     const { id } = useParams()
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
     const checkedIcon = <CheckBoxIcon fontSize="small" />;
-    //console.log(Object.values(Object.values(allCvs)))
+    const path = require('path');
+    const unoconv = require('awesome-unoconv');
 
     useEffect(() => {
         if (token) {
@@ -56,6 +58,29 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
 
     }, [token, callback]);
 
+    const getPdf = (file_path) => {
+        const mimetype = file_path.split(".")[1];
+        // if(mimetype === 'pdf'){
+        //     return require(`../../../../server/uploaded_CVs/${file_path.replace(/^.*[\\\/]/, '')}`)
+        // }
+        // else{
+
+        // }
+        
+        const sourceFilePath = path.resolve('./word_file.docx');
+        const outputFilePath = path.resolve('./myDoc.pdf');
+        unoconv
+            .convert(sourceFilePath, outputFilePath)
+            .then(result => {
+                console.log(result); // return outputFilePath
+                return outputFilePath
+            })
+            .catch(err => {
+                console.log(err);
+            });
+            
+    }
+
     const handleUploadPC = (e) => {
         e.preventDefault()
         let formdata = new FormData();
@@ -67,12 +92,13 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
             parseCvsAPI(formdata, token)
                 .then(res => {
                     console.log(res.data)
-                    setParsedCvsFromAPI(res.data.cvs)
+                    setParsedCvsFromAPI(res.data.data.cvs)
                     setIsParsing(false);
                 })
                 .then(() => {
                     try {
                         setIsMatching(true)
+                        console.log(parsedCvsFromAPI)
                         matchCvsAPI(jd, parsedCvsFromAPI, token)
                             .then(res => {
                                 console.log(res.data)
@@ -129,7 +155,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
     }
 
     // const onFileChangeFromPC = (e) => {
-        
+
     //     inputRef.current.click();
     // };
 
@@ -168,11 +194,6 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
 
         setCvsPC({ ...cvsPC, files: e.target.files });
 
-        // const newArr = []
-        // for (var i = 0; i < cvsPC.files.length; i++) {
-        //     newArr.push(cvsPC.files[i].name)
-        // }
-        // setFileNamesPC([...fileNamesPC, ...newArr])
     };
 
     const handleRemoveFilesFromPC = (index) => {
@@ -288,24 +309,17 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
                                             {cvsPC.files.length != 0 && `${cvsPC.files.length} files chosen`}
                                         </span>
                                         <span>
-                                            <label htmlFor = 'files'>
-                                            <a  className={`btn btn-primary ${!fileLimit ? '' : 'disabled' } `}>Upload Files</a>
+                                            <label htmlFor='files'>
+                                                <a className={`btn btn-primary ${!fileLimit ? '' : 'disabled'} `}>Upload Files</a>
                                                 {/* <Button type="button">Upload File</Button> */}
                                             </label>
-                                        
+
                                         </span>
                                     </div>
                                     {
                                         getFileNamesFromPC()
                                     }
 
-                                    {/* {
-                                            cvsPC.files.length !==0 && cvsPC.files.map((file, index) => {
-                                                <div style={{ paddingLeft: "10px", marginTop: "5px" }}>
-                                            {file.name}
-                                        </div>
-                                            })
-                                        } */}
 
                                 </div>
                             </Form.Group>

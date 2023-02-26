@@ -33,3 +33,10 @@ export const addJdAPI = async (jd, token) => {
     })
 }
 
+export const deleteJdAPI = async (id, jd, token) => {
+    console.log(id)
+    return await axios.patch(`/api/jd/delete_jd/${id}`, jd, {
+        headers: {token: `Bearer ${token}`}
+    })
+}
+

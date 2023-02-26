@@ -14,6 +14,7 @@ const { type } = require('os');
 //let ObjectId = require('mongodb').ObjectID;
 const mongoose = require('mongoose');
 const { ObjectId } = require('mongodb');
+
 //const JDController = require('../controllers/JDController')
 
 class cv_details {
@@ -85,7 +86,7 @@ const JDController = {
             //console.log(ObjectId(uploaded_by))
 
             if (!req.params.id) {
-                const all_jds = await JD.find({is_active: { $eq: true}});
+                const all_jds = await JD.find({ is_active: { $eq: true } });
 
                 return res.status(200).json({ error: { code: null, msg: null }, data: { all_jds: all_jds } });
             }
@@ -145,7 +146,7 @@ const JDController = {
                         // }
                         // console.log(dict)
                         //console.log(dict["6353ff07012055c7040c7079"])
-                        
+
                         // const x = dict.forEach(user =>{
                         //     if(user.user_id === ObjectId("635553aa4d179bb2271ce675")){
                         //         console.log("matched")              
@@ -172,7 +173,7 @@ const JDController = {
                         //     }))
                         // });
                         // console.log(cv_list)
-                        
+
 
                         if (err) {
                             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
@@ -218,29 +219,22 @@ const JDController = {
     },
 
     delete_JD: async (req, res) => {
-        const selected_jd = await JD.findById({ _id: req.params.id })
-        if (!selected_jd) {
-            res.status(404).json({ error: { code: res.statusCode, msg: "JD not found" }, data: null })
+        try {
+            console.log(req.body)
+                const updatedJD = await JD.findByIdAndUpdate(
+                    ObjectId(req.params.id),
+                    {
+                        $set:  req.body, 
+                    },
+                    { new: true }
+                );
+                res.status(200).json({ error: { code: null, msg: null }, data: updatedJD });
+
+            
+        } catch (err) {
+            res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
         }
-        else {
-            try {
-                if (!req.body.is_active) {
-                    res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
-                }
-                else {
-                    const updatedJD = await JD.findByIdAndUpdate(
-                        req.params.id,
-                        {
-                            $set: req.body,
-                        },
-                        { new: true }
-                    ); 
-                    res.status(200).json({ error: { code: null, msg: null }, data: updatedJD });
-                }
-            } catch (err) {
-                res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
-            }
-        }
+
     },
 
     get_job_details: async (req, res) => {
@@ -287,7 +281,7 @@ const JDController = {
                     function (err, result) {
                         if (err) {
                             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
-                        } else{
+                        } else {
                             console.log(JSON.stringify(result.sort(function (x, y) {
                                 return y.weighted_percentage - x.weighted_percentage;
                             })))

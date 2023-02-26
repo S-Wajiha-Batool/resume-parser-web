@@ -93,7 +93,7 @@ function AllJds() {
             getAllJds()
         }
 
-    }, [token])
+    }, [token, callback])
 
     return (
         isLoading ?

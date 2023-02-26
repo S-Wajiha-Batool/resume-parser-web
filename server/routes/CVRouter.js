@@ -14,6 +14,7 @@ router.get('/get_cv/:id?', verifyToken,CVController.getCv)
 
 router.put('/updateCV/:id', CVController.updatCV)
 
+router.post('/test_upload_cv', upload_cv.array('files'), CVController.test)
 //router.get('/getallCV/:id', CVController.getallCV) //JD ID will be given
 
 
