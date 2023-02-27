@@ -139,19 +139,19 @@ def down_cast(obj):
 # Setup flask server
 app = Flask(__name__) 
   
-# Setup url route which will calculate
-# total sum of array.
 @app.route('/parse_cv', methods = ['POST']) 
 def parse_cv(): 
-
     data = request.get_json() 
     print(data)
     result = []
     for file in data:
         text = extract_text_from_pdf('../server/uploaded_CVs/' + file)
         #names = extract_names(text)
-        name_modified = extract_names_modified(text,nlp)
-        phone_number = extract_phone_number(text)
+
+        #name_modified = extract_names_modified(text,nlp)
+        #phone_number =  extract_phone_number(text)
+        name_modified = "AA"
+        phone_number = "2332233"
         emails = extract_emails(text)
         #skills = skill_extractor.annotate(text)
         #print(skills)
@@ -169,5 +169,16 @@ def parse_cv():
     print(result)
     return json.dumps(result)
    
+@app.route('/match_cv', methods = ['POST']) 
+def match_cv(): 
+    data = request.get_json() 
+    print(data)
+    result = [9,8]
+    #for cv in data:
+
+    # Return data in json format 
+    #print(result)
+    return json.dumps(result)
+
 if __name__ == "__main__": 
     app.run(port=5000, debug=True)

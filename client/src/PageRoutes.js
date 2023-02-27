@@ -6,6 +6,7 @@ import AllJds from './Components/mainpages/AllJds';
 import Header from './Components/header/Header';
 import Footer from './Components/footer/Footer';
 import JdDetails from './Components/mainpages/JdDetails';
+import CvDetails from './Components/mainpages/CvDetails';
 
 const Layout = () => (
   <>
@@ -29,6 +30,7 @@ function PageRoutes() {
       <Route element={<Layout />}>
         <Route path="/" exact element={isLogged ? <AllJds /> : <Navigate to="/login" />} />
         <Route path="/jd/:id" exact element={isLogged ? <JdDetails /> : <Navigate to="/login" />} />
+        <Route path="/cv/:id" exact element={isLogged ? <CvDetails /> : <Navigate to="/login" />} />
       </Route>
     </Routes>
   )

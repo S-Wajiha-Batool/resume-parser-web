@@ -9,9 +9,9 @@ router.post('/upload_jd', verifyToken, JDController.createJD)
 
 router.get('/get_jd/:id?',verifyToken, JDController.getJD)
 
-router.put('/update_jd/:id', verifyToken, JDController.updateJD)
+router.patch('/update_jd/:id', verifyToken, JDController.updateJD)
 
-router.put('/delete_jd/:id', verifyToken, JDController.delete_JD)
+router.patch('/delete_jd/:id', verifyToken, JDController.delete_JD)
 
 router.get('/get_job_details/:id', JDController.get_job_details)
 

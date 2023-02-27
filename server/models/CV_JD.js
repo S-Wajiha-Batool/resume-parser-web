@@ -16,14 +16,11 @@ const CV_JD_Schema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    rank:{
-        type: Number, 
-        reuired: true
-    },
     hire_status:{
         type: String,
-        requires: true,
-        enum: ["Rejected", "Pending", "Accepted"]
+        required: true,
+        enum: ["Rejected", "Pending", "Accepted"],
+        default: "Pending",
     }
     
 },

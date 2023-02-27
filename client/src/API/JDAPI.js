@@ -4,10 +4,13 @@ import { useState, useEffect, useCallback } from 'react'
 export default function JDAPI() {
     const [allJDs, setAllJDs] = useState([]);
     const [callback, setCallback] = useState(false);
+    const [callbackJdDetails, setCallbackJdDetails] = useState(false)
     
     return {
         allJDs : [allJDs, setAllJDs],
-        callback: [callback, setCallback]
+        callback: [callback, setCallback],
+        callbackJdDetails: [callbackJdDetails, setCallbackJdDetails]
+
     }
 }
 
@@ -26,6 +29,13 @@ export const getJdAPI = async (id, token) => {
 
 export const addJdAPI = async (jd, token) => {
     return await axios.post(`/api/jd/upload_jd`, jd, {
+        headers: {token: `Bearer ${token}`}
+    })
+}
+
+export const deleteJdAPI = async (id, jd, token) => {
+    console.log(id)
+    return await axios.patch(`/api/jd/delete_jd/${id}`, jd, {
         headers: {token: `Bearer ${token}`}
     })
 }

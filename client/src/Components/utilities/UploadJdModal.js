@@ -97,6 +97,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
 
     const [validated, setValidated] = useState(false);
 
+    
 
     const handleSubmit = (e) => {
         const form = e.currentTarget;

@@ -10,15 +10,18 @@ import UploadCvsModal from '../utilities/UploadCvsModal';
 import CvTable from '../utilities/CvTable';
 
 function JdDetails() {
+    var moment = require('moment')
     const state = useContext(GlobalState);
     const [showModal, setShowModal] = useState(false);
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
     const [token] = state.UserAPI.token;
     const [jd, setJd] = useState([]);
+    const [allCvs, setAllCvs] = state.CVAPI.allCvs;
     const [cvs, setCvs] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [success, setSuccess] = useState(false);
+    const [callbackJdDetails, setCallbackJdDetails] = state.JDAPI.callbackJdDetails;
     const { id } = useParams()
 
     useEffect(() => {
@@ -46,7 +49,20 @@ function JdDetails() {
             }
             getJd()
         }
-    }, [token])
+    }, [token, callbackJdDetails])
+
+    const getSkills = (skills) => {
+        console.log(skills)
+        var a = [];
+        skills.map(s => {
+            a.push(s.skill_name)
+        })
+        return a;
+    }
+
+    const getDate = (d) => {
+        return moment(d).format("Do MMMM YYYY")
+    }
 
     return (
         isLoading ?
@@ -54,84 +70,65 @@ function JdDetails() {
             success ?
                 <> <Container>
                     <div>
-                            <>
-                                <Row>
-                                    <Col><h4>Job Description</h4></Col>
-                                    <Col className='uploadCv_btn'>
-                                        <Button onClick={handleShowModal}>Add CV</Button>
-                                    </Col>
-                                    <UploadCvsModal showModal={showModal} handleCloseModal={handleCloseModal} />
-                                </Row>
-                                <Row>
-                                    <Col>
+                        <>
+                                {/* <Col><h4>Job Description</h4></Col>
+                                <Col className='uploadCv_btn'>
+                                    <Button onClick={handleShowModal}>Add CV</Button>
+                                </Col> */}
+                                <UploadCvsModal jd = {jd} showModal={showModal} handleCloseModal={handleCloseModal} />
+                            <Row>
+                                <Col>
                                     <Card
-          bg='light'
-          text='dark'
-          style={{ width: '18rem' }}
-          className="mb-2"
-        >
-          <Card.Header>Header</Card.Header>
-          <Card.Body>
-            <Card.Title> Details </Card.Title>
-            <Card.Text>
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </Card.Text>
-          </Card.Body>
-        </Card>
-                                    </Col>
-                                    <Col>
-                                    <div>
-                        {cvs.length !== 0 &&
-                            <CvTable
-                                className='table'
-                                data={cvs}
-                            />}
+                                        bg='light'
+                                        text='dark'
+                                        style={{ width: '18rem' }}
+                                        className="mb-2"
+                                    >
+                                        <Card.Header>{jd.position}</Card.Header>
+                                        <Card.Body>
+                                            <Card.Title>  </Card.Title>
+                                            <Card.Subtitle>Department</Card.Subtitle>
+                                            <Card.Text>{jd.department}</Card.Text>
 
-                        {cvs.length === 0 &&
-                            <div>No JDs found</div>}
-                    </div>
-                                    </Col>
-                                </Row>
-                            </>
+                                            <Card.Subtitle>Experience</Card.Subtitle>
+                                            <Card.Text>{jd.experience}</Card.Text>
+
+                                            <Card.Subtitle>Qualification</Card.Subtitle>
+                                            <Card.Text>{jd.qualification}</Card.Text>
+
+                                            <Card.Subtitle>Universities</Card.Subtitle>
+                                            <Card.Text>{jd.universities.map(name => <li>{name}</li>)}</Card.Text>
+
+                                            <Card.Subtitle>Skills</Card.Subtitle>
+                                            <Card.Text>{getSkills(jd.skills).map(name => <li key="{name}">{name}</li>)}</Card.Text>
+
+                                            <Card.Subtitle>Posted By</Card.Subtitle>
+                                            <Card.Text>{jd.uploaded_by}</Card.Text>
+
+                                            <Card.Subtitle>Posted On</Card.Subtitle>
+                                            <Card.Text>{getDate(jd.createdAt)}</Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                                <Col>
+                                    <div>
+                                        {cvs.length !== 0 &&
+                                            <CvTable
+                                                className='table'
+                                                data={cvs}
+                                                handleShowModal={handleShowModal}
+                                            />}
+
+                                        {cvs.length === 0 &&
+                                            <div>No JDs found</div>}
+                                    </div>
+                                </Col>
+                            </Row>
+                        </>
                     </div>
                 </Container>
                 </>
                 : <div>Jd not found</div>
-
-        // <div class="container text-center">
-        //     <div class="row justify-content-between">
-        //         <div class="col-4">
-        //             <p class="fw-bold fs-4 text-start">Job Description #: {id}</p>
-        //         </div>
-        //         <div class="col-4 ">
-        //             <button type='button'
-        //                 className='btn btn-primary'
-        //                 value='Submit'
-        //                 position='center'>ADD CV
-        //             </button>
-        //         </div>
-        //     </div>
-        //     <div class="row align-items-start">
-        //         <div class="col border border-secondary rounded">
-        //             <p class="fw-bold fs-6 text-start">Title</p>
-        //             <p class="fs-7 text-start border border-secondary rounded border-opacity-50 text-wrap">HR Manager</p>
-        //             <p class="fw-bold fs-6 text-start">Department</p>
-        //             <p class="fs-7 text-start border border-secondary rounded border-opacity-50 text-wrap">HR</p>
-        //             <p class="fw-bold fs-6 text-start">Skills</p>
-        //             <p class="fs-7 text-start border border-secondary rounded border-opacity-50 text-wrap">Lorem ipsum</p>
-        //             <p class="fw-bold fs-6 text-start">Department</p>
-        //             <p class="fs-7 text-start border border-secondary rounded border-opacity-50 text-wrap">Lorem ipsum</p>
-        //             <p class="fw-bold fs-6 text-start">Qualification</p>
-        //             <p class="fs-7 text-start border border-secondary rounded border-opacity-50 text-wrap">Lorem ipsum</p>
-        //             <p class="fw-bold fs-6 text-start">Upload date</p>
-        //             <p class="fs-7 text-start border border-secondary rounded border-opacity-50 text-wrap">Lorem ipsum</p>
-        //         </div>
-        //         <div class="col">
-        //             CV table
-        //         </div>
-        //     </div>
-        // </div>
     )
 
 }

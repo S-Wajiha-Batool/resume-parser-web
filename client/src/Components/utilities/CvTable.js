@@ -1,96 +1,95 @@
-import React, { useState } from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, TableSortLabel } from '@material-ui/core';
+import React, { useState, useEffect, forwardRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import MaterialTable from 'material-table'
+import { ThemeProvider, createTheme } from '@mui/material';
+import { tableIcons } from './TableUtil';
+import AddBox from '@material-ui/icons/AddBox';
+import Edit from '@material-ui/icons/Edit';
+import DeleteOutline from '@material-ui/icons/DeleteOutline';
 
 const CvTable = (props) => {
-    const { data } = props;
-    const navigate = useNavigate();
-    //const headers = Object.keys(data[0]);
     const headers = ['full_name', 'email', 'hire_status', 'weighted_percentage', 'uploaded_by', 'createdAt']
     const labels = ['Name', 'Email', 'Status', 'Rating', 'Posted By', 'Posted On']
-    //const headers_key = ['position', 'department', 'skills.skill_name','experience']
-    const [sortType, setSortType] = useState({ column: null, order: 'asc' });
 
+    var moment = require('moment')
+    const defaultMaterialTheme = createTheme();
+    const { data, handleShowModal } = props;
+    const navigate = useNavigate();
+    const [tableData, setTableData] = useState([])
+    const columns = [
+        { title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
+        { title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { background: "#009688" }, headerStyle: { color: "#fff" },filterPlaceholder: "filter" },
+        { title: "Email", field: "email", filterPlaceholder: "filter" },
+        { title: "Rating", field: "weighted_percentage", filterPlaceholder: "filter" },
+        { title: "Status", field: "hire_status", filterPlaceholder: "filter" },
+        { title: "Posted By", field: "uploaded_by", filterPlaceholder: "filter"},
+        { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
+    ]
 
-    const getSkills = (skills) => {
-        var a = [];
-        skills.map(s => {
-            a.push(s.skill_name)
-        })
-        return a;
+    useEffect(() => {
+        setTableData(data);
+    }, [])
+
+    const getDate = (d) => {
+        return moment(d).format("Do MMMM YYYY")
     }
-
-    const handleSort = (column) => {
-        if (column === sortType.column) {
-            setSortType({ column: column, order: sortType.order === 'asc' ? 'desc' : 'asc' });
-        } else {
-            setSortType({ column: column, order: 'asc' });
-        }
-    }
-
-
-    //sorting function
-    const stableSort = (array, cmp) => {
-        const stabilizedThis = array.map((el, index) => [el, index]);
-        stabilizedThis.sort((a, b) => {
-            const order = cmp(a[0], b[0]);
-            if (order !== 0) return order;
-            return a[1] - b[1];
-        });
-        return stabilizedThis.map(el => el[0]);
-    }
-
-    const getSorting = (order, column) => {
-        return order === 'desc' ? (a, b) => desc(a, b, column) : (a, b) => -desc(a, b, column);
-    }
-
-    const desc = (a, b, column) => {
-        if (b[column] < a[column]) {
-            return 1;
-        }
-        if (b[column] > a[column]) {
-            return -1;
-        }
-        return 0;
-    }
-
-    const sortedData = stableSort(data, getSorting(sortType.order, sortType.column));
 
     return (
-        <Table>
-            <TableHead>
-                <TableRow>
-                    {headers.map((header, index) => (
-                        <TableCell key={index}>
-                            <TableSortLabel
-                                active={sortType.column === header}
-                                direction={sortType.order}
-                                onClick={() => handleSort(header)}
-                            >
-                                {labels[index]}
-                            </TableSortLabel>
-                        </TableCell>
-                    ))}
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {sortedData.map((item, index) => (
-                    <TableRow key={index}
-                        onClick={() => {
-                            navigate(`/cv/${item._id}`)
-                        }}>
-                        <TableCell >{item['full_name']}</TableCell>
-                        <TableCell >{item['email']}</TableCell>
-                        <TableCell >{item['hire_status']}</TableCell>
-                        <TableCell >{item['weighted_percentage']}</TableCell>
-                        <TableCell >{item['uploaded_by']}</TableCell>
-                        <TableCell >{item['createdAt']}</TableCell>
+        <ThemeProvider theme={defaultMaterialTheme}>
+            <MaterialTable columns={columns} data={tableData} icons={tableIcons}
+                actions={[
+                    {
+                        icon: () => <AddBox />,
+                        tooltip: "Add new row",
+                        isFreeAction: true,
+                        onClick: (e, data) => handleShowModal(),
+                        // isFreeAction:true
+                    },
+                    {
+                        icon: () => <Edit />,
+                        tooltip: "Edit",
+                        onClick: (e, rowData) => {
+                            // open dialog and fill your data to update
+                        },
+                        position: "row"
+                    },
+                    {
+                        icon: () => <DeleteOutline />,
+                        tooltip: "Delete",
+                        onClick: (e, rowData) => {
+                            // open dialog and fill your data to update
+                        },
+                        position: "row"
+                    }
 
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
-    );
+                ]}
+
+                //onSelectionChange={(selectedRows) => console.log(selectedRows)}
+                onRowClick={(event, rowData) => {
+                    console.log(rowData);
+                    navigate(`/cv/${rowData._id}`);
+                }}
+                options={{
+                    sorting: true, search: true,
+                    searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
+                    filtering: true, paging: true, pageSizeOptions: [2, 5, 10, 20, 25, 50, 100], pageSize: 5,
+                    paginationType: "stepped", showFirstLastPageButtons: false, paginationPosition: "both", exportButton: true,
+                    exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1, selection: true,
+                    showSelectAllCheckbox: true, showTextRowsSelected: true,
+                    selectionProps: rowData => ({
+                        // disabled: rowData.age == null,
+                        // color:"primary"
+                    }),
+                    grouping: true,
+                    columnsButton: true,
+                    rowStyle: (data, index) => index % 2 === 0 ? { background: "#f5f5f5" } : null,
+                    //headerStyle: { background: "#f44336", color: "#fff" },
+                    actionsColumnIndex: -1
+                }}
+                title="CVs"
+            />
+        </ThemeProvider>
+    )
 };
 
 export default CvTable;
