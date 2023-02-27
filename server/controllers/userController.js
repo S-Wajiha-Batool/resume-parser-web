@@ -53,9 +53,34 @@ const userController = {
     },
 
     profile: async (req, res) => {
-        const user = await User.findOne({ _id: req.user.id });
-        const { user_role, is_active, token, createdAt, updatedAt, __v, ...others } = user._doc;
-        return res.status(200).json({ error: { code: null, msg: null }, data: others })
+        try {
+            if (req.params.id) {
+                const user = await User.findOne({ _id: req.params.id })
+                const loggedin_user = await User.findOne({ _id: req.user.id})
+                if(loggedin_user.user_role == 0){
+                    return res.status(200).json({ error: { code: null, msg: null }, data: user })
+                }
+                else if(loggedin_user.user_role == 1){
+                    if(user.user_role == 2){
+                        return res.status(200).json({ error: { code: null, msg: null }, data: user })
+                    }
+                    else{
+                        return res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null})
+                    }
+                }
+                else{
+                    return res.status(403).json({ error: {code: res.statusCode, msg: "Permission Denied"}, data: null})
+                }
+                
+            }
+            else {
+                const user = await User.findOne({ _id: req.user.id });
+                const { user_role, is_active, token, createdAt, updatedAt, __v, ...others } = user._doc;
+                return res.status(200).json({ error: { code: null, msg: null }, data: others })
+            }
+        } catch (err) {
+            res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
+        }
     },
 
     createUser: async (req, res) => {
@@ -262,6 +287,10 @@ const userController = {
         } catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
         }
+    },
+
+    getUserDetails: async(req,res) =>{
+        
     },
 
     testPython: async (req, res) => {

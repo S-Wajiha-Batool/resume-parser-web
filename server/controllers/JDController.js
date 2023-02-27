@@ -130,6 +130,7 @@ const JDController = {
                     },
                 ],
                     async function (err, result) {
+                        //console.log(matchlist)
                         //const cv_uploaders = result.cvs.uploaded_by
                         // for(var i = 0; i<result.length; i++){
                         //     console.log(result[i].cvs.uploaded_by)

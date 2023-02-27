@@ -8,7 +8,7 @@ router.post('/login', userController.login)
 
 router.get('/logout', verifyToken, userController.logout)
 
-router.get('/profile', verifyToken , userController.profile) 
+router.get('/profile/:id?', verifyToken , userController.profile) 
 
 router.get('/users', verifyToken, userController.getAllUsers) 
 
