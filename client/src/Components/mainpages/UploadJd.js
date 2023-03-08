@@ -56,8 +56,6 @@ function UploadJd() {
                             <div className=''>FileName</div>
                             <input className='file_up' type='file' name='file1' required accept='image/*' onChange={handleChange()}></input>
                         </Row>
-
-
                         <hr
                             style={{
                                 backgroundColor: 'dimgrey',

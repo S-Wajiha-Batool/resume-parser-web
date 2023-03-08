@@ -14,8 +14,11 @@ router.get('/get_cv/:id?', verifyToken,CVController.getCv)
 
 router.put('/updateCV/:id', CVController.updatCV)
 
+router.patch('/delete_cv_against_jd/:id', verifyToken, CVController.deleteCvAgainstJd)
+
+router.patch('/delete_cv/:id', verifyToken, CVController.delete_CV)
+
 router.post('/test_upload_cv', upload_cv.array('files'), CVController.test)
-//router.get('/getallCV/:id', CVController.getallCV) //JD ID will be given
 
 
 module.exports = router;

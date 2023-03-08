@@ -5,11 +5,13 @@ export default function JDAPI() {
     const [allJDs, setAllJDs] = useState([]);
     const [callback, setCallback] = useState(false);
     const [callbackJdDetails, setCallbackJdDetails] = useState(false)
+    const [tableData, setTableData] = useState([])
     
     return {
         allJDs : [allJDs, setAllJDs],
         callback: [callback, setCallback],
-        callbackJdDetails: [callbackJdDetails, setCallbackJdDetails]
+        callbackJdDetails: [callbackJdDetails, setCallbackJdDetails],
+        tableData: [tableData, setTableData]
 
     }
 }

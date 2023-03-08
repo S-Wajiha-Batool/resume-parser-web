@@ -9,10 +9,10 @@ import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { addJdAPI } from '../../API/JDAPI'
 import arrow from '../../Icons/down_arrow.svg'
 import '../UI/UploadJdModal.css'
-import { skills, departments, experience, qualification, universities } from '../../constants'
+import { skills, departments, experience, qualification, universities, unis, quals } from '../../constants'
 
-function UploadJdModal({ showModal, handleCloseModal }) {
-    const [jd, setJd] = useState({ position: "", department: "HR", skills: [], experience: "None", qualification: 'BS-Computer Science', universities: [] })
+function UploadJdModal({ showModal, handleCloseModal}) {
+    const [jd, setJd] = useState({ position: "", department: "HR", skills: [], experience: "None", qualification: {}, universities: {} })
     console.log(jd)
 
     useEffect(() => {
@@ -22,58 +22,6 @@ function UploadJdModal({ showModal, handleCloseModal }) {
     }, [showModal])
 
     const [isUploadingJd, setIsUploadingJd] = useState(false)
-
-    
-
-    const top100Films = [
-        { title: 'The Shawshank Redemption', year: 1994 },
-        { title: 'The Godfather', year: 1972 },
-        { title: 'The Godfather: Part II', year: 1974 },
-        { title: 'The Dark Knight', year: 2008 },
-        { title: '12 Angry Men', year: 1957 },
-        { title: "Schindler's List", year: 1993 },
-        { title: 'Pulp Fiction', year: 1994 },
-        {
-            title: 'The Lord of the Rings: The Return of the King',
-            year: 2003,
-        },
-        { title: 'The Good, the Bad and the Ugly', year: 1966 },
-        { title: 'Fight Club', year: 1999 },
-        {
-            title: 'The Lord of the Rings: The Fellowship of the Ring',
-            year: 2001,
-        },
-        {
-            title: 'Star Wars: Episode V - The Empire Strikes Back',
-            year: 1980,
-        },
-        { title: 'Forrest Gump', year: 1994 },
-        { title: 'Inception', year: 2010 },
-        {
-            title: 'The Lord of the Rings: The Two Towers',
-            year: 2002,
-        },
-        { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
-        { title: 'Goodfellas', year: 1990 },
-        { title: 'The Matrix', year: 1999 },
-        { title: 'Seven Samurai', year: 1954 },
-        {
-            title: 'Star Wars: Episode IV - A New Hope',
-            year: 1977,
-        },
-        { title: 'City of God', year: 2002 },
-        { title: 'Se7en', year: 1995 },
-        { title: 'The Silence of the Lambs', year: 1991 },
-        { title: "It's a Wonderful Life", year: 1946 },
-        { title: 'Life Is Beautiful', year: 1997 },
-        { title: 'The Usual Suspects', year: 1995 },
-        { title: 'Léon: The Professional', year: 1994 },
-        { title: 'Spirited Away', year: 2001 },
-        { title: 'Saving Private Ryan', year: 1998 },
-        { title: 'Once Upon a Time in the West', year: 1968 },
-        { title: 'American History X', year: 1998 },
-        { title: 'Interstellar', year: 2014 },
-    ];
 
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
     const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -92,12 +40,14 @@ function UploadJdModal({ showModal, handleCloseModal }) {
     }
 
     const onChangeUniversities = (e, value) => {
-        setJd({ ...jd, 'universities': value })
+        setJd({ ...jd, 'universities': Object.fromEntries(value) })
+    }
+
+    const onChangeQualification = (e, value) => {
+        setJd({ ...jd, 'qualification': Object.fromEntries(value) })
     }
 
     const [validated, setValidated] = useState(false);
-
-    
 
     const handleSubmit = (e) => {
         const form = e.currentTarget;
@@ -115,7 +65,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                 showSuccessToast(res.data.data.msg);
                 setCallback(!callback)
                 handleCloseModal()
-                setJd({ position: "", department: "HR", skills: [], experience: "None", qualification: '', universities: []})
+                setJd({ position: "", department: "HR", skills: [], experience: "None", qualification: {}, universities: {}})
             })
             .catch(err => {
                 showErrorToast(err.response.data.error.msg)
@@ -148,7 +98,6 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                         <Form.Select
                             name='department'
                             value={jd.department}
-                            defaultValue={departments[0]}
                             onChange={onChangeInput}>
                             {departments.map((d, key) => {
                                 return <option className='option' key={key} value={d}>{d}</option>;
@@ -157,7 +106,6 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                     </Form.Group>
                     <br />
                     <Row>
-                        <Col>
                             <Form.Group>
                                 <Form.Label>Experience</Form.Label>
                                 <Form.Select
@@ -169,10 +117,10 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                                     })}
                                 </Form.Select>
                             </Form.Group>
-                        </Col>
-                        <Col>
+                        </Row>
+                        {/* <Col>
                             <Form.Group>
-                                <Form.Label>Min. Qualification</Form.Label>
+                                <Form.Label>Qualification</Form.Label>
                                 <Form.Select
                                     name='qualification'
                                     value={jd.qualification}
@@ -182,9 +130,40 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                                     })}
                                 </Form.Select>
                             </Form.Group>
-                        </Col>
+                        </Col> */}
+                        <br />
+                        <Row>
+                        <Form.Label>Qualification</Form.Label>
+                        {/* <StyledEngineProvider injectFirst> */}
+                            <Autocomplete
+                                isOptionEqualToValue={(option, value) => option[0] === value[0]}
+                                multiple
+                                id="checkboxes-tags-demo"
+                                size="small"
+                                options={Object.entries(quals)}
+                                disableCloseOnSelect
+                                getOptionLabel={(option) => option[1]  + " (" + option[0] + ")"}
+                                onChange={onChangeQualification}
+                                renderOption={(props, option, { selected }) => (
+                                    <li {...props} key={option[0]}>
+                                        <Checkbox
+                                            icon={icon}
+                                            checkedIcon={checkedIcon}
+                                            style={{ marginRight: 8 }}
+                                            checked={selected}
+                                        />
+                                        {option[1] + " (" + option[0] + ")"}
+                                    </li>
+                                )}
+                                style={{ width: 500 }}
+                                renderInput={(params) => (
+                                    <TextField required {...params} placeholder="Qualification" />
+                                )}
+                            />
+                        {/* </StyledEngineProvider> */}
                     </Row>
                     <br />
+                    
                     <Row>
                         <Form.Label>Skills</Form.Label>
                         {/* <StyledEngineProvider injectFirst> */}
@@ -198,7 +177,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                                 getOptionLabel={(option) => option.skill_name}
                                 onChange={onChangeSkills}
                                 renderOption={(props, option, { selected }) => (
-                                    <li {...props}>
+                                    <li {...props} key={option.skill_name}>
                                         <Checkbox
                                             icon={icon}
                                             checkedIcon={checkedIcon}
@@ -221,23 +200,23 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                         <Form.Label>Universities</Form.Label>
                         {/* <StyledEngineProvider injectFirst> */}
                             <Autocomplete
-                                isOptionEqualToValue={(option, value) => option === value}
+                                isOptionEqualToValue={(option, value) => option[0] === value[0]}
                                 multiple
                                 id="checkboxes-tags-demo"
                                 size="small"
-                                options={universities}
+                                options={Object.entries(unis)}
                                 disableCloseOnSelect
-                                getOptionLabel={(option) => option}
+                                getOptionLabel={(option) => option[1]  + " (" + option[0] + ")"}
                                 onChange={onChangeUniversities}
                                 renderOption={(props, option, { selected }) => (
-                                    <li {...props}>
+                                    <li {...props} key = {option[0]}>
                                         <Checkbox
                                             icon={icon}
                                             checkedIcon={checkedIcon}
                                             style={{ marginRight: 8 }}
                                             checked={selected}
                                         />
-                                        {option}
+                                        {option[1]  + " (" + option[0] + ")"}
                                     </li>
                                 )}
                                 style={{ width: 500 }}

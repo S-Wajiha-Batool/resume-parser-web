@@ -5,11 +5,13 @@ import { getCvAPI } from '../../API/CVAPI'
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { Container, Row, Col, Button, Spinner, Card } from 'react-bootstrap';
 import LoadingSpinner from '../utilities/LoadingSpinner';
-import CvTable from '../utilities/CvTable';
+import { useNavigate } from 'react-router-dom';
+import CvTable from '../utilities/CvsAgainstJdTable';
 
 function CvDetails() {
     var moment = require('moment')
     const state = useContext(GlobalState);
+    const navigate = useNavigate();
     const [token] = state.UserAPI.token;
     const [cv, setCv] = useState([]);
     const [jds, setJds] = useState([]);
@@ -19,7 +21,7 @@ function CvDetails() {
 
     useEffect(() => {
         if (token) {
-            const getJd = async () => {
+            const getCV = async () => {
                 try {
                     getCvAPI(id, token)
                         .then(res => {
@@ -39,7 +41,7 @@ function CvDetails() {
                     showErrorToast(err)
                 }
             }
-            getJd()
+            getCV()
         }
     }, [token])
 
@@ -80,36 +82,41 @@ function CvDetails() {
                                     >
                                         <Card.Header>{cv.full_name}</Card.Header>
                                         <Card.Body>
-                                            <Card.Title>{cv.score}</Card.Title>
+
+                                            <Card.Subtitle>Emails</Card.Subtitle>
+                                            <Card.Text>{cv.emails.map((email,index) => <li key={index}>{email}</li>)}</Card.Text>
+
                                             <Card.Subtitle>Contact #</Card.Subtitle>
                                             <Card.Text>{cv.phone_number}</Card.Text>
 
                                             <Card.Subtitle>Experience</Card.Subtitle>
                                             <Card.Text>{cv.experience}</Card.Text>
 
-                                            <Card.Subtitle>Qualification</Card.Subtitle>
+                                            {/* <Card.Subtitle>Qualification</Card.Subtitle>
                                             <Card.Text>{cv.qualification}</Card.Text>
 
                                             <Card.Subtitle>Universities</Card.Subtitle>
-                                            <Card.Text>{cv.universities.map(name => <li>{name}</li>)}</Card.Text>
+                                            <Card.Text>{cv.universities.map(name => <li>{name}</li>)}</Card.Text> */}
 
                                             <Card.Subtitle>Skills</Card.Subtitle>
                                             <Card.Text>{getSkills(cv.skills).map(name => <li key="{name}">{name}</li>)}</Card.Text>
+                                            
+                                            <Card.Subtitle>Links</Card.Subtitle>
+                                            <Card.Text>{cv.links.map((name,index) => <li key={index}><a href={name}>{name}</a></li>)}</Card.Text>
 
                                             <Card.Subtitle>Posted By</Card.Subtitle>
                                             <Card.Text>{cv.uploaded_by}</Card.Text>
 
                                             <Card.Subtitle>Posted On</Card.Subtitle>
                                             <Card.Text>{getDate(cv.createdAt)}</Card.Text>
-
-                                            <Card.Subtitle>Uploaded For: </Card.Subtitle>
+                                            
+                                            {jds.length !== 0 && <><Card.Subtitle>Uploaded For: </Card.Subtitle>
                                             <Card.Text>{jds.map((jd) => {
                                                 return(<div>
-                                                <span>{jd.position} - </span>
+                                                <span  onClick={navigate(`/jd/${jd._id}`)}>{jd.position} - </span>
                                                 <span>{jd.weighted_percentage} - </span>
-                                                <span>{jd.hire_status}</span>
                                                 </div>)
-                                            })}</Card.Text>
+                                            })}</Card.Text></>}
                                             
                                         </Card.Body>
                                     </Card>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-//import { Table, TableHead, TableRow, TableCell, TableBody, TableSortLabel } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import MaterialTable from 'material-table'
 import { ThemeProvider, createTheme } from '@mui/material';
@@ -7,23 +6,21 @@ import { tableIcons } from './TableUtil';
 import AddBox from '@material-ui/icons/AddBox';
 import Edit from '@material-ui/icons/Edit';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import Confirm from 'react-confirm-bootstrap';
 import { Modal, Button } from 'react-bootstrap'
 import { deleteJdAPI } from '../../API/JDAPI';
 import { GlobalState } from '../../GlobalState';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
-import { SettingsInputSvideoOutlined } from '@material-ui/icons';
 
 const JdTable = (props) => {
     var moment = require('moment')
     const defaultMaterialTheme = createTheme();
     const { data, handleShowModal } = props;
     const navigate = useNavigate();
-    const [tableData, setTableData] = useState([])
     const [selectedItem, setSelectedItem] = useState([])
     const [showDeleteDialogBox, setShowDeleteDialogBox] = useState(false)
     const [deleting, setDeleting] = useState(false)
     const state = useContext(GlobalState);
+    const [tableData, setTableData] = state.JDAPI.tableData
     const [token] = state.UserAPI.token;
     const [callback, setCallback] = state.JDAPI.callback;
     const columns = [
@@ -32,24 +29,28 @@ const JdTable = (props) => {
         { title: "Department", field: "department", filterPlaceholder: "filter" },
         {
             title: "Skills", field: "skills", grouping: false,
-            render: (rowData) => <ul>{getSkills(rowData.skills).map(name => <li key="{name}">{name}</li>)}</ul>,
+            render: (rowData) => <ul>{getSkills(rowData.skills).map((skill, index) => <li key={index}>{skill}</li>)}</ul>,
         },
         {
             title: "Experience", field: "experience",
             searchable: true, export: true
         },
-        { title: "Qualification", field: "qualification", searchable: true, export: true },
+        {
+            title: "Qualification", field: "qualification", render: (rowData) => <ul>
+                {Object.entries(rowData.qualification).map((option, index) => <li key={index}>{ option[1]  + " (" + option[0] + ")"}</li>)}
+            </ul>, searchable: true, export: true
+        },
         {
             title: "Universities", field: "universities", render: (rowData) => <ul>
-                {rowData.universities.map(name => <li>{name}</li>)}
+                {Object.entries(rowData.universities).map((option, index) => <li key={index}>{ option[1]  + " (" + option[0] + ")"}</li>)}
             </ul>, filterPlaceholder: "filter", searchable: true, export: true
         },
         { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
     ]
 
-    useEffect(() => {
-        setTableData(data);
-    }, [])
+    // useEffect(() => {
+    //     setTableData(data);
+    // }, [callback])
 
     const getSkills = (skills) => {
         console.log(skills)
@@ -63,8 +64,6 @@ const JdTable = (props) => {
     const getDate = (d) => {
         return moment(d).format("Do MMMM YYYY")
     }
-
-
 
     const onConfirmDelete = (e) => {
         // e.preventDefault()
@@ -88,14 +87,6 @@ const JdTable = (props) => {
 
     return (
         <>
-            {/* <Confirm
-                    visible={showDeleteDialogBox}
-                    onConfirm={onConfirmDelete}
-                    body="Are you sure you want to delete"
-                    confirmText="Yes"
-                    cancelText="No"
-                    title="Confirm Delete">
-                </Confirm> */}
 
             <Modal show={showDeleteDialogBox} onHide={() => setShowDeleteDialogBox(false)} centered>
                 <Modal.Header >
@@ -135,10 +126,6 @@ const JdTable = (props) => {
                             onClick: (e, rowData) => {
                                 setShowDeleteDialogBox(true);
                                 setSelectedItem(rowData)
-                                console.log('in', showDeleteDialogBox)
-
-
-
                             },
                             position: "row"
                         }
@@ -156,7 +143,7 @@ const JdTable = (props) => {
                         filtering: true, paging: true, pageSizeOptions: [2, 5, 10, 20, 25, 50, 100], pageSize: 5,
                         paginationType: "stepped", showFirstLastPageButtons: false, paginationPosition: "bottom", exportButton: true,
                         exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1, selection: true,
-                        showSelectAllCheckbox: true, showTextRowsSelected: true,
+                        //showSelectAllCheckbox: true, showTextRowsSelected: true,
                         selectionProps: rowData => ({
                             // disabled: rowData.age == null,
                             // color:"primary"
@@ -165,7 +152,8 @@ const JdTable = (props) => {
                         columnsButton: true,
                         rowStyle: (data, index) => index % 2 === 0 ? { background: "#f5f5f5" } : null,
                         //headerStyle: { background: "#f44336", color: "#fff" },
-                        actionsColumnIndex: -1
+                        actionsColumnIndex: -1,
+                        selection: false,
                     }}
                     title="Job Descriptions"
                 />

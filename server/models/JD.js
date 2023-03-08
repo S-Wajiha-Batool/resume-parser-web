@@ -36,11 +36,11 @@ const JDsSchema = new mongoose.Schema({
         required: true
     },
     qualification:{
-        type: String,
+        type: Object,
         required: true
     },
     universities:{
-        type: [String],
+        type: Object,
         required: true
     }
     
