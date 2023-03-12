@@ -23,7 +23,7 @@ const CVController = {
     getCv: async (req, res) => {
         try {
             if (!req.params.id) {
-                const all_cvs = await CV.find();
+                const all_cvs = await CV.find({ is_active: { $eq: true } });
                 return res.status(200).json({ error: { code: null, msg: null }, data: { all_cvs: all_cvs } });
             }
 
@@ -39,6 +39,9 @@ const CVController = {
                         $match: { CV_ID: id }
                     },
                     {
+                        $match: { "is_active_cv_jd": true }
+                    },
+                    {
                         $lookup: {
                             from: "jds",
                             localField: "JD_ID",
@@ -48,6 +51,9 @@ const CVController = {
                     },
                     {
                         $unset: ["matchlist._id", "createdAt", "updatedAt"]
+                    },
+                    {
+                        $match: { "matchlist.is_active": true }
                     },
                     { $unwind: "$matchlist" },
                     {
@@ -134,9 +140,9 @@ const CVController = {
                     phone_number: cv.phone_number,
                     emails: cv.emails,
                     experience: cv.experience,
-                    qualification: cv.qualification,
+                    //qualification: cv.qualification,
                     skills: cv.skills,
-                    universities: cv.universities,
+                    //universities: cv.universities,
                     links: cv.links,
                     cv_path: req.files[index].path,
                     cv_original_name: req.files[index].originalname
@@ -256,9 +262,41 @@ const CVController = {
         }
     },
 
+    deleteCvAgainstJd: async (req, res) => {
+        try {
+            console.log(req.body)
+                const updatedCV = await CV_JD.findByIdAndUpdate(
+                    ObjectId(req.params.id),
+                    {
+                        $set:  req.body, 
+                    },
+                    { new: true }
+                );
+                res.status(200).json({ error: { code: null, msg: null }, data: updatedCV });
+
+            
+        } catch (err) {
+            res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
+        }
+
+    },
+
+    delete_CV: async (req, res) => {
+        try {
+                const updatedCV = await CV.findByIdAndUpdate(
+                    ObjectId(req.params.id),
+                    {
+                        $set:  req.body, 
+                    },
+                    { new: true }
+                );
+                res.status(200).json({ error: { code: null, msg: null }, data: updatedCV });            
+        } catch (err) {
+            res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
+        }
+    },
+
     test: async (req, res) => {
-
-
         try {
             let arr = req.files[0].filename.split('.')
             const sourceFilePath = path.resolve(`./uploaded_CVs/${req.files[0].filename}`);

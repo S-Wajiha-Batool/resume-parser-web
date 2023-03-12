@@ -160,11 +160,8 @@ def parse_cv():
 
         skills= [] 
         experience = '2 years'
-        qualification = 'Bs-CS'
         links = []
-        universities = []
-
-        result.append({"full_name": name_modified, "phone_number": phone_number, "emails": emails, "skills": skills, "experience": experience, "qualification": qualification, "links": links, "universities": universities })
+        result.append({"full_name": name_modified, "phone_number": phone_number, "emails": emails, "skills": skills, "experience": experience, "links": links })
     # Return data in json format 
     print(result)
     return json.dumps(result)

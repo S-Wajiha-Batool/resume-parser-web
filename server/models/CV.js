@@ -14,13 +14,13 @@ const CVsSchema = new mongoose.Schema({
         required: true
     },
     experience:{
-        type: String,
+        type: [String],
         required: true
     },
-    qualification:{
-        type: String,
-        required: true
-    },
+    // qualification:{
+    //     type: String,
+    //     required: true
+    // },
     links:{
         type: [String],
         required: false 
@@ -43,10 +43,15 @@ const CVsSchema = new mongoose.Schema({
         ref: "users",
         required: true
     },
-    universities:{
-        type: [String],
-        required: true
-    }
+    is_active:{
+        type: Boolean,
+        required: true,
+        default: true
+    },
+    // universities:{
+    //     type: [String],
+    //     required: true
+    // }
 },
     {
 	timestamps:true

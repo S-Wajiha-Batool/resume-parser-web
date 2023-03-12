@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useContext, useEffect, useRef, createRef } from 'react';
 import JdTable from '../utilities/JdTable';
 import '../UI/AllJds.css';
 import { GlobalState } from '../../GlobalState';
@@ -9,10 +9,11 @@ import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import UploadJdModal from '../utilities/UploadJdModal';
 const FormData = require('form-data');
 
-function AllJds() {
 
+function AllJds() {
     const state = useContext(GlobalState);
     const [allJDs, setAllJDs] = state.JDAPI.allJDs;
+    const [tableData, setTableData] = state.JDAPI.tableData
     const [token] = state.UserAPI.token;
     console.log(allJDs)
     const [isLoading, setIsLoading] = useState(true);
@@ -81,6 +82,7 @@ function AllJds() {
                         setAllJDs(res.data.data.all_jds)
                         console.log(allJDs)
                         setSuccess(true);
+                        setTableData(res.data.data.all_jds)
                     })
                     .catch(err => {
                         console.log(err.response.data)
@@ -105,15 +107,11 @@ function AllJds() {
                         <Col className='uploadJd_btn'><Button onClick={handleShowModal}>Add JD</Button></Col> */}
                     </Row>
                     <div>
-                        {allJDs.length !== 0 &&
                             <JdTable
                                 className='table'
                                 data={allJDs}
                                 handleShowModal={handleShowModal}
-                            />}
-
-                        {allJDs.length === 0 &&
-                            <div>No JDs found</div>}
+                            />
                     </div>
                 </Container>
                     <UploadJdModal showModal={showModal} handleCloseModal={handleCloseModal} />

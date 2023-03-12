@@ -101,6 +101,9 @@ const JDController = {
                         $match: { JD_ID: id }
                     },
                     {
+                        $match: { "is_active_cv_jd": true }
+                    },
+                    {
                         $lookup: {
                             from: "cvs",
                             localField: "CV_ID",
@@ -110,6 +113,9 @@ const JDController = {
                     },
                     {
                         $unset: ["matchlist._id", "createdAt", "updatedAt"]
+                    },
+                    {
+                        $match: { "matchlist.is_active": true }
                     },
                     { $unwind: "$matchlist" },
                     {
@@ -121,7 +127,7 @@ const JDController = {
                                             $filter: {
                                                 input: { "$objectToArray": "$$ROOT" },
                                                 cond: { "$not": { "$in": ["$$this.k", ["matchlist"]] } },
-                                            }
+                                            },
                                         },
                                     },
                                     "$matchlist"
@@ -131,51 +137,7 @@ const JDController = {
                     },
                 ],
                     async function (err, result) {
-                        //console.log(matchlist)
-                        //const cv_uploaders = result.cvs.uploaded_by
-                        // for(var i = 0; i<result.length; i++){
-                        //     console.log(result[i].cvs.uploaded_by)
-                        // }
-                        // const all_users = await Users.find();
-
-                        // var dict = []; // create an empty array
-                        // for(var i = 0; i<all_users.length; i++){
-                        //     dict.push({
-                        //         user_id: all_users[i]._id,
-                        //         name: all_users[i].first_name + all_users[i].last_name
-                        //     });    
-                        // }
-                        // console.log(dict)
-                        //console.log(dict["6353ff07012055c7040c7079"])
-
-                        // const x = dict.forEach(user =>{
-                        //     if(user.user_id === ObjectId("635553aa4d179bb2271ce675")){
-                        //         console.log("matched")              
-                        //     }        
-                        //     else
-                        //         null
-                        // })
-
-                        //console.log(x)
-                        // let cv_list = [];
-                        // result.forEach(element => {
-                        //     cv_list.push(new cv_details({
-                        //         weighted_percentage: element.weighted_percentage,
-                        //         full_name: element.full_name,
-                        //         emails: element.emails,
-                        //         uploaded_by: dict.forEach(users =>{
-                        //             if(users.user_id === element.uploaded_by){
-                        //                 users.user_id 
-                        //                 console.log("matched")                       
-                        //             }        
-                        //             else
-                        //                 null
-                        //         })
-                        //     }))
-                        // });
-                        // console.log(cv_list)
-
-
+                        
                         if (err) {
                             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
                         } else {

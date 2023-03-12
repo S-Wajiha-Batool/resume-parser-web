@@ -5,14 +5,14 @@ import { Modal, Tabs, Tab, Button, Spinner, Form, Col, Row } from 'react-bootstr
 import { Checkbox, TextField, Autocomplete } from '@mui/material';
 import { GlobalState } from '../../GlobalState';
 import { parseCvsAPI } from '../../API/CVAPI';
-import { getCvsAPI, matchCvsAPI } from '../../API/CVAPI';
+import { getAllCvsAPI, matchCvsAPI } from '../../API/CVAPI';
 import { showErrorToast } from './Toasts';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import '../UI/UploadCvsModal.css'
 var FormData = require('form-data')
 
-function UploadCvsModal({ jd, showModal, handleCloseModal }) {
+function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
     const state = useContext(GlobalState);
     const [token] = state.UserAPI.token;
     const [allCvs, setAllCvs] = state.CVAPI.allCvs;
@@ -36,11 +36,12 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
     const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const path = require('path');
     const unoconv = require('awesome-unoconv');
+    console.log('cvsserver', cvsServer)
 
     useEffect(() => {
         if (token) {
             const getAllCvs = async () => {
-                getCvsAPI(token)
+                getAllCvsAPI(token)
                     .then(res => {
                         console.log(res.data)
                         setAllCvs(res.data.data.all_cvs)
@@ -58,6 +59,33 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
 
     }, [token, callback]);
 
+    // useEffect(() => {
+    //     console.log('inuseeffect')
+    //     try {
+    //         setIsMatching(true)
+    //         console.log(parsedCvsFromAPI)
+    //         matchCvsAPI(jd, parsedCvsFromAPI, token)
+    //             .then(res => {
+    //                 console.log(res.data)
+    //                 setIsMatching(false);
+    //                 setScoresPC(res.data.data);
+    //                 setCallbackJdDetails(!callbackJdDetails)
+    //             })
+    //             .catch(err => {
+    //                 console.log(err.response.data.error.msg)
+    //                 if (err.response.data.error.code == 500) {
+    //                     showErrorToast("CV Matching failed")
+    //                 }
+    //             })
+    //             .finally(() => {
+    //                 setMatchingDonePC(true)
+    //                 this.tableRef.current.onQueryChange();
+    //             })
+    //     } catch (err) {
+    //         showErrorToast(err)
+    //     };
+    // },[parsedCvsFromAPI])
+
     const getPdf = (file_path) => {
         const mimetype = file_path.split(".")[1];
         // if(mimetype === 'pdf'){
@@ -66,7 +94,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
         // else{
 
         // }
-        
+
         const sourceFilePath = path.resolve('./word_file.docx');
         const outputFilePath = path.resolve('./myDoc.pdf');
         unoconv
@@ -78,10 +106,10 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
             .catch(err => {
                 console.log(err);
             });
-            
+
     }
 
-    const handleUploadPC = (e) => {
+    const handleUploadPC = async (e) => {
         e.preventDefault()
         let formdata = new FormData();
         for (let i = 0; i < cvsPC.files.length; i++) {
@@ -89,31 +117,32 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
         }
         try {
             setIsParsing(true)
-            parseCvsAPI(formdata, token)
+            await parseCvsAPI(formdata, token)
                 .then(res => {
-                    console.log(res.data)
-                    setParsedCvsFromAPI(res.data.data.cvs)
+                    //console.log(res.data.data.cvs)
+                    //setParsedCvsFromAPI(res.data.data.cvs)
+                    let cvss = res.data.data.cvs
                     setIsParsing(false);
-                })
-                .then(() => {
-                    try {
-                        setIsMatching(true)
-                        console.log(parsedCvsFromAPI)
-                        matchCvsAPI(jd, parsedCvsFromAPI, token)
-                            .then(res => {
-                                console.log(res.data)
-                                setIsMatching(false);
-                                setScoresPC(res.data.data);
-                            })
-                            .catch(err => {
-                                console.log(err.response.data.error.msg)
-                                if (err.response.data.error.code == 500) {
-                                    showErrorToast("CV Matching failed")
-                                }
-                            })
-                    } catch (err) {
-                        showErrorToast(err)
-                    };
+                    setIsMatching(true)
+                    console.log(parsedCvsFromAPI)
+                    matchCvsAPI(jd, cvss, token)
+                        .then(res => {
+                            console.log(res.data)
+                            setIsMatching(false);
+                            setScoresPC(res.data.data);
+                        })
+                        .catch(err => {
+                            console.log(err.response.data.error.msg)
+                            if (err.response.data.error.code == 500) {
+                                showErrorToast("CV Matching failed")
+                            }
+                        })
+                        .finally(() => {
+                            setMatchingDonePC(true)
+                            setCallbackJdDetails(!callbackJdDetails)
+                        })
+
+                    //this.tableRef.current.onQueryChange();
                 })
                 .catch(err => {
                     console.log(err)
@@ -122,12 +151,12 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
                 .finally(() => {
                     setCallback(!callback);
                     //setCvsPC({ ...cvsPC, files: [] });
-                    setCallbackJdDetails(!callbackJdDetails)
-                    setMatchingDonePC(true)
+
                 })
         } catch (err) {
             showErrorToast(err)
         }
+
     }
 
     const handleUploadServer = (e) => {
@@ -138,16 +167,17 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
                 .then(res => {
                     console.log(res.data)
                     setScoresServer(res.data.data)
+                    setCallbackJdDetails(!callbackJdDetails)
+                    setMatchingDoneServer(true)
                 })
                 .catch(err => {
                     console.log(err)
                     showErrorToast(err.response.data.error.msg)
                 })
                 .finally(() => {
-                    setIsMatching(false);
                     setCallback(!callback);
-                    setCallbackJdDetails(!callbackJdDetails)
-                    setMatchingDoneServer(true)
+                    setIsMatching(false);
+                    this.tableRef.current.onQueryChange();
                 })
         } catch (err) {
             showErrorToast(err)
@@ -211,14 +241,6 @@ function UploadCvsModal({ jd, showModal, handleCloseModal }) {
         input.files = dt.files
         console.log(input.files)
         setCvsPC({ ...cvsPC, files: input.files });
-
-        //remove filenames too
-        // const newArr = []
-        // for (var i = 0; i < cvsPC.files.length; i++) {
-        //     newArr.push(cvsPC.files[i].name)
-        // }
-        // setFileNamesPC([...fileNamesPC, ...newArr])
-
     }
 
     const handleRemoveFilesFromServer = (file) => {

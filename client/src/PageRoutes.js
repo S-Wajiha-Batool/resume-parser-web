@@ -3,6 +3,7 @@ import { GlobalState } from './GlobalState'
 import { Routes, Route, Outlet, Navigate , useNavigate} from 'react-router-dom';
 import Login from './Components/mainpages/Login';
 import AllJds from './Components/mainpages/AllJds';
+import AllCvs from './Components/mainpages/AllCvs';
 import Header from './Components/header/Header';
 import Footer from './Components/footer/Footer';
 import JdDetails from './Components/mainpages/JdDetails';
@@ -29,6 +30,7 @@ function PageRoutes() {
       <Route path="/login" exact element={isLogged ? <Navigate to="/" /> : <Login />} />
       <Route element={<Layout />}>
         <Route path="/" exact element={isLogged ? <AllJds /> : <Navigate to="/login" />} />
+        <Route path="/cvs" exact element={isLogged ? <AllCvs /> : <Navigate to="/login" />} />
         <Route path="/jd/:id" exact element={isLogged ? <JdDetails /> : <Navigate to="/login" />} />
         <Route path="/cv/:id" exact element={isLogged ? <CvDetails /> : <Navigate to="/login" />} />
       </Route>
