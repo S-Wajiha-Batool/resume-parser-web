@@ -107,7 +107,7 @@ const CvsAgainstJdTable = (props) => {
                     sorting: true, search: true,
                     searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
                     filtering: true, paging: true, pageSizeOptions: [2, 5, 10, 20, 25, 50, 100], pageSize: 5,
-                    paginationType: "stepped", showFirstLastPageButtons: false, paginationPosition: "both", exportButton: true,
+                    paginationType: "stepped", showFirstLastPageButtons: false, paginationPosition: "bottom", exportButton: true,
                     exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1, selection: true,
                     showSelectAllCheckbox: true, showTextRowsSelected: true,
                     selectionProps: rowData => ({

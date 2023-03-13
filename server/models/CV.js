@@ -14,7 +14,7 @@ const CVsSchema = new mongoose.Schema({
         required: true
     },
     experience:{
-        type: [String],
+        type: Number,
         required: true
     },
     // qualification:{
@@ -32,11 +32,13 @@ const CVsSchema = new mongoose.Schema({
     },
     phone_number:{
         type: String,
-        required: true
+        required: true,
+        minlength: 0
     },
     full_name:{
         type: String,
-        required: true
+        required: true,
+        minlength: 0
     },
     uploaded_by:{
         type: mongoose.Schema.Types.ObjectId,

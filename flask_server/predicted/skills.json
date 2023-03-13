@@ -1,0 +1,494 @@
+{
+    "text": "muhammad hammad contact +923126932027 mail m hammad_19784@khi iba edu pk github hammad m education bs computer science institute of business administration iba karachi 08 2019 \u2013 6 2023 \u2022 honors & awards nthp scholar selected among the top 23 students from all over pakistan for four years fully funded scholarship at iba karachi projects interactive to do list app in flutter \u2022 created a complete task management app using several flutter widgets that gives easy solution to manage daily tasks \u2022 used provider for state management and firebase for saving data to present better user experience hangry \u2022 hangry is an app i am creating in collaboration with my group members for our final project in a flutter course at iba \u2022 we are providing a unique way of ordering food in restaurants the process includes scanning the qr code available on each table of the restaurant \u2022 as people scan the same qr they all get access to a unified interactive cart where each friend can add his own items which will be visible to every other person who scans the same qr aiming to ease the ordering process for customers vm architecture process and memory management cpu scheduling \u2022 spearheaded a group of 4 in which we designed virtual machine architecture using java \u2022 implemented registers instruction set instruction format machine execution cycle process control block program loading data loading code loading program execution program termination and 256 byte sized memory paging nlp analysis of content on google \u2022 generated a script that can search and pick first 50 links can be fed a custom number from google for any keyword it \u2022 then filters the content leaving only the useful content its applications include pos tagging entity tagging finding common words and phrases in content and headings visualizing all the data connecting found entities like nodes in a graph and finding the most important words using betweenness centrality securing useful insights and making quick nlp analyses easier text to latex \u2022 developed a text to latex converter with the functionality of parsing 13 different types of tex sextions from plain text making writing basic pdfs through latex easy breadth depth search \u2022 effeciently merged 2 famous algorithms bfs and dfs to develop a new algorithm \u2022 it starts while performing bfs and looks for branches at each node if any node has more than \"b\" branches; it shifts to dfs while having the tendency to perform quicker searches work experience findmyadventure pk seo intern \u2022 \u2022 executed analyses and audits on gathered data using different nlp tools and consolidated opportunities to rank higher initiated data gathering from the web to plan the content for their site more than 120 pages 07 2021 08 2021 and accelerate traffic by 10 times doubling the revenue skills \u2022 flutter \u2022 firebase \u2022 mongodb \u2022 java oop ds \u2022 python ai and data science libraries \u2022 sql \u2022 javascript \u2022 mern stack \u2022 web scraping \u2022 seo \u2022 trello clickup extracurricular achievements kpmg data analytics virual experience program \u2022 actively took part in kpmg\u2019s virtual experience program and succesfully completed the assigned tasks on given real world datasets \u2022 carried a data quality analysis and looked for opportunites to clean and tidy the raw data then implemented the changes",
+    "results": {
+        "full_matches": [
+            {
+                "skill_id": "KS1226Y6DNDT05G7FJ4J",
+                "doc_node_value": "computer science",
+                "score": 1,
+                "doc_node_id": [
+                    15,
+                    16
+                ]
+            },
+            {
+                "skill_id": "KS1218B62M9QRBY8WRSK",
+                "doc_node_value": "business administration",
+                "score": 1,
+                "doc_node_id": [
+                    19,
+                    20
+                ]
+            },
+            {
+                "skill_id": "KS4417576B7WXT8G221H",
+                "doc_node_value": "task management",
+                "score": 1,
+                "doc_node_id": [
+                    65,
+                    66
+                ]
+            },
+            {
+                "skill_id": "KS441PL6JPXW200W0GRQ",
+                "doc_node_value": "user experience",
+                "score": 1,
+                "doc_node_id": [
+                    94,
+                    95
+                ]
+            },
+            {
+                "skill_id": "KS1288W68R1QQ93CZ03T",
+                "doc_node_value": "qr code",
+                "score": 1,
+                "doc_node_id": [
+                    138,
+                    139
+                ]
+            },
+            {
+                "skill_id": "KS123886QKSQDNBCT8RK",
+                "doc_node_value": "memory management",
+                "score": 1,
+                "doc_node_id": [
+                    196,
+                    197
+                ]
+            },
+            {
+                "skill_id": "KS441TQ74FJX8PPY8TFH",
+                "doc_node_value": "virtual machine",
+                "score": 1,
+                "doc_node_id": [
+                    210,
+                    211
+                ]
+            },
+            {
+                "skill_id": "KS1281Y6QHJ8PQLHTZ6R",
+                "doc_node_value": "process control",
+                "score": 1,
+                "doc_node_id": [
+                    225,
+                    226
+                ]
+            },
+            {
+                "skill_id": "KS127W263JK1QPFK8SDM",
+                "doc_node_value": "plain text",
+                "score": 1,
+                "doc_node_id": [
+                    352,
+                    353
+                ]
+            },
+            {
+                "skill_id": "KS7LO8P3MXB93R3C9RWL",
+                "doc_node_value": "data science",
+                "score": 1,
+                "doc_node_id": [
+                    484,
+                    485
+                ]
+            },
+            {
+                "skill_id": "ESA0C585B3CBA1045AD0",
+                "doc_node_value": "mern stack",
+                "score": 1,
+                "doc_node_id": [
+                    492,
+                    493
+                ]
+            },
+            {
+                "skill_id": "KS122PT6RKPQ5KLM3XYH",
+                "doc_node_value": "data quality",
+                "score": 1,
+                "doc_node_id": [
+                    534,
+                    535
+                ]
+            },
+            {
+                "skill_id": "KS128D86HFQZWP7ZZY3H",
+                "doc_node_value": "raw datum",
+                "score": 1,
+                "doc_node_id": [
+                    546,
+                    547
+                ]
+            },
+            {
+                "skill_id": "KS121F17945FMQSZZPC6",
+                "score": 1,
+                "doc_node_value": "cart",
+                "doc_node_id": [
+                    162
+                ]
+            },
+            {
+                "skill_id": "KS440GJ6ML4G40B67460",
+                "score": 1,
+                "doc_node_value": "seo",
+                "doc_node_id": [
+                    418
+                ]
+            },
+            {
+                "skill_id": "KS1275Z6908VHW76FRXH",
+                "score": 1,
+                "doc_node_value": "oop",
+                "doc_node_id": [
+                    478
+                ]
+            },
+            {
+                "skill_id": "KS440GJ6ML4G40B67460",
+                "score": 1,
+                "doc_node_value": "seo",
+                "doc_node_id": [
+                    498
+                ]
+            }
+        ],
+        "ngram_scored": [
+            {
+                "skill_id": "KS126T170M8MGM367X9T",
+                "doc_node_id": [
+                    5
+                ],
+                "doc_node_value": "m",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS124CH623PFBJS8T5KM",
+                "doc_node_id": [
+                    10
+                ],
+                "doc_node_value": "github",
+                "type": "lowSurf",
+                "score": 1.0,
+                "len": 1
+            },
+            {
+                "skill_id": "KS126T170M8MGM367X9T",
+                "doc_node_id": [
+                    12
+                ],
+                "doc_node_value": "m",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS124K15WNLLZ5BG04MC",
+                "doc_node_id": [
+                    71
+                ],
+                "doc_node_value": "widgets",
+                "type": "lowSurf",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS1218W78FGVPVP2KXPX",
+                "doc_node_id": [
+                    85
+                ],
+                "doc_node_value": "management",
+                "type": "lowSurf",
+                "score": 1.0,
+                "len": 1
+            },
+            {
+                "skill_id": "KS1H7C2ZC7LXQQ6UN22I",
+                "doc_node_id": [
+                    87
+                ],
+                "doc_node_value": "firebase",
+                "type": "lowSurf",
+                "score": 1.0,
+                "len": 1
+            },
+            {
+                "skill_id": "KS7AASDV6UOE7VFBGF4D",
+                "doc_node_id": [
+                    106
+                ],
+                "doc_node_value": "collaboration",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS127FH6RY182W88Z7JM",
+                "doc_node_id": [
+                    188,
+                    189
+                ],
+                "doc_node_value": "ordering process",
+                "type": "lowSurf",
+                "score": 2,
+                "len": 2
+            },
+            {
+                "skill_id": "KS441WD75CKH6JF3WRCW",
+                "doc_node_id": [
+                    192
+                ],
+                "doc_node_value": "vm",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS1281W6C0KWC8KGVL1W",
+                "doc_node_id": [
+                    193,
+                    194
+                ],
+                "doc_node_value": "architecture process",
+                "type": "lowSurf",
+                "score": 2,
+                "len": 2
+            },
+            {
+                "skill_id": "KS680KR72KH02C5GM5TY",
+                "doc_node_id": [
+                    199
+                ],
+                "doc_node_value": "scheduling",
+                "type": "lowSurf",
+                "score": 1.0,
+                "len": 1
+            },
+            {
+                "skill_id": "KS120076FGP5WGWYMP0F",
+                "doc_node_id": [
+                    214
+                ],
+                "doc_node_value": "java",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS4403D6VQ2DVJFGVTQY",
+                "doc_node_id": [
+                    218,
+                    219,
+                    220
+                ],
+                "doc_node_value": "instruction set instruction",
+                "type": "oneToken",
+                "score": 0.65,
+                "len": 3
+            },
+            {
+                "skill_id": "KS125WD6D9FFYR2M78DL",
+                "doc_node_id": [
+                    243
+                ],
+                "doc_node_value": "paging",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS126ZK60X10ZQ7DRFLR",
+                "doc_node_id": [
+                    308
+                ],
+                "doc_node_value": "nodes",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS125R15XP0BPRHJ4ZV2",
+                "doc_node_id": [
+                    332
+                ],
+                "doc_node_value": "latex",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS125R15XP0BPRHJ4ZV2",
+                "doc_node_id": [
+                    338
+                ],
+                "doc_node_value": "latex",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS127KQ6LD33VJ6MC8F9",
+                "doc_node_id": [
+                    344
+                ],
+                "doc_node_value": "parsing",
+                "type": "lowSurf",
+                "score": 1.0,
+                "len": 1
+            },
+            {
+                "skill_id": "KS120XP6F2XX9S40D834",
+                "doc_node_id": [
+                    355,
+                    356
+                ],
+                "doc_node_value": "writing basic",
+                "type": "lowSurf",
+                "score": 2,
+                "len": 2
+            },
+            {
+                "skill_id": "KS125R15XP0BPRHJ4ZV2",
+                "doc_node_id": [
+                    359
+                ],
+                "doc_node_value": "latex",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS120D96FHL88PZDKZKH",
+                "doc_node_id": [
+                    369
+                ],
+                "doc_node_value": "algorithms",
+                "type": "lowSurf",
+                "score": 1.0,
+                "len": 1
+            },
+            {
+                "skill_id": "KS127296VDYS7ZFWVC46",
+                "doc_node_id": [
+                    390
+                ],
+                "doc_node_value": "node",
+                "type": "lowSurf",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS127296VDYS7ZFWVC46",
+                "doc_node_id": [
+                    393
+                ],
+                "doc_node_value": "node",
+                "type": "lowSurf",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS125Q96H9V85PKQJL14",
+                "doc_node_id": [
+                    398
+                ],
+                "doc_node_value": "b",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS1H7C2ZC7LXQQ6UN22I",
+                "doc_node_id": [
+                    473
+                ],
+                "doc_node_value": "firebase",
+                "type": "lowSurf",
+                "score": 1.0,
+                "len": 1
+            },
+            {
+                "skill_id": "KS126PF6PJY1N0ZX5R0P",
+                "doc_node_id": [
+                    475
+                ],
+                "doc_node_value": "mongodb",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS120076FGP5WGWYMP0F",
+                "doc_node_id": [
+                    477
+                ],
+                "doc_node_value": "java",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS125LS6N7WP4S6SFTCK",
+                "doc_node_id": [
+                    481
+                ],
+                "doc_node_value": "python",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS440W865GC4VRBW6LJP",
+                "doc_node_id": [
+                    488
+                ],
+                "doc_node_value": "sql",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS1200771D9CR9LB4MWW",
+                "doc_node_id": [
+                    490
+                ],
+                "doc_node_value": "javascript",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            },
+            {
+                "skill_id": "KS122P46PRC96YRQJ90R",
+                "doc_node_id": [
+                    495,
+                    496
+                ],
+                "doc_node_value": "web scraping",
+                "type": "lowSurf",
+                "score": 2,
+                "len": 2
+            },
+            {
+                "skill_id": "KS441JJ6PY9HSDKNLQH3",
+                "doc_node_id": [
+                    500
+                ],
+                "doc_node_value": "trello",
+                "type": "lowSurf",
+                "score": 1.0,
+                "len": 1
+            },
+            {
+                "skill_id": "KS120GV5ZXR64CJLL1J4",
+                "doc_node_id": [
+                    506
+                ],
+                "doc_node_value": "analytics",
+                "type": "fullUni",
+                "score": 1,
+                "len": 1
+            }
+        ]
+    }
+}
