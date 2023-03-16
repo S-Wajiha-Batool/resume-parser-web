@@ -137,7 +137,7 @@ const JDController = {
                     },
                 ],
                     async function (err, result) {
-                        
+
                         if (err) {
                             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
                         } else {
@@ -184,20 +184,77 @@ const JDController = {
     delete_JD: async (req, res) => {
         try {
             console.log(req.body)
-                const updatedJD = await JD.findByIdAndUpdate(
-                    ObjectId(req.params.id),
-                    {
-                        $set:  req.body, 
-                    },
-                    { new: true }
-                );
-                res.status(200).json({ error: { code: null, msg: null }, data: updatedJD });
+            const updatedJD = await JD.findByIdAndUpdate(
+                ObjectId(req.params.id),
+                {
+                    $set: req.body,
+                },
+                { new: true }
+            );
+            res.status(200).json({ error: { code: null, msg: null }, data: updatedJD });
 
-            
+
         } catch (err) {
             res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
         }
 
+    },
+
+    JD_count: async (req, res) => {
+        try {
+            var dict = {};
+            const jds = await JD.find();
+            jds.forEach(jd => {
+                dict[jd.department] = 0;
+            })
+            console.log(dict)
+
+            jds.forEach(jd => {
+                
+                dict[jd.department] = dict[jd]++;
+            })
+            return res.status(200).json({ error: { code: null, msg: null }, data: dict });
+
+        }
+        catch (err) {
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+        }
+    },
+
+    highest_rank: async (req, res) => {
+        try {
+            const ranks = [];
+            var count = 0;
+            const active_cvs = await CV.find({ is_active: { $eq: true } })
+            const active_jds = await JD.find({ is_active: { $eq: true } })
+            const active_cvs_jds = await CV_JD.find({ is_active_cv_jd: { $eq: true } })
+            const active_positions = [];
+            active_cvs_jds.forEach(active_cv_jd => {
+                active_jds.forEach(active_jd => {
+                    active_cvs.forEach(active_cv => {
+                        if (active_cv_jd.JD_ID.equals(active_jd._id) && active_cv_jd.CV_ID.equals(active_cv._id)) {
+
+                            active_positions.push(active_cv_jd)
+                        }
+                    })
+                })
+            })
+
+            var count = 0;
+            const total_cvs = await CV.find();
+            active_positions.forEach(active_position => {
+                if (active_position.weighted_percentage > 80) {
+                    count++;
+                }
+            })
+            var highest_percentage = (count / total_cvs.length) * 100;
+
+            return res.status(200).json({ error: { code: null, msg: null }, data: count, highest_percentage });
+
+        }
+        catch (err) {
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+        }
     },
 
     get_job_details: async (req, res) => {
@@ -314,8 +371,32 @@ const JDController = {
         } catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
         }
+    },
+    increased_JD: async (req, res) => {
+        try {
+            const JDs = await JD.find();
+            var date_ob = new Date();
+            var count = 0;
+            JDs.forEach(JD => {
+                const diff = Math.abs(date_ob - JD.createdAt)
+                console.log(date_ob)
+                console.log(JD.createdAt)
+                const d = diff / (1000 * 3600 * 24)
+                console.log(d)
+                if (d > 7) {
+                    count++;
+                }
+            });
+            const increased_percentage = (count / JDs.length) * 100;
+            return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage });
+
+        }
+        catch (err) {
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+        }
     }
 }
+
 
 
 module.exports = JDController;
