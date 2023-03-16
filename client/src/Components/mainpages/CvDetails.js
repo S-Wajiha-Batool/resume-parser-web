@@ -6,7 +6,6 @@ import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { Container, Row, Col, Button, Spinner, Card } from 'react-bootstrap';
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
-import CvTable from '../utilities/CvsAgainstJdTable';
 
 function CvDetails() {
     var moment = require('moment')
@@ -65,13 +64,9 @@ function CvDetails() {
                 <> <Container>
                     <div>
                         <>
-                                {/* <Col><h4>Job Description</h4></Col>
-                                <Col className='uploadCv_btn'>
-                                    <Button onClick={handleShowModal}>Add CV</Button>
-                                </Col> */}
                             <Row>
                                 <Col>
-                                <iframe src={require(`../../../../server/uploaded_CVs/${cv.cv_path.replace(/^.*[\\\/]/, '')}`)} width="600" height="780"/>
+                                <iframe src={require(`../../../../server/uploaded_CVs/${cv.cv_path.replace(/^.*[\\\/]/, '')}`)} width="100%" height="100%"/>
                                 </Col>
                                 <Col>
                                     <Card
@@ -90,7 +85,7 @@ function CvDetails() {
                                             <Card.Text>{cv.phone_number}</Card.Text>
 
                                             <Card.Subtitle>Experience</Card.Subtitle>
-                                            <Card.Text>{cv.experience}</Card.Text>
+                                            <Card.Text>{cv.experience} years</Card.Text>
 
                                             {/* <Card.Subtitle>Qualification</Card.Subtitle>
                                             <Card.Text>{cv.qualification}</Card.Text>
@@ -99,10 +94,12 @@ function CvDetails() {
                                             <Card.Text>{cv.universities.map(name => <li>{name}</li>)}</Card.Text> */}
 
                                             <Card.Subtitle>Skills</Card.Subtitle>
-                                            <Card.Text>{getSkills(cv.skills).map(name => <li key="{name}">{name}</li>)}</Card.Text>
+                                            <Card.Text>{cv.skills.length != 0 && cv.skills.map((name,index) => <li key={index}>{name}</li>)}</Card.Text>
+                                            <Card.Text>{cv.skills.length == 0 && "None"}</Card.Text>
                                             
                                             <Card.Subtitle>Links</Card.Subtitle>
-                                            <Card.Text>{cv.links.map((name,index) => <li key={index}><a href={name}>{name}</a></li>)}</Card.Text>
+                                            <Card.Text>{cv.links.length != 0 && cv.links.map((name,index) => <li key={index}><a href={name}>{name}</a></li>)}</Card.Text>
+                                            <Card.Text>{cv.links.length == 0 && "None"}</Card.Text>
 
                                             <Card.Subtitle>Posted By</Card.Subtitle>
                                             <Card.Text>{cv.uploaded_by}</Card.Text>
@@ -113,8 +110,8 @@ function CvDetails() {
                                             {jds.length !== 0 && <><Card.Subtitle>Uploaded For: </Card.Subtitle>
                                             <Card.Text>{jds.map((jd) => {
                                                 return(<div>
-                                                <span  onClick={navigate(`/jd/${jd._id}`)}>{jd.position} - </span>
-                                                <span>{jd.weighted_percentage} - </span>
+                                                <span onClick={() => {navigate(`/jd/${jd.JD_ID}`)}}>{jd.position} - </span>
+                                                <span>{jd.weighted_percentage} </span>
                                                 </div>)
                                             })}</Card.Text></>}
                                             

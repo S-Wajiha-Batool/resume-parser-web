@@ -6,6 +6,8 @@ import { loginAPI } from '../../API/UserAPI';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import {showSuccessToast, showErrorToast} from '../utilities/Toasts';
+import picture from '../images/login-page.png'
+import {} from '../UI/login.css'
 
 function Login() {
 
@@ -51,17 +53,22 @@ function Login() {
 
 
     return (
-        <div className='container col-md-8 d-flex align-items-center justify-content-center vh-100'>
-            <div className='card'>
-
-                <div className="card-header">
-                    <h4 style={{ textAlign: 'center' }}>Login</h4>
+        <div className='login-page'>
+            <div className = "login-image-container">
+            <figure>
+                <img src= {picture} alt = "login picture"/>
+            </figure>
+            </div>
+            <div className='login-form-container'>
+            <div className='login-card'>
+                <div className="login-header">
+                    <h2>Login</h2>
                 </div>
 
-                <div className='card-body'>
+                <div className='login-card'>
                     <form>
-                        <div className='form-group mb-3'>
-                            <text style={{ marginTop: 5, marginBottom: 5, fontWeight: 500 }}>
+                        <div>
+                            <text className='label'>
                                 Email
                             </text>
                             <input type='text'
@@ -69,11 +76,11 @@ function Login() {
                                 value={user.email}
                                 required
                                 onChange={onChangeInput}
-                                className='form-control' />
-                        </div>
+                                className='input' />
+                            </div>
+                        <div>
 
-                        <div className='form-group mb-3'>
-                            <text style={{ marginTop: 5, marginBottom: 5, fontWeight: 500 }}>
+                            <text className='label'>
                                 Password
                             </text>
                             <input type='password'
@@ -81,21 +88,24 @@ function Login() {
                                 value={user.password}
                                 required
                                 onChange={onChangeInput}
-                                className='form-control form-group' />
-                        </div>
-                        <div style={{textAlign: 'center'}}>
-                        <button type='button'
+                                className='input' />
+                            </div>
+                        <div>
+                        <button type='submit'
                         onClick={loginSubmit}
-                            className='btn btn-primary'
+                            className='input'
                             value='Submit'
                             position='center'>Submit
                         </button>
                         </div>
+                        <div className='label'>
+                            <text className='span.psw' position = 'center'>Forgot Password?</text>
+                        </div>
                     </form>
-                    <ToastContainer />
+                    <ToastContainer/>
                 </div>
             </div>
-            
+            </div>
         </div>
     )
 }

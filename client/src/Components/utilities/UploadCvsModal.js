@@ -106,7 +106,6 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
             .catch(err => {
                 console.log(err);
             });
-
     }
 
     const handleUploadPC = async (e) => {
@@ -136,6 +135,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                             if (err.response.data.error.code == 500) {
                                 showErrorToast("CV Matching failed")
                             }
+                            setIsMatching(false);
                         })
                         .finally(() => {
                             setMatchingDonePC(true)
@@ -147,14 +147,17 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                 .catch(err => {
                     console.log(err)
                     showErrorToast(err.response.data.error.msg)
+                    setIsParsing(false);
+                    setIsMatching(false);
                 })
                 .finally(() => {
                     setCallback(!callback);
-                    //setCvsPC({ ...cvsPC, files: [] });
 
                 })
         } catch (err) {
             showErrorToast(err)
+            setIsParsing(false);
+            setIsMatching(false);
         }
 
     }
@@ -173,6 +176,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                 .catch(err => {
                     console.log(err)
                     showErrorToast(err.response.data.error.msg)
+                    setIsMatching(false);
                 })
                 .finally(() => {
                     setCallback(!callback);
@@ -181,6 +185,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                 })
         } catch (err) {
             showErrorToast(err)
+            setIsMatching(false);
         }
     }
 
