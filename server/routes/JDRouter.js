@@ -15,4 +15,10 @@ router.patch('/delete_jd/:id', verifyToken, JDController.delete_JD)
 
 router.get('/get_job_details/:id', JDController.get_job_details)
 
+router.get('/increased_JD', JDController.increased_JD)
+
+router.get('/highest_rank', JDController.highest_rank)
+
+router.get('/JD_count', JDController.JD_count)
+
 module.exports = router;

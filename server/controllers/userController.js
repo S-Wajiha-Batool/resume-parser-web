@@ -57,7 +57,7 @@ const userController = {
         try {
             var user = {};
             if (req.params.id){
-                user = await User.findOne({ _id: req.user.id });
+                user = await User.findOne({ _id: req.params.id });
             }
             else {
                 user = await User.findOne({ _id: req.user.id });
@@ -274,6 +274,10 @@ const userController = {
         } catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
         }
+    },
+
+    getUserDetails: async(req,res) =>{
+        
     },
 
     testPython: async (req, res) => {

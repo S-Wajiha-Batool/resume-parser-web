@@ -10,11 +10,11 @@ const CV_JD = require('../models/CV_JD');
 const Users = require('../models/Users');
 const { spawn } = require("child_process");
 var request = require('request-promise');
-const { promisify } = require('bluebird');
-const libre = require('libreoffice-convert');
+//const { promisify } = require('bluebird');
+//const libre = require('libreoffice-convert');
 const fs = require('fs').promises;
-let lib_convert = promisify(libre.convert)
-var unoconv = require('unoconv');
+//let lib_convert = promisify(libre.convert)
+//var unoconv = require('unoconv');
 const { ObjectId } = require('mongodb');
 
 
@@ -293,6 +293,30 @@ const CVController = {
                 res.status(200).json({ error: { code: null, msg: null }, data: updatedCV });            
         } catch (err) {
             res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
+        }
+    },
+
+    increased_CV: async (req, res) => {
+        try {
+            const CVs = await CV.find();
+            var date_ob = new Date();
+            var count = 0;
+            CVs.forEach(CV => {
+                const diff = Math.abs(date_ob - CV.createdAt)
+                console.log(date_ob)
+                console.log(CV.createdAt)
+                const d = diff / (1000 * 3600 * 24)
+                console.log(d)
+                if (d > 7){
+                    count ++;
+                }
+            });
+            const increased_percentage = (count / CVs.length) * 100;
+            return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage });
+
+        }
+        catch (err) {
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
         }
     },
 

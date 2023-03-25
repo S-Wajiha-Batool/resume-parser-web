@@ -20,5 +20,7 @@ router.patch('/delete_cv/:id', verifyToken, CVController.delete_CV)
 
 router.post('/test_upload_cv', upload_cv.array('files'), CVController.test)
 
+router.get('/increased_CV', CVController.increased_CV)
+
 
 module.exports = router;
