@@ -28,8 +28,10 @@ function AllCvs() {
                         setTableData(res.data.data.all_cvs)
                     })
                     .catch(err => {
-                        console.log(err.response.data)
-                        showErrorToast(err.response.data.error.msg)
+                        console.log(err.response.data.error.msg)
+                        if (err.response.data.error.code == 500) {
+                        showErrorToast("CV fetching failed")
+                    }
                     })
                     .finally(() => {
                         setIsLoading(false);

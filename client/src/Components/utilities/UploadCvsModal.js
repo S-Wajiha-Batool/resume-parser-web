@@ -155,7 +155,8 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
 
                 })
         } catch (err) {
-            showErrorToast(err)
+            console.log(err)
+            showErrorToast("Error in CV upload")
             setIsParsing(false);
             setIsMatching(false);
         }

@@ -31,7 +31,6 @@ function AllJds() {
     const [jd, setJd] = useState({ position: "", department: "HR", file: null })
     const [uploadedFileName, setUploadedFileName] = useState(null);
 
-    const departments = ["HR", "IT", "Finance", "Marketing", "Software Engineering"]
 
     const onFileChange = (e) => {
         console.log("upload")
@@ -76,7 +75,8 @@ function AllJds() {
     useEffect(() => {
         if (token) {
             const getAllJds = async () => {
-                getAllJdsAPI(token)
+                try{
+                    getAllJdsAPI(token)
                     .then(res => {
                         console.log(res.data)
                         setAllJDs(res.data.data.all_jds)
@@ -85,12 +85,19 @@ function AllJds() {
                         setTableData(res.data.data.all_jds)
                     })
                     .catch(err => {
-                        console.log(err.response.data)
-                        showErrorToast(err.response.data.error.msg)
+                        console.log(err.response.data.error.msg)
+                        if (err.response.data.error.code == 500) {
+                        showErrorToast("JD fetching failed")
+                    }
                     })
                     .finally(() => {
                         setIsLoading(false);
                     })
+                }
+                catch(err){
+                    console.log(err)
+                }
+                
             }
             getAllJds()
         }

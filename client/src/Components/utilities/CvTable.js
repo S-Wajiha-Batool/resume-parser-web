@@ -18,7 +18,7 @@ const CvTable = (props) => {
     const navigate = useNavigate();
     const [selectedItem, setSelectedItem] = useState([])
     const [showDeleteDialogBox, setShowDeleteDialogBox] = useState(false)
-    const [deleting, setDeleting] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
     const state = useContext(GlobalState);
     const [tableData, setTableData] = state.CVAPI.tableData
     const [token] = state.UserAPI.token;
@@ -35,7 +35,7 @@ const CvTable = (props) => {
         },
         {
             title: "Links", field: "links", render: (rowData) => <ul>
-                {rowData.links.map((name,index) => <li key={index}><a href={name}>{name}</a></li>)}
+                {rowData.links.map((name, index) => <li key={index}><a href={name}>{name}</a></li>)}
             </ul>, searchable: true, export: true
         },
         { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
@@ -52,22 +52,30 @@ const CvTable = (props) => {
 
     const onConfirmDelete = (e) => {
         // e.preventDefault()
-        setDeleting(true)
-        deleteCVAPI(selectedItem._id, { is_active: false }, token)
-            .then(res => {
-                showSuccessToast(`${selectedItem.cv_original_name} deleted successfully`)
-                setShowDeleteDialogBox(false)
-                setCallback(!callback)
-            })
-            .catch(err => {
-                console.log(err.response.data.error.msg)
-                if (err.response.data.error.code == 500) {
-                    showErrorToast("Deletion failed")
-                }
-            })
-            .finally(() => {
-                setDeleting(false)
-            })
+        try {
+            setIsDeleting(true)
+            deleteCVAPI(selectedItem._id, { is_active: false }, token)
+                .then(res => {
+                    showSuccessToast(`${selectedItem.cv_original_name} deleted successfully`)
+                    setShowDeleteDialogBox(false)
+                    setCallback(!callback)
+                })
+                .catch(err => {
+                    console.log(err.response.data.error.msg)
+                    if (err.response.data.error.code == 500) {
+                        showErrorToast("Deletion failed")
+                    }
+                })
+                .finally(() => {
+                    setIsDeleting(false)
+                })
+        }
+        catch (err) {
+            console.log(err)
+            showErrorToast("Error in CV deletion")
+            setIsDeleting(false)
+        }
+
     }
 
     return (

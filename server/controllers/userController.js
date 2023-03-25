@@ -44,6 +44,7 @@ const userController = {
 
     logout: async (req, res) => {
         try {
+            console.log("here")
             res.clearCookie('refreshtoken', { path: '/api/user/refresh_token' })
             return res.status(200).json({ error: { code: null, msg: null }, data: "Successfully Logged out" })
         }
@@ -53,9 +54,20 @@ const userController = {
     },
 
     profile: async (req, res) => {
-        const user = await User.findOne({ _id: req.user.id });
-        const { user_role, is_active, token, createdAt, updatedAt, __v, ...others } = user._doc;
-        return res.status(200).json({ error: { code: null, msg: null }, data: others })
+        try {
+            var user = {};
+            if (req.params.id){
+                user = await User.findOne({ _id: req.user.id });
+            }
+            else {
+                user = await User.findOne({ _id: req.user.id });
+            }
+            const { user_role, is_active, token, createdAt, updatedAt, __v, ...others } = user._doc;
+            return res.status(200).json({ error: { code: null, msg: null }, data: others })
+        }
+        catch (err) {
+            return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
+        }
     },
 
     createUser: async (req, res) => {
@@ -313,7 +325,9 @@ const userController = {
         } catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
         }
-    }
+    },
+
+    
 }
 
 

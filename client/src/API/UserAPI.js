@@ -86,12 +86,25 @@ export const registerAPI = async (user) => {
     return await axios.post("api/user/register", user)
 }
 
-export const logoutAPI = async () => {
-    return await axios.get('api/user/logout')
+export const logoutAPI = async (token) => {
+    console.log('in')
+    return await axios.get("api/user/logout", {
+        headers: {token: `Bearer ${token}`}
+        }
+    )
+}
+
+export const getUserAPI = async (id, token) => {
+    console.log('in')
+    return await axios.get(`/api/user/profile/${id}`, {
+        headers: {token: `Bearer ${token}`}
+        }
+    )
 }
 
 export const allUsersAPI = async () => {
     return await axios.get('api/user/all_users')
 }
+
 
 
