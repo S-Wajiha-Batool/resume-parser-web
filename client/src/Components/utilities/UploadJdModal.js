@@ -28,7 +28,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
 
     const state = useContext(GlobalState);
     const [token] = state.UserAPI.token;
-    const [callback, setCallback] = state.JDAPI.callback;
+    const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
 
     const onChangeInput = e => {
         const { name, value } = e.target;
@@ -64,7 +64,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                 .then(res => {
                     console.log(res.data)
                     showSuccessToast(res.data.data.msg);
-                    setCallback(!callback)
+                    setCallbackJd(!callbackJd)
                     handleCloseModal()
                     setJd({ position: "", department: "HR", skills: [], experience: "None", qualification: {}, universities: {} })
                 })

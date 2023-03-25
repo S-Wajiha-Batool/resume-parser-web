@@ -22,7 +22,7 @@ const CvTable = (props) => {
     const state = useContext(GlobalState);
     const [tableData, setTableData] = state.CVAPI.tableData
     const [token] = state.UserAPI.token;
-    const [callback, setCallback] = state.CVAPI.callback;
+    const [callbackCv, setCallbackCv] = state.CVAPI.callbackCv;
     const columns = [
         { title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { background: "#009688" }, headerStyle: { color: "#fff" } },
         {
@@ -58,7 +58,7 @@ const CvTable = (props) => {
                 .then(res => {
                     showSuccessToast(`${selectedItem.cv_original_name} deleted successfully`)
                     setShowDeleteDialogBox(false)
-                    setCallback(!callback)
+                    setCallbackCv(!callbackCv)
                 })
                 .catch(err => {
                     console.log(err.response.data.error.msg)
@@ -75,7 +75,6 @@ const CvTable = (props) => {
             showErrorToast("Error in CV deletion")
             setIsDeleting(false)
         }
-
     }
 
     return (

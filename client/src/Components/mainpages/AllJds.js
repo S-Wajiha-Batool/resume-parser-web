@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useRef, createRef } from 'react
 import JdTable from '../utilities/JdTable';
 import '../UI/AllJds.css';
 import { GlobalState } from '../../GlobalState';
-import { getAllJdsAPI, addJdAPI } from '../../API/JDAPI'
+import { getAllJdsAPI } from '../../API/JDAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
@@ -26,50 +26,50 @@ function AllJds() {
     
     // for upload jd ----
     const inputRef = useRef();
-    const [callback, setCallback] = state.JDAPI.callback;
+    const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
 
     const [jd, setJd] = useState({ position: "", department: "HR", file: null })
     const [uploadedFileName, setUploadedFileName] = useState(null);
 
 
-    const onFileChange = (e) => {
-        console.log("upload")
-        inputRef.current.click();
-    };
+    // const onFileChange = (e) => {
+    //     console.log("upload")
+    //     inputRef.current.click();
+    // };
 
-    const onChangeInput = e => {
-        const { name, value } = e.target;
-        setJd({ ...jd, [name]: value })
-    }
+    // const onChangeInput = e => {
+    //     const { name, value } = e.target;
+    //     setJd({ ...jd, [name]: value })
+    // }
 
-    const handleDisplayFileDetails = (e) => {
-        inputRef.current?.files &&
-            setUploadedFileName(inputRef.current.files[0].name);
-        setJd({ ...jd, file: e.target.files });
-    };
+    // const handleDisplayFileDetails = (e) => {
+    //     inputRef.current?.files &&
+    //         setUploadedFileName(inputRef.current.files[0].name);
+    //     setJd({ ...jd, file: e.target.files });
+    // };
 
-    const handleSubmit = (e) => {
-        console.log('in submit')
-        e.preventDefault()
-        let formData = new FormData();
-        formData.append('position', jd.position);
-        formData.append('department', jd.department);
-        formData.append('file', jd.file[0]);
+    // const handleSubmit = (e) => {
+    //     console.log('in submit')
+    //     e.preventDefault()
+    //     let formData = new FormData();
+    //     formData.append('position', jd.position);
+    //     formData.append('department', jd.department);
+    //     formData.append('file', jd.file[0]);
 
-        addJdAPI(formData, token)
-            .then(res => {
-                console.log(res.data)
-                showSuccessToast(res.data.data.msg);
-                setCallback(!callback)
-                setShowModal(false)
-            })
-            .catch(err => {
-                //console.log(err.response.data)
-                //alert(err.response.data.error.msg)
-                showErrorToast(err.response.data.error.msg)
-            })
+    //     addJdAPI(formData, token)
+    //         .then(res => {
+    //             console.log(res.data)
+    //             showSuccessToast(res.data.data.msg);
+    //             setCallback(!callback)
+    //             setShowModal(false)
+    //         })
+    //         .catch(err => {
+    //             //console.log(err.response.data)
+    //             //alert(err.response.data.error.msg)
+    //             showErrorToast(err.response.data.error.msg)
+    //         })
 
-    }
+    // }
 
     //------
     useEffect(() => {
@@ -96,13 +96,14 @@ function AllJds() {
                 }
                 catch(err){
                     console.log(err)
+                    showErrorToast("JD fetching failed")
                 }
                 
             }
             getAllJds()
         }
 
-    }, [token, callback])
+    }, [token, callbackJd])
 
     return (
         isLoading ?

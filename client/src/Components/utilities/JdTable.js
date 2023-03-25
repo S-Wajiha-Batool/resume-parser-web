@@ -23,7 +23,7 @@ const JdTable = (props) => {
     const state = useContext(GlobalState);
     const [tableData, setTableData] = state.JDAPI.tableData
     const [token] = state.UserAPI.token;
-    const [callback, setCallback] = state.JDAPI.callback;
+    const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
     const columns = [
         //{ title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
         { title: "Position", field: "position", sorting: false, filtering: false, cellStyle: { background: "#009688" }, headerStyle: { color: "#fff" } },
@@ -74,7 +74,7 @@ const JdTable = (props) => {
                 .then(res => {
                     showSuccessToast(`${selectedItem.position} deleted successfully`)
                     setShowDeleteDialogBox(false)
-                    setCallback(!callback)
+                    setCallbackJd(!callbackJd)
                 })
                 .catch(err => {
                     console.log(err.response.data.error.msg)

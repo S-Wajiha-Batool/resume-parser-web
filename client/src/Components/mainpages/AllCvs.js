@@ -14,7 +14,7 @@ function AllCvs() {
     const [token] = state.UserAPI.token;
     const [isLoading, setIsLoading] = useState(true);
     const [success, setSuccess] = useState(false);
-    const [callback, setCallback] = state.CVAPI.callback;
+    const [callbackCv, setCallbackCv] = state.CVAPI.callbackCv;
 
     useEffect(() => {
         if (token) {
@@ -40,7 +40,7 @@ function AllCvs() {
             getallCVs()
         }
 
-    }, [token, callback])
+    }, [token, callbackCv])
 
     return (
         isLoading ?
