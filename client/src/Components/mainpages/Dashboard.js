@@ -14,7 +14,16 @@ function Dashboard() {
   const [allJDs, setAllJDs] = state.JDAPI.allJDs;
   const [allCvs, setAllCvs] = state.CVAPI.allCvs;
   const [token] = state.UserAPI.token;
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingJds, setIsLoadingJds] = useState(true);
+  const [isLoadingCvs, setIsLoadingCvs] = useState(true);
+  const [isLoadingPercent, setIsLoadingPercent] = useState(true);
+  const [isLoadingBar, setIsLoadingBar] = useState(true);
+  const [isLoadingPie, setIsLoadingPie] = useState(true);
+  const [successJds, setSuccessJds] = useState(false);
+  const [successCvs, setSuccessCvs] = useState(false);
+  const [successPercent, setSuccessPercent] = useState(false);
+  const [successBar, setSuccessBar] = useState(false);
+  const [successPie, setSuccessPie] = useState(false);
   const [success, setSuccess] = useState(false);
   const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
   const [callbackCv, setCallbackCv] = state.CVAPI.callbackCv;
@@ -29,10 +38,32 @@ function Dashboard() {
             .then(res => {
               console.log(res.data)
               setAllJDs(res.data.data.all_jds)
-              setSuccess(true);
+              try {
+                getIncreasedJdsAPI(token)
+                  .then(res => {
+                    console.log(res.data)
+                    setIncreasedJds(res.data.data)
+                    setSuccessJds(true);
+                  })
+                  .catch(err => {
+                    setSuccessJds(false)
+                    console.log(err.response.data.error.msg)
+                    if (err.response.data.error.code == 500) {
+                      showErrorToast("JD increase fetching failed")
+                    }
+                  })
+                  .finally(() => {
+                    setIsLoadingJds(false);
+                  })
+              }
+              catch (err) {
+                console.log(err)
+                showErrorToast("JD increase fetching failed")
+              }
+              setSuccessJds(true);
             })
             .catch(err => {
-              setSuccess(false)
+              setSuccessJds(false)
               console.log(err.response.data.error.msg)
               if (err.response.data.error.code == 500) {
                 showErrorToast("JD fetching failed")
@@ -54,13 +85,33 @@ function Dashboard() {
         try {
           getAllCvsAPI(token)
             .then(res => {
-              console.log(res.data)
               setAllCvs(res.data.data.all_cvs)
-              console.log(allCvs)
-              setSuccess(true);
+              setSuccessCvs(true);
+              try {
+                getIncreasedCvsAPI(token)
+                  .then(res => {
+                    console.log(res.data)
+                    setIncreasedCvs(res.data.data)
+                    setSuccessCvs(true);
+                  })
+                  .catch(err => {
+                    setSuccessCvs(false)
+                    console.log(err.response.data.error.msg)
+                    if (err.response.data.error.code == 500) {
+                      showErrorToast("CV increase fetching failed")
+                    }
+                  })
+                  .finally(() => {
+                    setIsLoadingCvs(false);
+                  })
+              }
+              catch (err) {
+                console.log(err)
+                showErrorToast("CV increase fetching failed")
+              }
             })
             .catch(err => {
-              setSuccess(false)
+              setSuccessCvs(false)
               console.log(err.response.data.error.msg)
               if (err.response.data.error.code == 500) {
                 showErrorToast("CV fetching failed")
@@ -70,7 +121,7 @@ function Dashboard() {
           //     setIsLoading(false);
           // })
         }
-        catch(err) {
+        catch (err) {
           console.log(err)
           showErrorToast("CV fetching failed")
         }
@@ -79,61 +130,7 @@ function Dashboard() {
       getallCVs()
     }
 
-    const getIncreasedJds = async () => {
-      try {
-        getIncreasedJdsAPI(token)
-          .then(res => {
-            console.log(res.data)
-            setIncreasedJds(res.data.data)
-            setSuccess(true);
-          })
-          .catch(err => {
-            setSuccess(false)
-            console.log(err.response.data.error.msg)
-            if (err.response.data.error.code == 500) {
-              showErrorToast("JD increase fetching failed")
-            }
-          })
-        // .finally(() => {
-        //     setIsLoading(false);
-        // })
-      }
-      catch (err) {
-        console.log(err)
-        showErrorToast("JD increase fetching failed")
-      }
 
-    }
-    getIncreasedJds()
-
-    const getIncreasedCvs = async () => {
-      try {
-        getIncreasedCvsAPI(token)
-          .then(res => {
-            console.log(res.data)
-            setIncreasedCvs(res.data.data)
-            setSuccess(true);
-          })
-          .catch(err => {
-            setSuccess(false)
-            console.log(err.response.data.error.msg)
-            if (err.response.data.error.code == 500) {
-              showErrorToast("CV increase fetching failed")
-            }
-          })
-        // .finally(() => {
-        //     setIsLoading(false);
-        // })
-      }
-      catch (err) {
-        console.log(err)
-        showErrorToast("CV increase fetching failed")
-      }
-
-    }
-    getIncreasedCvs()
-
-    setIsLoading(false)
 
   }, [token, callbackJd, callbackCv])
 
@@ -151,22 +148,23 @@ function Dashboard() {
   ];
 
   return (
-    isLoading ? 
-    <LoadingSpinner/>:
-    success ? 
     <div>
       <div className="boxes-container">
         <div className="box">
           <h2>Job Descriptions</h2>
-          <p>{allJDs.length}</p>
-          <p>{increasedJds > 0 ? <span style={{backgroundColor:"green"}}>{increasedJds} %</span>: <span style={{backgroundColor:"red"}}>abs({increasedJds}) %</span>}</p>
+          {isLoadingJds ? <LoadingSpinner /> : successJds ? <><p>{allJDs.length}</p>
+            <p>{increasedJds > 0 ? <span style={{ backgroundColor: "green" }}>{increasedJds} %</span> : <span style={{ backgroundColor: "red" }}>abs({increasedJds}) %</span>}</p></>
+            : 'Unable to fetch data'
+          }
         </div>
 
         <div className="box">
           <h2>Resumes</h2>
-          <p>{allCvs.length}</p>
-          <p>{increasedCvs > 0 ? <span style={{backgroundColor:"green"}}>{increasedCvs} %</span>: <span style={{backgroundColor:"red"}}>abs({increasedCvs}) %</span>}</p>
-        </div>
+          {isLoadingCvs ? <LoadingSpinner /> : successCvs ? <><p>{allCvs.length}</p>
+            <p>{increasedCvs > 0 ? <span style={{ backgroundColor: "green" }}>{increasedCvs} %</span> : <span style={{ backgroundColor: "red" }}>abs({increasedCvs}) %</span>}</p></>
+            : 'Unable to fetch data'
+          }
+          </div>
 
         <div className="box">
           <h2>CVs Scoring greater than 80 %</h2>
@@ -197,7 +195,6 @@ function Dashboard() {
         {/* Box content */}
       </div>
     </div>
-    : 'Error in data fetching'
   )
 
 }
