@@ -1,12 +1,13 @@
 import React, { useState, useContext, useEffect, } from 'react';
-import { VictoryChart, VictoryAxis, VictoryBar } from 'victory';
+import { VictoryChart, VictoryAxis, VictoryBar, VictoryPie} from 'victory';
 import '../UI/dashboard.css'
 import { GlobalState } from '../../GlobalState';
 import { getAllJdsAPI, getIncreasedJdsAPI } from '../../API/JDAPI';
 import { getAllCvsAPI, getIncreasedCvsAPI } from '../../API/CVAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
-
+import ArrowIndicator from './arrowindicator';
+import '../UI/arrowindicator.css'
 
 function Dashboard() {
 
@@ -146,24 +147,53 @@ function Dashboard() {
     { x: '80-90%', y: 17 },
     { x: '90-100%', y: 30 }
   ];
+  const pieData = [
+    { x: 'Group A', y: 35 },
+    { x: 'Group B', y: 40 },
+    { x: 'Group C', y: 25 }
+  ];
+
+  const colorScale = ['#0055FF', '#0077FF', '#0099FF', '#00BBFF', '#00DDFF', '#00FFFF'];
 
   return (
-    <div>
+    <div className='dashboard-container'>
       <div className="boxes-container">
         <div className="box">
           <h2>Job Descriptions</h2>
-          {isLoadingJds ? <LoadingSpinner /> : successJds ? <><p>{allJDs.length}</p>
-            <p>{increasedJds > 0 ? <span style={{ backgroundColor: "green" }}>{increasedJds} %</span> : <span style={{ backgroundColor: "red" }}>abs({increasedJds}) %</span>}</p></>
-            : 'Unable to fetch data'
-          }
+          {isLoadingJds ? (<LoadingSpinner /> ): successJds ? (
+          <>
+          <p>{allJDs.length}</p>
+            <p>
+                {increasedJds > 0 ? 
+                ( <> 
+                <span>{increasedJds} %</span> <ArrowIndicator value={1} /> 
+                </>
+                ) : ( 
+                <> 
+            <span>abs({increasedJds}) %</span> <ArrowIndicator value={-1} />
+            </>)}
+            </p>
+            </>)
+            : (
+                'Unable to fetch data'
+          )}
         </div>
 
         <div className="box">
           <h2>Resumes</h2>
-          {isLoadingCvs ? <LoadingSpinner /> : successCvs ? <><p>{allCvs.length}</p>
-            <p>{increasedCvs > 0 ? <span style={{ backgroundColor: "green" }}>{increasedCvs} %</span> : <span style={{ backgroundColor: "red" }}>abs({increasedCvs}) %</span>}</p></>
-            : 'Unable to fetch data'
-          }
+          {isLoadingCvs ? (<LoadingSpinner /> ): successCvs ? (<><p>{allCvs.length}</p>
+            <p>{increasedCvs > 0 ? (
+            <>
+            <span>{increasedCvs} %</span> <ArrowIndicator value={1}/> 
+            </>
+            ) : (
+                <>
+            <span>abs({increasedCvs}) %</span><ArrowIndicator value={-1}/>
+            </>)}
+            </p>
+            </>)
+            : ('Unable to fetch data'
+          )}
           </div>
 
         <div className="box">
@@ -171,7 +201,10 @@ function Dashboard() {
           <p>Data for Box 3</p>
         </div>
       </div>
-      <div className='histogram-container'>
+      <div className='charts-container'>
+      <div className='box histogram-box'>
+        <h2>Histogram</h2>
+        <div className='chart-container'>
         <VictoryChart>
           <VictoryAxis
             label="Percentage"
@@ -187,14 +220,20 @@ function Dashboard() {
             x="x"
             y="y"
             barWidth={17}
-            style={{ data: { fill: 'blue' } }}
+            style={{ data: { fill: '#2196F3' } }}
           />
         </VictoryChart>
       </div>
-      <div className="box-bottom">
-        {/* Box content */}
       </div>
-    </div>
+      <div className="box pie-chart-box">
+
+            <h2>Pie Chart</h2>
+            <div className="chart-container">
+              <VictoryPie data={pieData}  colorScale = {colorScale} />
+            </div>
+          </div>
+        </div>
+      </div>
   )
 
 }

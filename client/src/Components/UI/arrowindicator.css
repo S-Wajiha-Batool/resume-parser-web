@@ -1,0 +1,16 @@
+.arrow-indicator {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+  
+  .arrow-up-green {
+    border-width: 0 9px 15px 9px;
+    border-color: transparent transparent green transparent;
+  }
+  
+  .arrow-down-red {
+    border-width: 15px 9px 0 9px;
+    border-color: red transparent transparent transparent;
+  }
