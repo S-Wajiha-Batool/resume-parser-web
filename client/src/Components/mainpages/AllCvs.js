@@ -14,7 +14,7 @@ function AllCvs() {
     const [token] = state.UserAPI.token;
     const [isLoading, setIsLoading] = useState(true);
     const [success, setSuccess] = useState(false);
-    const [callback, setCallback] = state.CVAPI.callback;
+    const [callbackCv, setCallbackCv] = state.CVAPI.callbackCv;
 
     useEffect(() => {
         if (token) {
@@ -28,8 +28,10 @@ function AllCvs() {
                         setTableData(res.data.data.all_cvs)
                     })
                     .catch(err => {
-                        console.log(err.response.data)
-                        showErrorToast(err.response.data.error.msg)
+                        console.log(err.response.data.error.msg)
+                        if (err.response.data.error.code == 500) {
+                        showErrorToast("CV fetching failed")
+                    }
                     })
                     .finally(() => {
                         setIsLoading(false);
@@ -38,7 +40,7 @@ function AllCvs() {
             getallCVs()
         }
 
-    }, [token, callback])
+    }, [token, callbackCv])
 
     return (
         isLoading ?

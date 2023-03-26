@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, createRef } from 'react';
 import { useParams } from 'react-router-dom'
 import { GlobalState } from '../../GlobalState';
 import { getJdAPI } from '../../API/JDAPI'
+import { getUserAPI } from '../../API/UserAPI';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { Container, Row, Col, Button, Spinner, Card } from 'react-bootstrap';
 import '../UI/JdDetails.css'
@@ -17,6 +18,7 @@ function JdDetails() {
     const handleShowModal = () => setShowModal(true);
     const [token] = state.UserAPI.token;
     const [jd, setJd] = useState([]);
+    const [user, setUser] = useState(null);
     const [allCvs, setAllCvs] = state.CVAPI.allCvs;
     const [cvs, setCvs] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -38,20 +40,37 @@ function JdDetails() {
                             setCvs(res.data.data.cvs)
                             setCvAgainstJdTableData(res.data.data.cvs)
                             console.log(jd)
-                            setSuccess(true);
+                            const user = res.data.data.jd.uploaded_by;
+                            try {
+                                getUserAPI(user, token)
+                                    .then(res => {
+                                        console.log(res.data)
+                                        setUser(res.data.data)
+                                        setSuccess(true);
+                                    })
+                                    .catch(err => {
+                                        console.log(err.response.data)
+                                        showErrorToast(err.response.data.error.msg)
+                                    })
+                                     .finally(() => {
+                                         setIsLoading(false);
+                                     })
+                            } catch (err) {
+                                showErrorToast(err)
+                            }
                         })
                         .catch(err => {
                             console.log(err.response.data)
                             showErrorToast(err.response.data.error.msg)
-                        })
-                        .finally(() => {
-                            setIsLoading(false);
                         })
                 } catch (err) {
                     showErrorToast(err)
                 }
             }
             getJd()
+
+            
+        
         }
     }, [token, callbackJdDetails])
 
@@ -107,7 +126,7 @@ function JdDetails() {
                                             <Card.Text>{getSkills(jd.skills).map((skill, index) => <li key={index}>{skill}</li>)}</Card.Text>
 
                                             <Card.Subtitle>Posted By</Card.Subtitle>
-                                            <Card.Text>{jd.uploaded_by}</Card.Text>
+                                            <Card.Text>{user.first_name + " " + user.last_name}</Card.Text>
 
                                             <Card.Subtitle>Posted On</Card.Subtitle>
                                             <Card.Text>{getDate(jd.createdAt)}</Card.Text>

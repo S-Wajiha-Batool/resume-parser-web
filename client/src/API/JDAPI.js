@@ -3,13 +3,13 @@ import { useState, useEffect, useCallback } from 'react'
 
 export default function JDAPI() {
     const [allJDs, setAllJDs] = useState([]);
-    const [callback, setCallback] = useState(false);
+    const [callbackJd, setCallbackJd] = useState(false);
     const [callbackJdDetails, setCallbackJdDetails] = useState(false)
     const [tableData, setTableData] = useState([])
     
     return {
         allJDs : [allJDs, setAllJDs],
-        callback: [callback, setCallback],
+        callbackJd: [callbackJd, setCallbackJd],
         callbackJdDetails: [callbackJdDetails, setCallbackJdDetails],
         tableData: [tableData, setTableData]
 
@@ -36,8 +36,13 @@ export const addJdAPI = async (jd, token) => {
 }
 
 export const deleteJdAPI = async (id, jd, token) => {
-    console.log(id)
     return await axios.patch(`/api/jd/delete_jd/${id}`, jd, {
+        headers: {token: `Bearer ${token}`}
+    })
+}
+
+export const getIncreasedJdsAPI = async (token) => {
+    return await axios.get(`/api/jd/increased_jds`, {
         headers: {token: `Bearer ${token}`}
     })
 }

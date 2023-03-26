@@ -16,7 +16,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
     const state = useContext(GlobalState);
     const [token] = state.UserAPI.token;
     const [allCvs, setAllCvs] = state.CVAPI.allCvs;
-    const [callback, setCallback] = state.CVAPI.callback;
+    const [callbackCv, setCallbackCv] = state.CVAPI.callbackCv;
     const [cvsPC, setCvsPC] = useState({ files: [] })
     const [cvsServer, setCvsServer] = useState([])
     const [isParsing, setIsParsing] = useState(false);
@@ -57,7 +57,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
             getAllCvs()
         }
 
-    }, [token, callback]);
+    }, [token, callbackCv]);
 
     // useEffect(() => {
     //     console.log('inuseeffect')
@@ -123,7 +123,6 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                     let cvss = res.data.data.cvs
                     setIsParsing(false);
                     setIsMatching(true)
-                    console.log(parsedCvsFromAPI)
                     matchCvsAPI(jd, cvss, token)
                         .then(res => {
                             console.log(res.data)
@@ -151,11 +150,12 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                     setIsMatching(false);
                 })
                 .finally(() => {
-                    setCallback(!callback);
+                    setCallbackCv(!callbackCv);
 
                 })
         } catch (err) {
-            showErrorToast(err)
+            console.log(err)
+            showErrorToast("Error in CV upload")
             setIsParsing(false);
             setIsMatching(false);
         }
@@ -179,7 +179,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                     setIsMatching(false);
                 })
                 .finally(() => {
-                    setCallback(!callback);
+                    setCallbackCv(!callbackCv);
                     setIsMatching(false);
                     this.tableRef.current.onQueryChange();
                 })

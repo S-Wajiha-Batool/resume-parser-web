@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom'
 import { GlobalState } from '../../GlobalState';
 import { getCvAPI } from '../../API/CVAPI'
+import { getUserAPI } from '../../API/UserAPI';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { Container, Row, Col, Button, Spinner, Card } from 'react-bootstrap';
 import LoadingSpinner from '../utilities/LoadingSpinner';
@@ -14,6 +15,7 @@ function CvDetails() {
     const [token] = state.UserAPI.token;
     const [cv, setCv] = useState([]);
     const [jds, setJds] = useState([]);
+    const [user, setUser] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [success, setSuccess] = useState(false);
     const { id } = useParams()
@@ -27,14 +29,29 @@ function CvDetails() {
                             console.log(res.data)
                             setCv(res.data.data.cv)
                             setJds(res.data.data.jds)
-                            setSuccess(true);
+                            const user = res.data.data.cv.uploaded_by;
+                            try {
+                                getUserAPI(user, token)
+                                    .then(res => {
+                                        console.log(res.data)
+                                        setUser(res.data.data)
+                                        setSuccess(true);
+                                    })
+                                    .catch(err => {
+                                        console.log(err.response.data)
+                                        showErrorToast(err.response.data.error.msg)
+                                    })
+                                     .finally(() => {
+                                         setIsLoading(false);
+                                     })
+                            } catch (err) {
+                                showErrorToast(err)
+                            }
+                            //setSuccess(true);
                         })
                         .catch(err => {
                             console.log(err.response.data)
                             showErrorToast(err.response.data.error.msg)
-                        })
-                        .finally(() => {
-                            setIsLoading(false);
                         })
                 } catch (err) {
                     showErrorToast(err)
@@ -43,15 +60,6 @@ function CvDetails() {
             getCV()
         }
     }, [token])
-
-    const getSkills = (skills) => {
-        console.log(skills)
-        var a = [];
-        skills.map(s => {
-            a.push(s.skill_name)
-        })
-        return a;
-    }
 
     const getDate = (d) => {
         return moment(d).format("Do MMMM YYYY")
@@ -102,7 +110,7 @@ function CvDetails() {
                                             <Card.Text>{cv.links.length == 0 && "None"}</Card.Text>
 
                                             <Card.Subtitle>Posted By</Card.Subtitle>
-                                            <Card.Text>{cv.uploaded_by}</Card.Text>
+                                            <Card.Text>{user.first_name + " " + user.last_name}</Card.Text>
 
                                             <Card.Subtitle>Posted On</Card.Subtitle>
                                             <Card.Text>{getDate(cv.createdAt)}</Card.Text>

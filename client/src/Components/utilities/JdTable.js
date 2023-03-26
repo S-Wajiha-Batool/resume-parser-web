@@ -10,6 +10,7 @@ import { Modal, Button } from 'react-bootstrap'
 import { deleteJdAPI } from '../../API/JDAPI';
 import { GlobalState } from '../../GlobalState';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
+import {Spinner} from 'react-bootstrap';
 
 const JdTable = (props) => {
     var moment = require('moment')
@@ -18,11 +19,11 @@ const JdTable = (props) => {
     const navigate = useNavigate();
     const [selectedItem, setSelectedItem] = useState([])
     const [showDeleteDialogBox, setShowDeleteDialogBox] = useState(false)
-    const [deleting, setDeleting] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
     const state = useContext(GlobalState);
     const [tableData, setTableData] = state.JDAPI.tableData
     const [token] = state.UserAPI.token;
-    const [callback, setCallback] = state.JDAPI.callback;
+    const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
     const columns = [
         //{ title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
         { title: "Position", field: "position", sorting: false, filtering: false, cellStyle: { background: "#009688" }, headerStyle: { color: "#fff" } },
@@ -37,12 +38,12 @@ const JdTable = (props) => {
         },
         {
             title: "Qualification", field: "qualification", render: (rowData) => <ul>
-                {Object.entries(rowData.qualification).map((option, index) => <li key={index}>{ option[1]  + " (" + option[0] + ")"}</li>)}
+                {Object.entries(rowData.qualification).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}
             </ul>, searchable: true, export: true
         },
         {
             title: "Universities", field: "universities", render: (rowData) => <ul>
-                {Object.entries(rowData.universities).map((option, index) => <li key={index}>{ option[1]  + " (" + option[0] + ")"}</li>)}
+                {Object.entries(rowData.universities).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}
             </ul>, filterPlaceholder: "filter", searchable: true, export: true
         },
         { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
@@ -67,22 +68,30 @@ const JdTable = (props) => {
 
     const onConfirmDelete = (e) => {
         // e.preventDefault()
-        setDeleting(true)
-        deleteJdAPI(selectedItem._id, { is_active: false }, token)
-            .then(res => {
-                showSuccessToast(`${selectedItem.position} deleted successfully`)
-                setShowDeleteDialogBox(false)
-                setCallback(!callback)
-            })
-            .catch(err => {
-                console.log(err.response.data.error.msg)
-                if (err.response.data.error.code == 500) {
-                    showErrorToast("Deletion failed")
-                }
-            })
-            .finally(() => {
-                setDeleting(false)
-            })
+        try {
+            setIsDeleting(true)
+            deleteJdAPI(selectedItem._id, { is_active: false }, token)
+                .then(res => {
+                    showSuccessToast(`${selectedItem.position} deleted successfully`)
+                    setShowDeleteDialogBox(false)
+                    setCallbackJd(!callbackJd)
+                })
+                .catch(err => {
+                    console.log(err.response.data.error.msg)
+                    if (err.response.data.error.code == 500) {
+                        showErrorToast("Deletion failed")
+                    }
+                })
+                .finally(() => {
+                    setIsDeleting(false)
+                })
+        }
+        catch (err) {
+            console.log(err)
+            showErrorToast("Error in JD deletion")
+            setIsDeleting(false)
+        }
+
     }
 
     return (
@@ -96,8 +105,16 @@ const JdTable = (props) => {
                     Are you sure you want to delete {selectedItem.position}?
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowDeleteDialogBox(false)}>No</Button>
-                    <Button variant="danger" onClick={() => onConfirmDelete()}>Yes</Button>
+                    {!isDeleting && <Button variant="secondary" onClick={() => setShowDeleteDialogBox(false)}>No</Button>}
+                    <Button variant="danger" disabled={isDeleting} onClick={() => onConfirmDelete()}>
+                    {isDeleting && <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />}
+                        {isDeleting ? " Deleting JD.." : "Yes"}</Button>
 
                 </Modal.Footer>
             </Modal>

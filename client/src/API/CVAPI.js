@@ -3,14 +3,14 @@ import { useState, useEffect, useCallback } from 'react'
 
 export default function CVAPI() {
     const [allCvs, setAllCvs] = useState([]);
-    const [callback, setCallback] = useState(false);
+    const [callbackCv, setCallbackCv] = useState(false);
     const [tableData, setTableData] = useState([]);
     const [cvAgainstJdTableData, setCvAgainstJdTableData] = useState([])
 
     
     return {
         allCvs : [allCvs, setAllCvs],
-        callback: [callback, setCallback],
+        callbackCv: [callbackCv, setCallbackCv],
         tableData: [tableData, setTableData],
         cvAgainstJdTableData: [cvAgainstJdTableData, setCvAgainstJdTableData]
     }
@@ -49,6 +49,12 @@ export const deleteCvAgainstJdAPI = async (id, cv, token) => {
 
 export const deleteCVAPI = async (id, jd, token) => {
     return await axios.patch(`/api/cv/delete_cv/${id}`, jd, {
+        headers: {token: `Bearer ${token}`}
+    })
+}
+
+export const getIncreasedCvsAPI = async (token) => {
+    return await axios.get(`/api/cv/increased_cvs`, {
         headers: {token: `Bearer ${token}`}
     })
 }
