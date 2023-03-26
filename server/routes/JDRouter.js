@@ -21,4 +21,6 @@ router.get('/highest_rank', JDController.highest_rank)
 
 router.get('/JD_count', JDController.JD_count)
 
+router.get('/JD_distribution', JDController.JD_distribution)
+
 module.exports = router;

@@ -211,7 +211,7 @@ const JDController = {
 
             jds.forEach(jd => {
                 
-                dict[jd.department] = dict[jd]++;
+                dict[jd.department] = dict[jd.department] + 1;
             })
             return res.status(200).json({ error: { code: null, msg: null }, data: dict });
 
@@ -394,6 +394,61 @@ const JDController = {
         catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
         }
+    },
+    JD_distribution: async(req, res) => {
+        try{
+            var dict = {
+                "0% - 10%" : 0,
+                "10% - 20%" : 0,
+                "20% - 30%" : 0,
+                "30% - 40%" : 0,
+                "40% - 50%" : 0,
+                "50% - 60%" : 0,
+                "60% - 70%" : 0,
+                "70% - 80%" : 0,
+                "80% - 90%" : 0,
+                "90% - 100%" : 0,
+            }
+            const all_cv_jd = await CV_JD.find();
+            all_cv_jd.forEach(each_cv_jd => {
+                if(Math.round(each_cv_jd.weighted_percentage) >=0 && Math.round(each_cv_jd.weighted_percentage) <10){
+                    dict["0% - 10%"] = dict["0% - 10%"] + 1; 
+                }
+                else if(Math.round(each_cv_jd.weighted_percentage) >=10 && Math.round(each_cv_jd.weighted_percentage) <20){
+                    dict["10% - 20%"] = dict["10% - 20%"] + 1; 
+                }
+                else if(Math.round(each_cv_jd.weighted_percentage) >=20 && Math.round(each_cv_jd.weighted_percentage) <30){
+                    dict["20% - 30%"] = dict["20% - 30%"] + 1; 
+                }
+                else if(Math.round(each_cv_jd.weighted_percentage) >=30 && Math.round(each_cv_jd.weighted_percentage) <40){
+                    dict["30% - 40%"] = dict["30% - 40%"] + 1; 
+                }
+                else if(Math.round(each_cv_jd.weighted_percentage) >=40 && Math.round(each_cv_jd.weighted_percentage) <50){
+                    dict["40% - 50%"] = dict["40% - 50%"] + 1; 
+                }
+                else if(Math.round(each_cv_jd.weighted_percentage) >=50 && Math.round(each_cv_jd.weighted_percentage) <60){
+                    dict["50% - 60%"] = dict["50% - 60%"] + 1; 
+                }
+                else if(Math.round(each_cv_jd.weighted_percentage) >=60 && Math.round(each_cv_jd.weighted_percentage) <70){
+                    dict["60% - 70%"] = dict["60% - 70%"] + 1; 
+                }
+                else if(Math.round(each_cv_jd.weighted_percentage) >=70 && Math.round(each_cv_jd.weighted_percentage) <80){
+                    dict["70% - 80%"] = dict["70% - 80%"] + 1; 
+                }
+                else if(Math.round(each_cv_jd.weighted_percentage) >=80 && Math.round(each_cv_jd.weighted_percentage) <90){
+                    dict["80% - 90%"] = dict["80% - 90%"] + 1; 
+                }
+                else if(Math.round(each_cv_jd.weighted_percentage) >=90 && Math.round(each_cv_jd.weighted_percentage) <100){
+                    dict["90% - 100%"] = dict["90% - 100%"] + 1; 
+                }
+                
+            });
+            return res.status(200).json({ error: { code: null, msg: null }, data: dict });
+        }
+        catch(err){
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+        }
+
     }
 }
 
