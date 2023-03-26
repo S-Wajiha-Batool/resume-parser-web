@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect, } from 'react';
-import { VictoryChart, VictoryAxis, VictoryBar, VictoryPie} from 'victory';
+import { VictoryChart, VictoryAxis, VictoryBar, VictoryPie } from 'victory';
 import '../UI/dashboard.css'
 import { GlobalState } from '../../GlobalState';
-import { getAllJdsAPI, getIncreasedJdsAPI } from '../../API/JDAPI';
-import { getAllCvsAPI, getIncreasedCvsAPI } from '../../API/CVAPI'
+import { getAllJdsAPI, getIncreasedJdsAPI, getJdCountForEachDeptAPI } from '../../API/JDAPI';
+import { getAllCvsAPI, getIncreasedCvsAPI, getHigestScoringCvsCountAPI, getCvDistributionAPI } from '../../API/CVAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import ArrowIndicator from './arrowindicator';
@@ -18,18 +18,19 @@ function Dashboard() {
   const [isLoadingJds, setIsLoadingJds] = useState(true);
   const [isLoadingCvs, setIsLoadingCvs] = useState(true);
   const [isLoadingPercent, setIsLoadingPercent] = useState(true);
-  const [isLoadingBar, setIsLoadingBar] = useState(true);
+  const [isLoadingHist, setIsLoadingHist] = useState(true);
   const [isLoadingPie, setIsLoadingPie] = useState(true);
   const [successJds, setSuccessJds] = useState(false);
   const [successCvs, setSuccessCvs] = useState(false);
   const [successPercent, setSuccessPercent] = useState(false);
-  const [successBar, setSuccessBar] = useState(false);
+  const [successHist, setSuccessHist] = useState(false);
   const [successPie, setSuccessPie] = useState(false);
   const [success, setSuccess] = useState(false);
   const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
   const [callbackCv, setCallbackCv] = state.CVAPI.callbackCv;
   const [increasedJds, setIncreasedJds] = useState(0);
   const [increasedCvs, setIncreasedCvs] = useState(0);
+  const [percent, setPercent] = useState(0);
 
   useEffect(() => {
     if (token) {
@@ -82,58 +83,89 @@ function Dashboard() {
       }
       getAllJds()
 
-      const getallCVs = async () => {
-        try {
-          getAllCvsAPI(token)
-            .then(res => {
-              setAllCvs(res.data.data.all_cvs)
-              setSuccessCvs(true);
-              try {
-                getIncreasedCvsAPI(token)
-                  .then(res => {
-                    console.log(res.data)
-                    setIncreasedCvs(res.data.data)
-                    setSuccessCvs(true);
-                  })
-                  .catch(err => {
-                    setSuccessCvs(false)
-                    console.log(err.response.data.error.msg)
-                    if (err.response.data.error.code == 500) {
-                      showErrorToast("CV increase fetching failed")
-                    }
-                  })
-                  .finally(() => {
-                    setIsLoadingCvs(false);
-                  })
-              }
-              catch (err) {
-                console.log(err)
-                showErrorToast("CV increase fetching failed")
-              }
-            })
-            .catch(err => {
-              setSuccessCvs(false)
-              console.log(err.response.data.error.msg)
-              if (err.response.data.error.code == 500) {
-                showErrorToast("CV fetching failed")
-              }
-            })
-          // .finally(() => {
-          //     setIsLoading(false);
-          // })
-        }
-        catch (err) {
-          console.log(err)
-          showErrorToast("CV fetching failed")
-        }
-
-      }
-      getallCVs()
     }
+  }, [token, callbackJd])
 
+  useEffect(() => {
+    const getallCVs = async () => {
+      try {
+        getAllCvsAPI(token)
+          .then(res => {
+            setAllCvs(res.data.data.all_cvs)
+            setSuccessCvs(true);
+            try {
+              getIncreasedCvsAPI(token)
+                .then(res => {
+                  console.log(res.data)
+                  setIncreasedCvs(res.data.data)
+                  setSuccessCvs(true);
+                })
+                .catch(err => {
+                  setSuccessCvs(false)
+                  console.log(err.response.data.error.msg)
+                  if (err.response.data.error.code == 500) {
+                    showErrorToast("CV increase fetching failed")
+                  }
+                })
+                .finally(() => {
+                  setIsLoadingCvs(false);
+                })
+            }
+            catch (err) {
+              console.log(err)
+              showErrorToast("CV increase fetching failed")
+            }
+          })
+          .catch(err => {
+            setSuccessCvs(false)
+            console.log(err.response.data.error.msg)
+            if (err.response.data.error.code == 500) {
+              showErrorToast("CV fetching failed")
+            }
+          })
+        // .finally(() => {
+        //     setIsLoading(false);
+        // })
+      }
+      catch (err) {
+        console.log(err)
+        showErrorToast("CV fetching failed")
+      }
 
+    }
+    getallCVs()
 
-  }, [token, callbackJd, callbackCv])
+    const getHigestScoringCvsCount = async () => {
+      try {
+        getHigestScoringCvsCountAPI(token)
+          .then(res => {
+            setPercent(res.data.data.count)
+            setSuccessPercent(true);
+          })
+          .catch(err => {
+            setSuccessPercent(false)
+            console.log(err.response.data.error.msg)
+            if (err.response.data.error.code == 500) {
+              showErrorToast("Highest scoring CV count fetching failed")
+            }
+          })
+          .finally(() => {
+            setIsLoadingPercent(false);
+          })
+      }
+      catch (err) {
+        console.log(err)
+        showErrorToast("Highest scoring CV count fetching failed")
+      }
+
+    }
+    getHigestScoringCvsCount()
+
+  }, [token, callbackCv])
+
+  useEffect(() => {
+
+  }, [token, callbackCv])
 
   const data = [
     { x: '0-10%', y: 5 },
@@ -160,80 +192,86 @@ function Dashboard() {
       <div className="boxes-container">
         <div className="box">
           <h2>Job Descriptions</h2>
-          {isLoadingJds ? (<LoadingSpinner /> ): successJds ? (
-          <>
-          <p>{allJDs.length}</p>
-            <p>
-                {increasedJds > 0 ? 
-                ( <> 
-                <span>{increasedJds} %</span> <ArrowIndicator value={1} /> 
-                </>
-                ) : ( 
-                <> 
-            <span>abs({increasedJds}) %</span> <ArrowIndicator value={-1} />
-            </>)}
-            </p>
+          {isLoadingJds ? (<LoadingSpinner />) : successJds ? (
+            <>
+              <p>{allJDs.length}</p>
+              <p>
+                {increasedJds > 0 ?
+                  (<>
+                    <span>{increasedJds} %</span> <ArrowIndicator value={1} />
+                  </>
+                  ) : (
+                    <>
+                      <span>abs({increasedJds}) %</span> <ArrowIndicator value={-1} />
+                    </>)}
+              </p>
             </>)
             : (
-                'Unable to fetch data'
-          )}
+              'Unable to fetch data'
+            )}
         </div>
 
         <div className="box">
           <h2>Resumes</h2>
-          {isLoadingCvs ? (<LoadingSpinner /> ): successCvs ? (<><p>{allCvs.length}</p>
+          {isLoadingCvs ? (<LoadingSpinner />) : successCvs ? (<><p>{allCvs.length}</p>
             <p>{increasedCvs > 0 ? (
-            <>
-            <span>{increasedCvs} %</span> <ArrowIndicator value={1}/> 
-            </>
+              <>
+                <span>{increasedCvs} %</span> <ArrowIndicator value={1} />
+              </>
             ) : (
-                <>
-            <span>abs({increasedCvs}) %</span><ArrowIndicator value={-1}/>
-            </>)}
+              <>
+                <span>abs({increasedCvs}) %</span><ArrowIndicator value={-1} />
+              </>)}
             </p>
-            </>)
+          </>)
             : ('Unable to fetch data'
-          )}
-          </div>
+            )}
+        </div>
 
         <div className="box">
           <h2>CVs Scoring greater than 80 %</h2>
-          <p>Data for Box 3</p>
+          {isLoadingPercent ? (<LoadingSpinner />) : successPercent ? (
+            <p>{percent}</p>
+          )
+            : (
+              'Unable to fetch data'
+            )}
         </div>
       </div>
-      <div className='charts-container'>
-      <div className='box histogram-box'>
-        <h2>Histogram</h2>
-        <div className='chart-container'>
-        <VictoryChart>
-          <VictoryAxis
-            label="Percentage"
-            tickValues={['0-10%', '10-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%']}
-            style={{ tickLabels: { fontSize: 10 } }}
-          />
-          <VictoryAxis
-            dependentAxis
-            label="Numbers"
-          />
-          <VictoryBar
-            data={data}
-            x="x"
-            y="y"
-            barWidth={17}
-            style={{ data: { fill: '#2196F3' } }}
-          />
-        </VictoryChart>
-      </div>
-      </div>
-      <div className="box pie-chart-box">
 
-            <h2>Pie Chart</h2>
-            <div className="chart-container">
-              <VictoryPie data={pieData}  colorScale = {colorScale} />
-            </div>
+      <div className='charts-container'>
+        <div className='box histogram-box'>
+          <h2>Histogram</h2>
+          <div className='chart-container'>
+            <VictoryChart>
+              <VictoryAxis
+                label="Percentage"
+                tickValues={['0-10%', '10-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%']}
+                style={{ tickLabels: { fontSize: 10 } }}
+              />
+              <VictoryAxis
+                dependentAxis
+                label="Numbers"
+              />
+              <VictoryBar
+                data={data}
+                x="x"
+                y="y"
+                barWidth={17}
+                style={{ data: { fill: '#2196F3' } }}
+              />
+            </VictoryChart>
+          </div>
+        </div>
+        <div className="box pie-chart-box">
+
+          <h2>Pie Chart</h2>
+          <div className="chart-container">
+            <VictoryPie data={pieData} colorScale={colorScale} />
           </div>
         </div>
       </div>
+    </div>
   )
 
 }

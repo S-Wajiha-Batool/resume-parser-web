@@ -221,42 +221,6 @@ const JDController = {
         }
     },
 
-    highest_rank: async (req, res) => {
-        try {
-            const ranks = [];
-            var count = 0;
-            const active_cvs = await CV.find({ is_active: { $eq: true } })
-            const active_jds = await JD.find({ is_active: { $eq: true } })
-            const active_cvs_jds = await CV_JD.find({ is_active_cv_jd: { $eq: true } })
-            const active_positions = [];
-            active_cvs_jds.forEach(active_cv_jd => {
-                active_jds.forEach(active_jd => {
-                    active_cvs.forEach(active_cv => {
-                        if (active_cv_jd.JD_ID.equals(active_jd._id) && active_cv_jd.CV_ID.equals(active_cv._id)) {
-
-                            active_positions.push(active_cv_jd)
-                        }
-                    })
-                })
-            })
-
-            var count = 0;
-            const total_cvs = await CV.find();
-            active_positions.forEach(active_position => {
-                if (active_position.weighted_percentage > 80) {
-                    count++;
-                }
-            })
-            var highest_percentage = (count / total_cvs.length) * 100;
-
-            return res.status(200).json({ error: { code: null, msg: null }, data: count, highest_percentage });
-
-        }
-        catch (err) {
-            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
-        }
-    },
-
     get_job_details: async (req, res) => {
         try {
             if (!req.params.id) { //jd id will be given in parameter
