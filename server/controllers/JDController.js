@@ -207,13 +207,56 @@ const JDController = {
             jds.forEach(jd => {
                 dict[jd.department] = 0;
             })
-            console.log(dict)
-
+            //console.log(dict)
+            const formated_response = [];
             jds.forEach(jd => {
+
+                //formated_response.push( { x: jd.department, y: dict[jd.department] + 1 } )
                 
                 dict[jd.department] = dict[jd.department] + 1;
             })
-            return res.status(200).json({ error: { code: null, msg: null }, data: dict });
+
+            for (const [key, value] of Object.entries(dict)) {
+                formated_response.push({ x: key, y: value})
+              }
+            return res.status(200).json({ error: { code: null, msg: null }, data: formated_response });
+
+
+        }
+        catch (err) {
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+        }
+    },
+
+    highest_rank: async (req, res) => {
+        try {
+            const ranks = [];
+            var count = 0;
+            const active_cvs = await CV.find({ is_active: { $eq: true } })
+            const active_jds = await JD.find({ is_active: { $eq: true } })
+            const active_cvs_jds = await CV_JD.find({ is_active_cv_jd: { $eq: true } })
+            const active_positions = [];
+            active_cvs_jds.forEach(active_cv_jd => {
+                active_jds.forEach(active_jd => {
+                    active_cvs.forEach(active_cv => {
+                        if (active_cv_jd.JD_ID.equals(active_jd._id) && active_cv_jd.CV_ID.equals(active_cv._id)) {
+
+                            active_positions.push(active_cv_jd)
+                        }
+                    })
+                })
+            })
+
+            var count = 0;
+            const total_cvs = await CV.find();
+            active_positions.forEach(active_position => {
+                if (active_position.weighted_percentage > 80) {
+                    count++;
+                }
+            })
+            var highest_percentage = (count / total_cvs.length) * 100;
+
+            return res.status(200).json({ error: { code: null, msg: null }, data: count, highest_percentage });
 
         }
         catch (err) {
@@ -407,7 +450,20 @@ const JDController = {
                 }
                 
             });
-            return res.status(200).json({ error: { code: null, msg: null }, data: dict });
+
+            const distribution = [
+                { x: "0% - 10%", y: dict["0% - 10%"]},
+                { x: "10% - 20%", y: dict["10% - 20%"]},
+                { x: "20% - 30%", y: dict["20% - 30%"]},
+                { x: "30% - 40%", y: dict["30% - 40%"]},
+                { x: "40% - 50%", y: dict["40% - 50%"]},
+                { x: "50% - 60%", y: dict["50% - 60%"]},
+                { x: "60% - 70%", y: dict["60% - 70%"]},
+                { x: "70% - 80%", y: dict["70% - 80%"]},
+                { x: "80% - 90%", y: dict["80% - 90%"]},
+                { x: "90% - 100%", y: dict["90% - 100%"]},
+            ]
+            return res.status(200).json({ error: { code: null, msg: null }, data: distribution });
         }
         catch(err){
             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
