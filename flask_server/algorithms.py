@@ -124,7 +124,9 @@ def extract_dates(resume_text):
         '%Y-%m': ['%Y-%m'],
         '%m/%y': ['%m/%y'],
         '%B-%Y': ['%B-%Y', '%b-%Y'],
-        '%B-%Y': ['%B-%Y', '%b-%Y']
+        '%B-%Y': ['%B-%Y', '%b-%Y'],
+        '%B-%Y': ['%B %Y', '%b %Y']
+
     }
 
     matches = re.finditer(date_regex, result)

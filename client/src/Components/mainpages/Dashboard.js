@@ -25,12 +25,13 @@ function Dashboard() {
   const [successPercent, setSuccessPercent] = useState(false);
   const [successHist, setSuccessHist] = useState(false);
   const [successPie, setSuccessPie] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
   const [callbackCv, setCallbackCv] = state.CVAPI.callbackCv;
   const [increasedJds, setIncreasedJds] = useState(0);
   const [increasedCvs, setIncreasedCvs] = useState(0);
   const [percent, setPercent] = useState(0);
+  const [pie, setPie] = useState([]);
+  const [hist, setHist] = useState([])
 
   useEffect(() => {
     if (token) {
@@ -79,14 +80,40 @@ function Dashboard() {
           console.log(err)
           showErrorToast("JD fetching failed")
         }
-
       }
       getAllJds()
+
+      // const getJdCountForEachDept = async () => {
+      //   try {
+      //     getJdCountForEachDeptAPI(token)
+      //       .then(res => {
+      //         setPie(res.data.data)
+      //         setSuccessPie(true);
+      //       })
+      //       .catch(err => {
+      //         setSuccessPie(false)
+      //         console.log(err.response.data.error.msg)
+      //         if (err.response.data.error.code == 500) {
+      //           showErrorToast("Jd count for each department fetching failed")
+      //         }
+      //       })
+      //       .finally(() => {
+      //         setIsLoadingPie(false);
+      //       })
+      //   }
+      //   catch (err) {
+      //     console.log(err)
+      //     showErrorToast("Jd count for each department fetching failed")
+      //   }
+  
+      // }
+      // getJdCountForEachDept()
 
     }
   }, [token, callbackJd])
 
   useEffect(() => {
+    if (token){
     const getallCVs = async () => {
       try {
         getAllCvsAPI(token)
@@ -135,37 +162,34 @@ function Dashboard() {
     }
     getallCVs()
 
-    const getHigestScoringCvsCount = async () => {
-      try {
-        getHigestScoringCvsCountAPI(token)
-          .then(res => {
-            setPercent(res.data.data.count)
-            setSuccessPercent(true);
-          })
-          .catch(err => {
-            setSuccessPercent(false)
-            console.log(err.response.data.error.msg)
-            if (err.response.data.error.code == 500) {
-              showErrorToast("Highest scoring CV count fetching failed")
-            }
-          })
-          .finally(() => {
-            setIsLoadingPercent(false);
-          })
-      }
-      catch (err) {
-        console.log(err)
-        showErrorToast("Highest scoring CV count fetching failed")
-      }
-
-    }
-    getHigestScoringCvsCount()
-
+    // const getCvDistribution = async () => {
+    //   try {
+    //     getCvDistributionAPI(token)
+    //       .then(res => {
+    //         setHist(res.data.data)
+    //         setSuccessHist(true);
+    //       })
+    //       .catch(err => {
+    //         setSuccessHist(false)
+    //         console.log(err.response.data.error.msg)
+    //         if (err.response.data.error.code == 500) {
+    //           showErrorToast("CV distribution fetching failed")
+    //         }
+    //       })
+    //       .finally(() => {
+    //         setIsLoadingHist(false);
+    //       })
+    //   }
+    //   catch (err) {
+    //     console.log(err)
+    //     showErrorToast("CV distribution fetching failed")
+    //   }
+    // }
+    // getCvDistribution()
+  }
   }, [token, callbackCv])
 
-  useEffect(() => {
-
-  }, [token, callbackCv])
+ 
 
   const data = [
     { x: '0-10%', y: 5 },
