@@ -26,10 +26,6 @@ const CvTable = (props) => {
     const columns = [
         { title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { background: "#009688" }, headerStyle: { color: "#fff" } },
         {
-            title: "Skills", field: "skills", grouping: false,
-            render: (rowData) => <ul>{rowData.skills.map((skill, index) => <li key={index}>{skill}</li>)}</ul>,
-        },
-        {
             title: "Experience", field: "experience",
             searchable: true, export: true
         },
