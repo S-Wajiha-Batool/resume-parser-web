@@ -19,6 +19,4 @@ router.get('/increased_jds', verifyToken, JDController.increased_JD)
 
 router.get('/JD_count', JDController.JD_count)
 
-router.get('/JD_distribution', JDController.JD_distribution)
-
 module.exports = router;

@@ -17,19 +17,19 @@ function Dashboard() {
   const [token] = state.UserAPI.token;
   const [isLoadingJds, setIsLoadingJds] = useState(true);
   const [isLoadingCvs, setIsLoadingCvs] = useState(true);
-  const [isLoadingPercent, setIsLoadingPercent] = useState(true);
+  const [isLoadingCount, setIsLoadingCount] = useState(true);
   const [isLoadingHist, setIsLoadingHist] = useState(true);
   const [isLoadingPie, setIsLoadingPie] = useState(true);
   const [successJds, setSuccessJds] = useState(false);
   const [successCvs, setSuccessCvs] = useState(false);
-  const [successPercent, setSuccessPercent] = useState(false);
+  const [successCount, setSuccessCount] = useState(false);
   const [successHist, setSuccessHist] = useState(false);
   const [successPie, setSuccessPie] = useState(false);
   const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
   const [callbackCv, setCallbackCv] = state.CVAPI.callbackCv;
   const [increasedJds, setIncreasedJds] = useState(0);
   const [increasedCvs, setIncreasedCvs] = useState(0);
-  const [percent, setPercent] = useState(0);
+  const [count, setCount] = useState(0);
   const [pie, setPie] = useState([]);
   const [hist, setHist] = useState([])
 
@@ -83,31 +83,31 @@ function Dashboard() {
       }
       getAllJds()
 
-      // const getJdCountForEachDept = async () => {
-      //   try {
-      //     getJdCountForEachDeptAPI(token)
-      //       .then(res => {
-      //         setPie(res.data.data)
-      //         setSuccessPie(true);
-      //       })
-      //       .catch(err => {
-      //         setSuccessPie(false)
-      //         console.log(err.response.data.error.msg)
-      //         if (err.response.data.error.code == 500) {
-      //           showErrorToast("Jd count for each department fetching failed")
-      //         }
-      //       })
-      //       .finally(() => {
-      //         setIsLoadingPie(false);
-      //       })
-      //   }
-      //   catch (err) {
-      //     console.log(err)
-      //     showErrorToast("Jd count for each department fetching failed")
-      //   }
+      const getJdCountForEachDept = async () => {
+        try {
+          getJdCountForEachDeptAPI(token)
+            .then(res => {
+              setPie(res.data.data)
+              setSuccessPie(true);
+            })
+            .catch(err => {
+              setSuccessPie(false)
+              console.log(err.response.data.error.msg)
+              if (err.response.data.error.code == 500) {
+                showErrorToast("Jd count for each department fetching failed")
+              }
+            })
+            .finally(() => {
+              setIsLoadingPie(false);
+            })
+        }
+        catch (err) {
+          console.log(err)
+          showErrorToast("Jd count for each department fetching failed")
+        }
   
-      // }
-      // getJdCountForEachDept()
+      }
+      getJdCountForEachDept()
 
     }
   }, [token, callbackJd])
@@ -162,30 +162,55 @@ function Dashboard() {
     }
     getallCVs()
 
-    // const getCvDistribution = async () => {
-    //   try {
-    //     getCvDistributionAPI(token)
-    //       .then(res => {
-    //         setHist(res.data.data)
-    //         setSuccessHist(true);
-    //       })
-    //       .catch(err => {
-    //         setSuccessHist(false)
-    //         console.log(err.response.data.error.msg)
-    //         if (err.response.data.error.code == 500) {
-    //           showErrorToast("CV distribution fetching failed")
-    //         }
-    //       })
-    //       .finally(() => {
-    //         setIsLoadingHist(false);
-    //       })
-    //   }
-    //   catch (err) {
-    //     console.log(err)
-    //     showErrorToast("CV distribution fetching failed")
-    //   }
-    // }
-    // getCvDistribution()
+    const getCvDistribution = async () => {
+      try {
+        getCvDistributionAPI(token)
+          .then(res => {
+            setHist(res.data.data)
+            setSuccessHist(true);
+          })
+          .catch(err => {
+            setSuccessHist(false)
+            console.log(err.response.data.error.msg)
+            if (err.response.data.error.code == 500) {
+              showErrorToast("CV distribution fetching failed")
+            }
+          })
+          .finally(() => {
+            setIsLoadingHist(false);
+          })
+      }
+      catch (err) {
+        console.log(err)
+        showErrorToast("CV distribution fetching failed")
+      }
+    }
+    getCvDistribution()
+
+    const getHigestScoringCvsCount = async () => {
+      try {
+        getHigestScoringCvsCountAPI(token)
+            .then(res => {
+            setCount(res.data.data)
+            setSuccessCount(true);
+          })
+          .catch(err => {
+            setSuccessCount(false)
+            console.log(err.response.data.error.msg)
+            if (err.response.data.error.code == 500) {
+              showErrorToast("Highest scoring CV count fetching failed")
+            }
+          })
+          .finally(() => {
+            setIsLoadingCount(false);
+          })
+      }
+      catch (err) {
+        console.log(err)
+        showErrorToast("Highest scoring CV count fetching failed")
+      }
+    }
+    getHigestScoringCvsCount()
   }
   }, [token, callbackCv])
 
@@ -222,11 +247,11 @@ function Dashboard() {
               <p>
                 {increasedJds > 0 ?
                   (<>
-                    <span>{increasedJds} %</span> <ArrowIndicator value={1} />
+                    <span>{increasedJds.toFixed(2)} %</span> <ArrowIndicator value={1} />
                   </>
                   ) : (
                     <>
-                      <span>abs({increasedJds}) %</span> <ArrowIndicator value={-1} />
+                      <span>abs({increasedJds.toFixed(2)}) %</span> <ArrowIndicator value={-1} />
                     </>)}
               </p>
             </>)
@@ -240,11 +265,11 @@ function Dashboard() {
           {isLoadingCvs ? (<LoadingSpinner />) : successCvs ? (<><p>{allCvs.length}</p>
             <p>{increasedCvs > 0 ? (
               <>
-                <span>{increasedCvs} %</span> <ArrowIndicator value={1} />
+                <span>{increasedCvs.toFixed(2)} %</span> <ArrowIndicator value={1} />
               </>
             ) : (
               <>
-                <span>abs({increasedCvs}) %</span><ArrowIndicator value={-1} />
+                <span>abs({increasedCvs.toFixed(2)}) %</span><ArrowIndicator value={-1} />
               </>)}
             </p>
           </>)
@@ -254,8 +279,8 @@ function Dashboard() {
 
         <div className="box">
           <h2>CVs Scoring greater than 80 %</h2>
-          {isLoadingPercent ? (<LoadingSpinner />) : successPercent ? (
-            <p>{percent}</p>
+          {isLoadingCount ? (<LoadingSpinner />) : successCount ? (
+            <p>{count}</p>
           )
             : (
               'Unable to fetch data'
@@ -265,33 +290,43 @@ function Dashboard() {
 
       <div className='charts-container'>
         <div className='box histogram-box'>
-          <h2>Histogram</h2>
+          <h2>Resumes Score Distribution</h2>
           <div className='chart-container'>
+          {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
             <VictoryChart>
-              <VictoryAxis
-                label="Percentage"
-                tickValues={['0-10%', '10-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%']}
-                style={{ tickLabels: { fontSize: 10 } }}
-              />
-              <VictoryAxis
-                dependentAxis
-                label="Numbers"
-              />
-              <VictoryBar
-                data={data}
-                x="x"
-                y="y"
-                barWidth={17}
-                style={{ data: { fill: '#2196F3' } }}
-              />
-            </VictoryChart>
+            <VictoryAxis
+              label="Percentage"
+              tickValues={['0-10%', '10-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%']}
+              style={{ tickLabels: { fontSize: 10 } }}
+            />
+            <VictoryAxis
+              dependentAxis
+              label="Count"
+            />
+            <VictoryBar
+              data={hist}
+              x="x"
+              y="y"
+              barWidth={17}
+              style={{ data: { fill: '#2196F3' } }}
+            />
+          </VictoryChart>
+          )
+            : (
+              'Unable to fetch data'
+            )}
           </div>
         </div>
         <div className="box pie-chart-box">
 
-          <h2>Pie Chart</h2>
+          <h2>Department-wise Job Descriptions</h2>
           <div className="chart-container">
-            <VictoryPie data={pieData} colorScale={colorScale} />
+          {isLoadingPie ? (<LoadingSpinner />) : successPie ? (
+            <VictoryPie data={pie} colorScale={colorScale} />
+            )
+            : (
+              'Unable to fetch data'
+            )}
           </div>
         </div>
       </div>

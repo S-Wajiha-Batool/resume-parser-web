@@ -24,5 +24,6 @@ router.get('/increased_cvs', CVController.increased_CV)
 
 router.get('/highest_rank', verifyToken, CVController.highest_rank)
 
+router.get('/cv_distribution', CVController.CV_distribution)
 
 module.exports = router;
