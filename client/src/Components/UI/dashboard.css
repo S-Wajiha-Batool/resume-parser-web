@@ -1,29 +1,28 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   justify-content: space-between;
   background-color: #cfe7f8;
 }
 
 .boxes-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  padding: 20px;
+  padding: 30px;
 }
 
 .box {
   background-color: white;
   color: black;
-  padding: 20px;
-  width: 30%;
+  padding: 30px;
+  width: calc(30% - 20px);
+  margin-bottom: 20px;
   text-align: center;
   box-shadow: 0 0 10px rgba(0.1, 0.1, 0.1, 0.2);
-  border-radius: 10px;
-  transition: transform 0.3s ease;
-}
-.box:hover {
-  transform: scale(1.05);
+  border-radius: 15px;
+  height: 200px;
 }
 
 .charts-container {
@@ -32,35 +31,36 @@
   flex-direction: column;
   align-items: center;
   margin-top: 50px;
-  justify-content: space-evenly;
+  justify-content: center;
+  height: 500px;
   padding: 20px;
+  margin: 20px;
 }
 
 .histogram-box {
   background-color: white;
   color: black;
   padding: 20px;
-  width: 50%;
   text-align: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
-  margin-bottom: 50px;
-  position: absolute;
-  bottom: 0;
-  left: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  height: 520px;
+  width: 58%;
 }
+
 .pie-chart-box {
   background-color: white;
   color: black;
   padding: 20px;
-  width: 36%;
+  width: 35%;
   text-align: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
-  margin-bottom: 50px;
-  position: absolute;
-  right: 25px;
-  bottom: 0;
+  margin-bottom: 20px;
+  position: relative;
+  height: 520px;
 }
 
 .chart-container {
@@ -68,29 +68,51 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  width: 100%;
   margin: 20px;
   padding: 20px;
 }
+
 .victory-chart {
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 768px) {
-  .boxes-container {
-    flex-wrap: wrap;
-  }
-
+@media (min-width: 768px) {
   .box {
-    width: 100%;
+    width: calc(50% - 20px);
+  }
+  
+  .histogram-box, .pie-chart-box {
+    width: 45%;
   }
 
   .charts-container {
     flex-direction: row;
   }
+}
+
+@media (min-width: 992px) {
+  .box {
+    width: calc(33.33% - 20px);
+  }
   
-  .histogram-box, .pie-chart-box {
-    width: 100%;
+  .histogram-box {
+    width: 60%;
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+  }
+
+  .pie-chart-box {
+    width: 35%;
+    position: absolute;
+    bottom: 0;
+    right: 25px;
+  }
+
+  .charts-container {
+    margin-top: 0;
   }
 }

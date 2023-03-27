@@ -47,3 +47,11 @@ export const getIncreasedJdsAPI = async (token) => {
     })
 }
 
+export const getJdCountForEachDeptAPI = async (token) => {
+    return await axios.get(`/api/jd/jd_count`, {
+        headers: {token: `Bearer ${token}`}
+    })
+}
+
+
+

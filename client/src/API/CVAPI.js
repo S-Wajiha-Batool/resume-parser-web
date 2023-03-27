@@ -58,3 +58,16 @@ export const getIncreasedCvsAPI = async (token) => {
         headers: {token: `Bearer ${token}`}
     })
 }
+
+export const getHigestScoringCvsCountAPI = async (token) => {
+    return await axios.get(`/api/cv/highest_rank`, {
+        headers: {token: `Bearer ${token}`}
+    })
+}
+
+export const getCvDistributionAPI = async (token) => {
+    return await axios.get(`/api/cv/cv_distribution`, {
+        headers: {token: `Bearer ${token}`}
+    })
+}
+

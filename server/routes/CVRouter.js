@@ -22,5 +22,7 @@ router.post('/test_upload_cv', upload_cv.array('files'), CVController.test)
 
 router.get('/increased_cvs', CVController.increased_CV)
 
+router.get('/highest_rank', verifyToken, CVController.highest_rank)
+
 
 module.exports = router;

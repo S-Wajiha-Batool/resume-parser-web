@@ -254,9 +254,9 @@ const JDController = {
                     count++;
                 }
             })
-            //var highest_percentage = (count / total_cvs.length) * 100;
+            var highest_percentage = (count / total_cvs.length) * 100;
 
-            return res.status(200).json({ error: { code: null, msg: null }, data: count });
+            return res.status(200).json({ error: { code: null, msg: null }, data: count, highest_percentage });
 
         }
         catch (err) {

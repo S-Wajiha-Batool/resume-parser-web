@@ -17,8 +17,6 @@ router.get('/get_job_details/:id', JDController.get_job_details)
 
 router.get('/increased_jds', verifyToken, JDController.increased_JD)
 
-router.get('/highest_rank', JDController.highest_rank)
-
 router.get('/JD_count', JDController.JD_count)
 
 router.get('/JD_distribution', JDController.JD_distribution)
