@@ -207,13 +207,20 @@ const JDController = {
             jds.forEach(jd => {
                 dict[jd.department] = 0;
             })
-            console.log(dict)
-
+            //console.log(dict)
+            const formated_response = [];
             jds.forEach(jd => {
+
+                //formated_response.push( { x: jd.department, y: dict[jd.department] + 1 } )
                 
                 dict[jd.department] = dict[jd.department] + 1;
             })
-            return res.status(200).json({ error: { code: null, msg: null }, data: dict });
+
+            for (const [key, value] of Object.entries(dict)) {
+                formated_response.push({ x: key, y: value})
+              }
+            return res.status(200).json({ error: { code: null, msg: null }, data: formated_response });
+
 
         }
         catch (err) {
@@ -247,9 +254,9 @@ const JDController = {
                     count++;
                 }
             })
-            var highest_percentage = (count / total_cvs.length) * 100;
+            //var highest_percentage = (count / total_cvs.length) * 100;
 
-            return res.status(200).json({ error: { code: null, msg: null }, data: count, highest_percentage });
+            return res.status(200).json({ error: { code: null, msg: null }, data: count });
 
         }
         catch (err) {
@@ -443,7 +450,20 @@ const JDController = {
                 }
                 
             });
-            return res.status(200).json({ error: { code: null, msg: null }, data: dict });
+
+            const distribution = [
+                { x: "0% - 10%", y: dict["0% - 10%"]},
+                { x: "10% - 20%", y: dict["10% - 20%"]},
+                { x: "20% - 30%", y: dict["20% - 30%"]},
+                { x: "30% - 40%", y: dict["30% - 40%"]},
+                { x: "40% - 50%", y: dict["40% - 50%"]},
+                { x: "50% - 60%", y: dict["50% - 60%"]},
+                { x: "60% - 70%", y: dict["60% - 70%"]},
+                { x: "70% - 80%", y: dict["70% - 80%"]},
+                { x: "80% - 90%", y: dict["80% - 90%"]},
+                { x: "90% - 100%", y: dict["90% - 100%"]},
+            ]
+            return res.status(200).json({ error: { code: null, msg: null }, data: distribution });
         }
         catch(err){
             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
