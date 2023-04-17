@@ -51,7 +51,7 @@ const JDController = {
             var day = ("0" + date_ob.getDate()).slice(-2);
             var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
             var year = date_ob.getFullYear();
-            var date = year + "-" + month + "-" + day;
+            //var date = year + "-" + month + "-" + day;
 
             const newJd = new JD({
                 position: position,
@@ -92,7 +92,6 @@ const JDController = {
             }
 
             else {
-
                 const selected_jd = await JD.findById({ _id: req.params.id })
                 const id = ObjectId(req.params.id);
                 //getCvs
@@ -174,9 +173,9 @@ const JDController = {
                     { new: true }
                 );
 
-                res.status(200).json({ error: { code: null, msg: null }, data: updatedJD });
+                return res.status(200).json({ error: { code: null, msg: null }, data: {msg: "JD updated successfully"} });
             } catch (err) {
-                res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
+                return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
             }
         }
     },

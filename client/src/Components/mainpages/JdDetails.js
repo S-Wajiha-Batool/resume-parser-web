@@ -52,9 +52,9 @@ function JdDetails() {
                                         console.log(err.response.data)
                                         showErrorToast(err.response.data.error.msg)
                                     })
-                                     .finally(() => {
-                                         setIsLoading(false);
-                                     })
+                                    .finally(() => {
+                                        setIsLoading(false);
+                                    })
                             } catch (err) {
                                 showErrorToast(err)
                             }
@@ -69,8 +69,8 @@ function JdDetails() {
             }
             getJd()
 
-            
-        
+
+
         }
     }, [token, callbackJdDetails])
 
@@ -94,11 +94,11 @@ function JdDetails() {
                 <> <Container>
                     <div>
                         <>
-                                {/* <Col><h4>Job Description</h4></Col>
+                            {/* <Col><h4>Job Description</h4></Col>
                                 <Col className='uploadCv_btn'>
                                     <Button onClick={handleShowModal}>Add CV</Button>
                                 </Col> */}
-                                <UploadCvsModal jd = {jd} showModal={showModal} handleCloseModal={handleCloseModal} tableRef = {tableRef}/>
+                            <UploadCvsModal jd={jd} showModal={showModal} handleCloseModal={handleCloseModal} tableRef={tableRef} />
                             <Row>
                                 <Col>
                                     <Card
@@ -117,13 +117,19 @@ function JdDetails() {
                                             <Card.Text>{jd.experience}</Card.Text>
 
                                             <Card.Subtitle>Qualification</Card.Subtitle>
-                                            <Card.Text>{Object.entries(jd.qualification).map((option, index) => <li key={index}>{ option[1]  + " (" + option[0] + ")"}</li>)}</Card.Text>
+                                            <Card.Text>{jd.qualification && Object.entries(jd.qualification).length > 0 ?
+                                                Object.entries(jd.qualification).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)
+                                                :
+                                                <div>-</div>}</Card.Text>
 
                                             <Card.Subtitle>Universities</Card.Subtitle>
-                                            <Card.Text>{Object.entries(jd.universities).map((option, index) => <li key={index}>{ option[1]  + " (" + option[0] + ")"}</li>)}</Card.Text>
+                                            <Card.Text>{jd.universities && Object.entries(jd.universities).length > 0 ?
+                                                Object.entries(jd.universities).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)
+                                                :
+                                                <div>-</div>}</Card.Text>
 
                                             <Card.Subtitle>Skills</Card.Subtitle>
-                                            <Card.Text>{getSkills(jd.skills).map((skill, index) => <li key={index}>{skill}</li>)}</Card.Text>
+                                            <Card.Text>{getSkills(jd.skills).length > 0 ? getSkills(jd.skills).map((skill, index) => <li key={index}>{skill}</li>) : <div>-</div>}</Card.Text>
 
                                             <Card.Subtitle>Posted By</Card.Subtitle>
                                             <Card.Text>{user.first_name + " " + user.last_name}</Card.Text>
@@ -135,12 +141,12 @@ function JdDetails() {
                                 </Col>
                                 <Col>
                                     <div>
-                                            <CvTable
-                                                className='table'
-                                                data={cvs}
-                                                handleShowModal={handleShowModal}
-                                                tableRef= {tableRef}
-                                            />
+                                        <CvTable
+                                            className='table'
+                                            data={cvs}
+                                            handleShowModal={handleShowModal}
+                                            tableRef={tableRef}
+                                        />
                                     </div>
                                 </Col>
                             </Row>

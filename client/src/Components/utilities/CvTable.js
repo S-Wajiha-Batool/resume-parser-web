@@ -10,6 +10,7 @@ import { Modal, Button } from 'react-bootstrap'
 import { deleteCVAPI } from '../../API/CVAPI';
 import { GlobalState } from '../../GlobalState';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
+import DeleteModal from './DeleteModal';
 
 const CvTable = (props) => {
     var moment = require('moment')
@@ -17,12 +18,13 @@ const CvTable = (props) => {
     const { data, handleShowModal } = props;
     const navigate = useNavigate();
     const [selectedItem, setSelectedItem] = useState([])
-    const [showDeleteDialogBox, setShowDeleteDialogBox] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const handleCloseDeleteModal = () => setShowDeleteModal(false);
+    const handleShowDeleteModal = () => setShowDeleteModal(true);
     const [isDeleting, setIsDeleting] = useState(false)
     const state = useContext(GlobalState);
     const [tableData, setTableData] = state.CVAPI.tableData
     const [token] = state.UserAPI.token;
-    const [callbackCv, setCallbackCv] = state.CVAPI.callbackCv;
     const columns = [
         { title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { background: "#009688" }, headerStyle: { color: "#fff" } },
         {
@@ -37,59 +39,14 @@ const CvTable = (props) => {
         { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
     ]
 
-    // useEffect(() => {
-    //     setTableData(data);
-    // }, [callback])
-
-
     const getDate = (d) => {
         return moment(d).format("Do MMMM YYYY")
     }
 
-    const onConfirmDelete = (e) => {
-        // e.preventDefault()
-        try {
-            setIsDeleting(true)
-            deleteCVAPI(selectedItem._id, { is_active: false }, token)
-                .then(res => {
-                    showSuccessToast(`${selectedItem.cv_original_name} deleted successfully`)
-                    setShowDeleteDialogBox(false)
-                    setCallbackCv(!callbackCv)
-                })
-                .catch(err => {
-                    console.log(err.response.data.error.msg)
-                    if (err.response.data.error.code == 500) {
-                        showErrorToast("Deletion failed")
-                    }
-                })
-                .finally(() => {
-                    setIsDeleting(false)
-                })
-        }
-        catch (err) {
-            console.log(err)
-            showErrorToast("Error in CV deletion")
-            setIsDeleting(false)
-        }
-    }
-
     return (
         <>
-            <Modal show={showDeleteDialogBox} onHide={() => setShowDeleteDialogBox(false)} centered>
-                <Modal.Header >
-                    <Modal.Title>Confirm Delete</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    Are you sure you want to delete {selectedItem.cv_original_name}?
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowDeleteDialogBox(false)}>No</Button>
-                    <Button variant="danger" onClick={() => onConfirmDelete()}>Yes</Button>
-
-                </Modal.Footer>
-            </Modal>
+            <DeleteModal showModal={showDeleteModal} handleCloseModal={handleCloseDeleteModal} data={selectedItem} target={"cv"}/>
             <ThemeProvider theme={defaultMaterialTheme}>
-
                 <MaterialTable columns={columns} data={tableData} icons={tableIcons}
                     actions={[
                         // {
@@ -103,7 +60,7 @@ const CvTable = (props) => {
                             icon: () => <DeleteOutline />,
                             tooltip: "Delete",
                             onClick: (e, rowData) => {
-                                setShowDeleteDialogBox(true);
+                                handleShowDeleteModal();
                                 setSelectedItem(rowData)
                             },
                             position: "row"

@@ -10,6 +10,8 @@ router.post('/parse_cv', verifyToken, upload_cv.array('files') , fileFilterMiddl
 
 router.post('/match_cv', verifyToken, CVController.matchCV)
 
+router.patch('/rescore_cv/:id', verifyToken, CVController.rescoreCV)
+
 router.get('/get_cv/:id?', verifyToken,CVController.getCv)
 
 router.put('/updateCV/:id', CVController.updatCV)

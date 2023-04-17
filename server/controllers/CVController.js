@@ -240,6 +240,104 @@ const CVController = {
         }
     },
 
+    rescoreCV: async (req, res) => {
+        //find cvs for this jd
+        const selected_jd = await JD.findById({ _id: req.params.id })
+        const id = ObjectId(req.params.id);
+        console.log('selected_jd', selected_jd)
+
+        CV_JD.aggregate([
+            {
+                $match: { JD_ID: id }
+            },
+            {
+                $match: { "is_active_cv_jd": true }
+            },
+            {
+                $lookup: {
+                    from: "cvs",
+                    localField: "CV_ID",
+                    foreignField: "_id",
+                    as: "matchlist"
+                }
+            },
+            {
+                $unset: ["matchlist._id", "createdAt", "updatedAt"]
+            },
+            {
+                $match: { "matchlist.is_active": true }
+            },
+            { $unwind: "$matchlist" },
+            {
+                $replaceRoot: {
+                    newRoot: {
+                        $mergeObjects: [
+                            {
+                                $arrayToObject: {
+                                    $filter: {
+                                        input: { "$objectToArray": "$$ROOT" },
+                                        cond: { "$not": { "$in": ["$$this.k", ["matchlist"]] } },
+                                    },
+                                },
+                            },
+                            "$matchlist"
+                        ]
+                    }
+                }
+            },
+        ],
+            async function (err, result) {
+                if (err) {
+                    return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+                } else {
+                    try {
+                        var data = [] //array for scores after matching
+                        console.log('body', req.body)
+                        const jd = selected_jd
+                        const cvs = result
+                        var options = {
+                            method: 'POST',
+                            uri: 'http://127.0.0.1:5000/match_cv',
+                            body: { jd, cvs },
+                            json: true
+                        };
+            
+                        //api call to flask to get scores
+                        await new Promise(async (resolve, reject) => {
+                            await request(options)
+                                .then(function (scores) {
+                                    console.log(scores);
+                                    resolve(data = scores)
+                                })
+                                .catch(function (err) {
+                                    console.log(err)
+                                    return res.status(500).json({ error: { code: res.statusCode, msg: "Error in CV matching" }, data: null })
+                                });
+                        })
+            
+                        const promises = cvs.map(async (cv, index) => {
+                            const updatedJD = await CV_JD.findByIdAndUpdate(
+                                ObjectId(cv._id),
+                                {
+                                    $set: {"weighted_percentage" : data[index]},
+                                },
+                                { new: true }
+                            );
+                            return updatedJD;
+                        });
+                                    
+                        await Promise.all(promises);
+                        
+                        return res.status(200).json({ error: { code: null, msg: null }, data: {msg: "Resumes rescored successfully"}});
+            
+                    } catch (err) {
+                        return res.status(500).json({ error: { code: null, msg: err.message }, data: null });
+                    }                            
+                    //return res.status(200).json({ error: { code: null, msg: null }, data: { jd: selected_jd, cvs: result } });
+                }
+            });
+    },
+
     updatCV: async (req, res) => {
         const selected_cv = await CV.findById({ _id: req.params.id })
         if (!selected_cv) {

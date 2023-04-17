@@ -41,6 +41,12 @@ export const deleteJdAPI = async (id, jd, token) => {
     })
 }
 
+export const updateJdAPI = async (id, jd, token) => {
+    return await axios.patch(`/api/jd/update_jd/${id}`, jd, {
+        headers: {token: `Bearer ${token}`}
+    })
+}
+
 export const getIncreasedJdsAPI = async (token) => {
     return await axios.get(`/api/jd/increased_jds`, {
         headers: {token: `Bearer ${token}`}

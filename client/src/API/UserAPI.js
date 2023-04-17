@@ -32,7 +32,8 @@ export default function UserAPI() {
                         setToken(false)
                         setUser(false)
                         localStorage.removeItem('firstLogin')
-                        alert(err.response.data.error.msg)
+                        showErrorToast("Failed to fetch user")
+                        console.log(err.response.data.error.msg)
                         clearTimeout(timer);
                     })
             }
@@ -55,10 +56,12 @@ export default function UserAPI() {
                             console.log(err.response.data)
                             setIsLogged(false)
                             setToken(false)
-                            alert(err.response.data.error.msg)
+                            showErrorToast("Failed to fetch user")
+                            console.log(err.response.data.error.msg)
                         })
                 } catch (err) {
-                    alert(err.response.data.error.msg)
+                    showErrorToast("Failed to fetch user")
+                    console.log(err.response.data.error.msg)
                     setIsLogged(false)
                     setToken(false)
                 }

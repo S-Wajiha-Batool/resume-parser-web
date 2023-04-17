@@ -41,6 +41,13 @@ export const matchCvsAPI = async (jd, cvs, token) => {
     })
 }
 
+export const rescoreCvsAPI = async (id, token) => {
+    console.log(id)
+    return await axios.patch(`/api/cv/rescore_cv/${id}`, {}, {
+        headers: {token: `Bearer ${token}`}
+    })
+}
+
 export const deleteCvAgainstJdAPI = async (id, cv, token) => {
     return await axios.patch(`/api/cv/delete_cv_against_jd/${id}`, cv, {
         headers: {token: `Bearer ${token}`}

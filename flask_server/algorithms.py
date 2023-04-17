@@ -204,7 +204,7 @@ def parse_cv():
 def match_cv(): 
     data = request.get_json() 
     print(data)
-    result = [9,8]
+    result = [6,7]
     #for cv in data:
 
     # Return data in json format 
