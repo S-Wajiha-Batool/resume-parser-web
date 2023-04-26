@@ -10,6 +10,7 @@ import { Modal, Button } from 'react-bootstrap'
 import { deleteCVAPI } from '../../API/CVAPI';
 import { GlobalState } from '../../GlobalState';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
+import '../UI/CvTable.css'
 
 const CvTable = (props) => {
     var moment = require('moment')
@@ -24,7 +25,7 @@ const CvTable = (props) => {
     const [token] = state.UserAPI.token;
     const [callbackCv, setCallbackCv] = state.CVAPI.callbackCv;
     const columns = [
-        { title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { background: "#009688" }, headerStyle: { color: "#fff" } },
+        { title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { background: "#1d9fc7" }, headerStyle: { color: "black" } },
         {
             title: "Experience", field: "experience",
             searchable: true, export: true

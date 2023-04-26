@@ -1,0 +1,34 @@
+.card {
+    background-color: #f0faff;
+    color: #003366;
+    border-color: #003366;
+    size: 100vh;
+    font-size: smaller;
+  }
+  
+  .card-header {
+    background-color: #003366;
+    color: #f0faff;
+    font-size: small;
+  }
+  
+  .card-body {
+    background-color: #f0faff;
+    color: #003366;
+    size: 100vh;
+    font-size: smaller;
+  }
+  .card-text{
+      color: black;
+      font-size: smaller;
+  }
+  
+  .btn-primary {
+    background-color: #003366;
+    border-color: #003366;
+  }
+  
+  .btn-primary:hover {
+    background-color: #f0faff;
+    color: #003366;
+  }

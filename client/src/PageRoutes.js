@@ -12,7 +12,7 @@ import Dashboard from './Components/mainpages/Dashboard';
 import Sidebar from './Components/sidebar/Sidebar'
 
 const Layout = () => (
-  <div style={({ height: "100vh"})}>
+  <div style={({ height: "100vh", position: 'inherit'})}>
     <Sidebar />
     <div style={{
       marginLeft: "100px"

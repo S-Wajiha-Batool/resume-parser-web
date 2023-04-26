@@ -62,14 +62,14 @@ function Login() {
             <div className='login-form-container'>
             <div className='login-card'>
                 <div className="login-header">
-                    <h2>Login</h2>
+                    <h2 className='text1'>Login</h2>
                 </div>
 
                 <div className='login-card'>
                     <form>
                         <div>
-                            <text className='label'>
-                                Email
+                            <text className='label' >
+                               <p className='text1'>Email</p> 
                             </text>
                             <input type='text'
                                 name='email'
@@ -81,7 +81,7 @@ function Login() {
                         <div>
 
                             <text className='label'>
-                                Password
+                            <p className='text1'>Password</p> 
                             </text>
                             <input type='password'
                                 name='password'
@@ -99,7 +99,7 @@ function Login() {
                         </button>
                         </div>
                         <div className='label'>
-                            <text className='span.psw' position = 'center'>Forgot Password?</text>
+                            <text className='span.psw' position = 'center'><p className='text1'>Forgot Password?</p> </text>
                         </div>
                     </form>
                     <ToastContainer/>

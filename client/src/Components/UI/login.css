@@ -1,101 +1,131 @@
-/* Bordered form */
-.login-page{
+/* Login Page */
+.login-page {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   height: 100vh;
-}
-/* Login form container */
-.login-form-container {
-  flex-basis: 50%;
-  padding: 5px;
-  
+  background-color: white;
+  font-family: Arial, sans-serif;
 }
 
-/* Login image container */
+/* Login Image Container */
 .login-image-container {
   flex-basis: 50%;
   background-size: cover;
   background-position: center;
   display: flex;
   justify-content: center;
-  width: 50%;
-  height: 400px;
-  min-height: 400px;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
 }
+
 .login-image-container img {
   max-width: 100%;
-  height: 400px;
-  width: 400px;
+  max-height: 100%;
 }
+
+/* Login Form Container */
+.login-form-container {
+  flex-basis: 50%;
+  padding: 5px;
+}
+
+/* Login Card */
 .login-card {
-    max-width: 400px;
+    width: 100%;
     margin: 0 auto;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0px 2px 5px rgba(0,0,0,0);
     padding: 20px;
-  }
+    height: 100%;
+}
 
-  .login-header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .login-header h2 {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
- 
-  
+/* Login Header */
+.login-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-header h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Form */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form Label */
 .label {
-  display: block;
   margin-bottom: 5px;
   font-weight: bold;
+  color: #2e90e6;
 }
-.input[type=text], input[type=password] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    display: inline-block;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px rgba(0.1,0.1,0.1,0.3);
 
-  }
-.input[type= submit] {
-background-color: #007bff;
-color: #fff;
-padding: 10px 20px;
-border: none;
-border-radius:  5px;
-cursor: pointer;
+/* Form Input */
+.input {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
-.input[type= "submit"]:hover {
+
+.input[type="text"],
+.input[type="password"] {
+  width: 100%;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Submit Button */
+input[type="submit"] {
+  background-color: #1b82ef;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+input[type="submit"]:hover {
   background-color: #0069d9;
 }
-/* Set a style for all buttons */
-button {
-    background-color: #04AA6D;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-  }
 
-  
-/* Add a hover effect for buttons */
-  button:hover {
-    opacity: 0.8;
-  }
-/* The "Forgot password" text */
+button {
+  background-color: #216de9;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+button:hover{
+  opacity: 0.9;
+}
+
+
+/* Forgot Password Link */
 span.psw {
-    float: right;
-    padding-top: 16px;
-    text-align: center;
-    position: center;
-  }
+  text-align: right;
+  margin-bottom: 20px;
+  color: #555;
+  font-size: 14px;
+}
+
+/* Text */
+.text1 {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+}

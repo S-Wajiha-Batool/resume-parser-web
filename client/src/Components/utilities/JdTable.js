@@ -11,6 +11,7 @@ import { deleteJdAPI } from '../../API/JDAPI';
 import { GlobalState } from '../../GlobalState';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import {Spinner} from 'react-bootstrap';
+import '../UI/JdTable.css'
 
 const JdTable = (props) => {
     var moment = require('moment')
@@ -26,7 +27,7 @@ const JdTable = (props) => {
     const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
     const columns = [
         //{ title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
-        { title: "Position", field: "position", sorting: false, filtering: false, cellStyle: { background: "#009688" }, headerStyle: { color: "#fff" } },
+        { title: "Position", field: "position", sorting: false, filtering: false, cellStyle: { background: "#1d9fc7", fontWeight: 'bold' }, headerStyle: { color: "#fff" },  },
         { title: "Department", field: "department", filterPlaceholder: "filter" },
         {
             title: "Skills", field: "skills", grouping: false,
