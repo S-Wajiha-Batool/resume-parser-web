@@ -17,10 +17,6 @@ const CVsSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    // qualification:{
-    //     type: String,
-    //     required: true
-    // },
     links:{
         type: [String],
         required: false 
@@ -28,7 +24,6 @@ const CVsSchema = new mongoose.Schema({
     emails:{
         type: [String],
         required: true
-      //match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'This is not a valid email address'
     },
     phone_number:{
         type: String,
@@ -50,16 +45,8 @@ const CVsSchema = new mongoose.Schema({
         required: true,
         default: true
     },
-    // universities:{
-    //     type: [String],
-    //     required: true
-    // }
 },
     {
 	timestamps:true
     })
-    var validateEmail = function(email) {
-        var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        return re.test(email)
-    };
 module.exports = mongoose.model('cvs', CVsSchema)    
