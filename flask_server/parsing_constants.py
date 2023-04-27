@@ -76,4 +76,8 @@ LINKS_REGEX = r"""
 
 PHONE_REGEX = r'[\+\(]?[1-9][0-9 .\-\(\)]{8,}[0-9]'
 EMAIL_REGEX = r'[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.[a-z]+'
+<<<<<<< HEAD
 NAME_REGEX = r'[a-z]+(\s+[a-z]+)?'
+=======
+NAME_REGEX = r'[a-z]+(\s+[a-z]+)?'
+>>>>>>> dfe1f189dc04968e99d13a37c09108df2ba8e869
