@@ -149,7 +149,7 @@ def extract_dates_and_text(resume_text):
         if match:
             result = match.group(1)
             break
-    
+
     date_regex = parsing_constants.DATE_REGEX
     date_formats = parsing_constants.DATE_FORMATS_BY_REGEX
     matches = re.finditer(date_regex, result)

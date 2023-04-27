@@ -1,5 +1,1 @@
-<<<<<<< HEAD
 source env/bin/activate
-=======
-source env/bin/activate
->>>>>>> dfe1f189dc04968e99d13a37c09108df2ba8e869
