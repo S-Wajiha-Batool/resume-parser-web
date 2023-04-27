@@ -14,6 +14,7 @@ import { Spinner } from 'react-bootstrap';
 import EditJdModal from '../utilities/EditJdModal';
 import DeleteModal from './DeleteModal';
 
+import '../UI/JdTable.css'
 
 const JdTable = (props) => {
     var moment = require('moment')
@@ -35,7 +36,7 @@ const JdTable = (props) => {
 
     const columns = [
         //{ title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
-        { title: "Position", field: "position", sorting: false, filtering: false, cellStyle: { background: "#009688" }, headerStyle: { color: "#fff" } },
+        { title: "Position", field: "position", sorting: false, filtering: false, cellStyle: { background: "#1d9fc7", fontWeight: 'bold' }, headerStyle: { color: "#fff" },  },
         { title: "Department", field: "department", filterPlaceholder: "filter" },
         {
             title: "Skills", field: "skills", grouping: false,

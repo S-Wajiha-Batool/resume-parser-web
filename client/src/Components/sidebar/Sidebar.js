@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import '../UI/Sidebar.css'
+import '../UI/Sidebar.css';
 import { logoutAPI } from '../../API/UserAPI';
 import { GlobalState } from '../../GlobalState';
 import {IoIosMenu} from "react-icons/io";
@@ -10,6 +10,11 @@ import { FaList, FaRegHeart } from "react-icons/fa";
 import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
 import { showErrorToast, showSuccessToast } from '../utilities/Toasts';
 import { useNavigate } from 'react-router-dom';
+import home_icon from '../images/home.png'
+import JD_icon from '../images/job-description.png'
+import CV_icon from '../images/cv.png'
+import logout_icon from '../images/logout.png'
+import menu_icon from '../images/menu.png'
 
 const Sidebar = () => {
     const [menuCollapse, setMenuCollapse] = useState(true);
@@ -43,39 +48,54 @@ const Sidebar = () => {
       }
 
     return (
-        <>
             <div id="header">
                 {/* collapsed props to change menu size using menucollapse state */}
                 <ProSidebar collapsed={menuCollapse}>
                     <SidebarHeader>
-                        {menuCollapse ? <div className='heading' onClick={menuIconClick}><IoIosMenu /></div> : 
+                        {menuCollapse ?
+                        <div className='heading' onClick={menuIconClick}>
+                        <img className='menu-icon' src={menu_icon} alt='MENU'/>
+                        </div> : 
                         <>
-                        <div onClick={menuIconClick}><IoIosMenu /></div>
+                        <div onClick={menuIconClick}></div>
                          <div className="logotext">
-                            <p>Resume Parser</p>
+                            <p className='logotext'>Resume Parser</p>
                         </div>
                         </>}
                     </SidebarHeader>
-                    <SidebarContent>
-                        <Menu iconShape="square">
-                            <MenuItem onClick={() => setMenuCollapse(true)} icon={<FiHome />}>
-                                <Link to="/" />
-                                Dashboard
+                    <SidebarContent color='blue'>
+                        <Menu>
+                            <MenuItem  onClick={() => setMenuCollapse(true)} > 
+                            <Link to='/'>
+                                <img className='home-icon' src={home_icon} alt='Dashboard'/> 
+                                <p className='text'>Dashboard</p>
+                                </Link>
                             </MenuItem>
-                            <MenuItem onClick={() => setMenuCollapse(true)} icon={<FaList />}>Jds
-                                <Link to="/jds" /></MenuItem>
-                            <MenuItem onClick={() => setMenuCollapse(true)} icon={<FaRegHeart />}>Cvs
-                                <Link to="/cvs" /></MenuItem>
+                            <MenuItem onClick={() => setMenuCollapse(true)} >
+                                <Link to='/jds'>
+                            <img className='JD-icon' src={JD_icon} alt='JD'/>
+                                <p className='text'>JDs</p>
+                                </Link>
+                                </MenuItem>
+                            <MenuItem onClick={() => setMenuCollapse(true)}>
+                                <Link to='/cvs'>
+                            <img className='CV-icon' src={CV_icon} alt='JD'/>
+                                <p className='text'>CVs</p>
+                                </Link>
+                                </MenuItem>
                         </Menu>
                     </SidebarContent>
                     <SidebarFooter>
-                        <Menu iconShape="square">
-                            <MenuItem icon={<FiLogOut />} onClick={logoutUser}>Logout</MenuItem>
+                        <Menu>
+                            <MenuItem onClick={logoutUser}>
+                            <img className='logout-icon' src={logout_icon} alt='JD'/>
+                                <p className='text'>Logout</p>
+                                </MenuItem>
                         </Menu>
                     </SidebarFooter>
                 </ProSidebar>
             </div>
-        </>
+        
     );
 };
 

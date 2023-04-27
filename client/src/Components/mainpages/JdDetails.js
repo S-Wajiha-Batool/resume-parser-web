@@ -91,14 +91,14 @@ function JdDetails() {
         isLoading ?
             <LoadingSpinner /> :
             success ?
-                <> <Container>
+                <Container>
                     <div>
                         <>
-                            {/* <Col><h4>Job Description</h4></Col>
+                                {/* <Col><h4>Job Description</h4></Col>
                                 <Col className='uploadCv_btn'>
                                     <Button onClick={handleShowModal}>Add CV</Button>
                                 </Col> */}
-                            <UploadCvsModal jd={jd} showModal={showModal} handleCloseModal={handleCloseModal} tableRef={tableRef} />
+                                <UploadCvsModal jd = {jd} showModal={showModal} handleCloseModal={handleCloseModal} tableRef = {tableRef}/>
                             <Row>
                                 <Col>
                                     <Card
@@ -107,14 +107,14 @@ function JdDetails() {
                                         style={{ width: '18rem' }}
                                         className="mb-2"
                                     >
-                                        <Card.Header>{jd.position}</Card.Header>
+                                    <Card.Header className="bg-primary text-white">{jd.position}</Card.Header>
                                         <Card.Body>
                                             <Card.Title>  </Card.Title>
                                             <Card.Subtitle>Department</Card.Subtitle>
                                             <Card.Text>{jd.department}</Card.Text>
 
-                                            <Card.Subtitle>Experience</Card.Subtitle>
-                                            <Card.Text>{jd.experience}</Card.Text>
+                                        <Card.Subtitle>Experience</Card.Subtitle>
+                                        <Card.Text>{jd.experience}</Card.Text>
 
                                             <Card.Subtitle>Qualification</Card.Subtitle>
                                             <Card.Text>{jd.qualification && Object.entries(jd.qualification).length > 0 ?
@@ -131,8 +131,8 @@ function JdDetails() {
                                             <Card.Subtitle>Skills</Card.Subtitle>
                                             <Card.Text>{getSkills(jd.skills).length > 0 ? getSkills(jd.skills).map((skill, index) => <li key={index}>{skill}</li>) : <div>-</div>}</Card.Text>
 
-                                            <Card.Subtitle>Posted By</Card.Subtitle>
-                                            <Card.Text>{user.first_name + " " + user.last_name}</Card.Text>
+                                        <Card.Subtitle>Posted By</Card.Subtitle>
+                                        <Card.Text>{user.first_name + " " + user.last_name}</Card.Text>
 
                                             <Card.Subtitle>Posted On</Card.Subtitle>
                                             <Card.Text>{getDate(jd.createdAt)}</Card.Text>
@@ -153,10 +153,8 @@ function JdDetails() {
                         </>
                     </div>
                 </Container>
-                </>
                 : <div>Jd not found</div>
     )
-
 }
 
 export default JdDetails

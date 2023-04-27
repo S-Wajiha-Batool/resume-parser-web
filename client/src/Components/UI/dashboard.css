@@ -51,7 +51,7 @@
 }
 
 .pie-chart-box {
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   color: black;
   padding: 20px;
   width: 35%;
@@ -74,11 +74,24 @@
 }
 
 .victory-chart {
-  background-color: white;
+  background-color: rgb(247, 241, 241);
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
+.text1{
+color: black;
+font-family: 'Hanalei Fill';
+font-weight: bold;
+text-decoration: underline;
+font-size: larger;
+}
 
+.text2{
+  color: rgb(39, 140, 223);
+  font-family: 'Hanalei Fill';
+  font-weight: bold;
+  font-size: large;
+  }
 @media (min-width: 768px) {
   .box {
     width: calc(50% - 20px);

@@ -7,6 +7,7 @@ import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { Container, Row, Col, Button, Spinner, Card } from 'react-bootstrap';
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
+import '../UI/CvDetails.css'
 
 function CvDetails() {
     var moment = require('moment')
@@ -87,13 +88,13 @@ function CvDetails() {
                                         <Card.Body>
 
                                             <Card.Subtitle>Emails</Card.Subtitle>
-                                            <Card.Text>{cv.emails.map((email,index) => <li key={index}>{email}</li>)}</Card.Text>
+                                            <Card.Text className="Text1">{cv.emails.map((email,index) => <li key={index}>{email}</li>)}</Card.Text>
 
                                             <Card.Subtitle>Contact #</Card.Subtitle>
-                                            <Card.Text>{cv.phone_number}</Card.Text>
+                                            <Card.Text className="Text1">{cv.phone_number}</Card.Text>
 
                                             <Card.Subtitle>Experience</Card.Subtitle>
-                                            <Card.Text>{cv.experience} years</Card.Text>
+                                            <Card.Text className="Text1">{cv.experience} years</Card.Text>
 
                                             {/* <Card.Subtitle>Qualification</Card.Subtitle>
                                             <Card.Text>{cv.qualification}</Card.Text>
@@ -102,21 +103,19 @@ function CvDetails() {
                                             <Card.Text>{cv.universities.map(name => <li>{name}</li>)}</Card.Text> */}
 
                                             <Card.Subtitle>Skills</Card.Subtitle>
-                                            <Card.Text>{cv.skills.length != 0 && cv.skills.map((name,index) => <li key={index}>{name}</li>)}</Card.Text>
-                                            <Card.Text>{cv.skills.length == 0 && "None"}</Card.Text>
+                                            <Card.Text className="Text1">{cv.skills.length != 0 && cv.skills.map((name,index) => <li key={index}>{name}</li>)} {cv.skills.length == 0 && "None"}</Card.Text>
                                             
                                             <Card.Subtitle>Links</Card.Subtitle>
-                                            <Card.Text>{cv.links.length != 0 && cv.links.map((name,index) => <li key={index}><a href={name}>{name}</a></li>)}</Card.Text>
-                                            <Card.Text>{cv.links.length == 0 && "None"}</Card.Text>
+                                            <Card.Text className="Text1">{cv.links.length != 0 && cv.links.map((name,index) => <li key={index}><a href={name}>{name}</a></li>)} {cv.links.length == 0 && "None"}</Card.Text>
 
                                             <Card.Subtitle>Posted By</Card.Subtitle>
-                                            <Card.Text>{user.first_name + " " + user.last_name}</Card.Text>
+                                            <Card.Text className="Text1">{user.first_name + " " + user.last_name}</Card.Text>
 
                                             <Card.Subtitle>Posted On</Card.Subtitle>
-                                            <Card.Text>{getDate(cv.createdAt)}</Card.Text>
+                                            <Card.Text className="Text1">{getDate(cv.createdAt)}</Card.Text>
                                             
                                             {jds.length !== 0 && <><Card.Subtitle>Uploaded For: </Card.Subtitle>
-                                            <Card.Text>{jds.map((jd) => {
+                                            <Card.Text className="Text1">{jds.map((jd) => {
                                                 return(<div>
                                                 <span onClick={() => {navigate(`/jd/${jd.JD_ID}`)}}>{jd.position} - </span>
                                                 <span>{jd.weighted_percentage} </span>

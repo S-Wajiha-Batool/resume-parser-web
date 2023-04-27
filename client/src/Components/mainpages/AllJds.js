@@ -31,47 +31,6 @@ function AllJds() {
     const [jd, setJd] = useState({ position: "", department: "HR", file: null })
     const [uploadedFileName, setUploadedFileName] = useState(null);
 
-
-    // const onFileChange = (e) => {
-    //     console.log("upload")
-    //     inputRef.current.click();
-    // };
-
-    // const onChangeInput = e => {
-    //     const { name, value } = e.target;
-    //     setJd({ ...jd, [name]: value })
-    // }
-
-    // const handleDisplayFileDetails = (e) => {
-    //     inputRef.current?.files &&
-    //         setUploadedFileName(inputRef.current.files[0].name);
-    //     setJd({ ...jd, file: e.target.files });
-    // };
-
-    // const handleSubmit = (e) => {
-    //     console.log('in submit')
-    //     e.preventDefault()
-    //     let formData = new FormData();
-    //     formData.append('position', jd.position);
-    //     formData.append('department', jd.department);
-    //     formData.append('file', jd.file[0]);
-
-    //     addJdAPI(formData, token)
-    //         .then(res => {
-    //             console.log(res.data)
-    //             showSuccessToast(res.data.data.msg);
-    //             setCallback(!callback)
-    //             setShowModal(false)
-    //         })
-    //         .catch(err => {
-    //             //console.log(err.response.data)
-    //             //alert(err.response.data.error.msg)
-    //             showErrorToast(err.response.data.error.msg)
-    //         })
-
-    // }
-
-    //------
     useEffect(() => {
         if (token) {
             const getAllJds = async () => {
@@ -107,25 +66,18 @@ function AllJds() {
 
     return (
         isLoading ?
-            <LoadingSpinner /> :
-            success ?
-                <> <Container>
-                    <Row >
-                        {/* <Col><h3>Job Descriptions</h3></Col>
-                        <Col className='uploadJd_btn'><Button onClick={handleShowModal}>Add JD</Button></Col> */}
-                    </Row>
-                    <div>
-                            <JdTable
-                                className='table'
-                                data={allJDs}
-                                handleShowModal={handleShowModal}
-                            />
-                    </div>
-                </Container>
-                    <UploadJdModal showModal={showModal} handleCloseModal={handleCloseModal} />
-                </>
-                : "No Jds found"
-    )
-}
+          <LoadingSpinner /> :
+          success ?
+            <div className="jd-list-container">
+              <div className="jd-list-header">
+                <h1 className="jd-list-title">Job Descriptions</h1>
+                <Button className="jd-list-upload-btn" onClick={handleShowModal}>Add JD</Button>
+              </div>
+              <JdTable className="jd-list-table" data={allJDs} handleShowModal={handleShowModal} />
+              <UploadJdModal className="jd-list-upload-modal" showModal={showModal} handleCloseModal={handleCloseModal} />
+            </div>
+            : "No Jds found"
+      )
+    }
 
 export default AllJds;

@@ -2,3 +2,33 @@
     display: flex;
     justify-content: flex-end;
 }
+/* JdDetails.css */
+
+/* Set the background color to blue */
+body {
+    background-color: #cfe7f8;
+    ;
+  }
+  
+  /* Set the text color to white */
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a {
+    color: #fff;
+  }
+  
+  /* Set the background color of the card header to white */
+  .card-header {
+    background-color: #fff;
+  }
+  
+  /* Set the background color of the card body to blue */
+  .card-body {
+    background-color: #cfe7f8;
+  }
