@@ -29,7 +29,7 @@ const CvTable = (props) => {
     const columns = [
         { title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { background: "#1d9fc7" }, headerStyle: { color: "black" } },
         {
-            title: "Experience", field: "experience",
+            title: "Experience", field: "total_experience",
             searchable: true, export: true
         },
         {

@@ -139,7 +139,8 @@ const CVController = {
                     full_name: cv.full_name,
                     phone_number: cv.phone_number,
                     emails: cv.emails,
-                    experience: cv.experience,
+                    total_experience: cv.experience,
+                    experience_by_job: cv.experience_by_job,
                     //qualification: cv.qualification,
                     skills: cv.skills,
                     //universities: cv.universities,
@@ -445,6 +446,10 @@ const CVController = {
                     count ++;
                 }
             });
+
+            if (CVs.length == 0){
+                return res.status(200).json({ error: { code: null, msg: null }, data: 0 });
+            }
             const increased_percentage = (count / CVs.length) * 100;
             return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage });
 

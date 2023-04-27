@@ -1,2 +1,1 @@
-source .env/bin/activate
-pip install docx2txt nltk skillNer fuzzywuzzy pdfminer.six IPython python-Levenshtein lxml
+source env/bin/activate

@@ -42,9 +42,9 @@ function CvDetails() {
                                         console.log(err.response.data)
                                         showErrorToast(err.response.data.error.msg)
                                     })
-                                     .finally(() => {
-                                         setIsLoading(false);
-                                     })
+                                    .finally(() => {
+                                        setIsLoading(false);
+                                    })
                             } catch (err) {
                                 showErrorToast(err)
                             }
@@ -75,7 +75,7 @@ function CvDetails() {
                         <>
                             <Row>
                                 <Col>
-                                <iframe src={require(`../../../../server/uploaded_CVs/${cv.cv_path.replace(/^.*[\\\/]/, '')}`)} width="100%" height="100%"/>
+                                    <iframe src={require(`../../../../server/uploaded_CVs/${cv.cv_path.replace(/^.*[\\\/]/, '')}`)} width="100%" height="100%" />
                                 </Col>
                                 <Col>
                                     <Card
@@ -88,13 +88,20 @@ function CvDetails() {
                                         <Card.Body>
 
                                             <Card.Subtitle>Emails</Card.Subtitle>
-                                            <Card.Text className="Text1">{cv.emails.map((email,index) => <li key={index}>{email}</li>)}</Card.Text>
+                                            <Card.Text className="Text1">{cv.emails.map((email, index) => <li key={index}>{email}</li>)}</Card.Text>
 
                                             <Card.Subtitle>Contact #</Card.Subtitle>
                                             <Card.Text className="Text1">{cv.phone_number}</Card.Text>
 
                                             <Card.Subtitle>Experience</Card.Subtitle>
-                                            <Card.Text className="Text1">{cv.experience} years</Card.Text>
+                                            <Card.Text className="Text1"><ul>
+                                                {cv.experience_by_job ? Object.entries(cv.experience_by_job).map(([key, value]) => (
+                                                    <li key={key}>
+                                                        {key}: {value} 
+                                                    </li>
+                                                )) : <div>-</div>}
+                                                {cv.total_experience ? <div>"Total :" cv.total_experience</div> : null}
+                                            </ul></Card.Text>
 
                                             {/* <Card.Subtitle>Qualification</Card.Subtitle>
                                             <Card.Text>{cv.qualification}</Card.Text>
@@ -103,25 +110,25 @@ function CvDetails() {
                                             <Card.Text>{cv.universities.map(name => <li>{name}</li>)}</Card.Text> */}
 
                                             <Card.Subtitle>Skills</Card.Subtitle>
-                                            <Card.Text className="Text1">{cv.skills.length != 0 && cv.skills.map((name,index) => <li key={index}>{name}</li>)} {cv.skills.length == 0 && "None"}</Card.Text>
-                                            
+                                            <Card.Text className="Text1">{cv.skills.length != 0 && cv.skills.map((name, index) => <li key={index}>{name}</li>)} {cv.skills.length == 0 && "None"}</Card.Text>
+
                                             <Card.Subtitle>Links</Card.Subtitle>
-                                            <Card.Text className="Text1">{cv.links.length != 0 && cv.links.map((name,index) => <li key={index}><a href={name}>{name}</a></li>)} {cv.links.length == 0 && "None"}</Card.Text>
+                                            <Card.Text >{cv.links.length != 0 && cv.links.map((link, index) => <li key={index}><a href={link}>{link}</a></li>)} {cv.links.length == 0 && "None"}</Card.Text>
 
                                             <Card.Subtitle>Posted By</Card.Subtitle>
                                             <Card.Text className="Text1">{user.first_name + " " + user.last_name}</Card.Text>
 
                                             <Card.Subtitle>Posted On</Card.Subtitle>
                                             <Card.Text className="Text1">{getDate(cv.createdAt)}</Card.Text>
-                                            
+
                                             {jds.length !== 0 && <><Card.Subtitle>Uploaded For: </Card.Subtitle>
-                                            <Card.Text className="Text1">{jds.map((jd) => {
-                                                return(<div>
-                                                <span onClick={() => {navigate(`/jd/${jd.JD_ID}`)}}>{jd.position} - </span>
-                                                <span>{jd.weighted_percentage} </span>
-                                                </div>)
-                                            })}</Card.Text></>}
-                                            
+                                                <Card.Text className="Text1">{jds.map((jd) => {
+                                                    return (<div>
+                                                        <span onClick={() => { navigate(`/jd/${jd.JD_ID}`) }}>{jd.position} - </span>
+                                                        <span>{jd.weighted_percentage} </span>
+                                                    </div>)
+                                                })}</Card.Text></>}
+
                                         </Card.Body>
                                     </Card>
                                 </Col>

@@ -393,6 +393,9 @@ const JDController = {
                     count++;
                 }
             });
+            if(JDs.length == 0) {
+                return res.status(200).json({ error: { code: null, msg: null }, data: 0 });
+            }
             const increased_percentage = (count / JDs.length) * 100;
             return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage });
 
