@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import {useLocation} from 'react-router-dom';
 import '../UI/Sidebar.css';
 import { logoutAPI } from '../../API/UserAPI';
 import { GlobalState } from '../../GlobalState';
@@ -17,6 +18,7 @@ import logout_icon from '../images/logout.png'
 import menu_icon from '../images/menu.png'
 
 const Sidebar = () => {
+    const location = window.location.pathname;
     const [menuCollapse, setMenuCollapse] = useState(true);
     const menuIconClick = () => {
         //condition checking to change state from true to false and vice versa
@@ -65,19 +67,19 @@ const Sidebar = () => {
                     </SidebarHeader>
                     <SidebarContent color='blue'>
                         <Menu>
-                            <MenuItem  onClick={() => setMenuCollapse(true)} > 
+                            <MenuItem className={location === '/' ? 'active' : ''} onClick={() => setMenuCollapse(true)} > 
                             <Link to='/'>
                                 <img className='home-icon' src={home_icon} alt='Dashboard'/> 
                                 <p className='text'>Dashboard</p>
                                 </Link>
                             </MenuItem>
-                            <MenuItem onClick={() => setMenuCollapse(true)} >
+                            <MenuItem className={location === '/jds' ? 'active' : ''} onClick={() => setMenuCollapse(true)} >
                                 <Link to='/jds'>
                             <img className='JD-icon' src={JD_icon} alt='JD'/>
                                 <p className='text'>JDs</p>
                                 </Link>
                                 </MenuItem>
-                            <MenuItem onClick={() => setMenuCollapse(true)}>
+                            <MenuItem className={location === '/cvs' ? 'active' : ''} onClick={() => setMenuCollapse(true)}>
                                 <Link to='/cvs'>
                             <img className='CV-icon' src={CV_icon} alt='JD'/>
                                 <p className='text'>CVs</p>
