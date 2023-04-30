@@ -73,13 +73,13 @@ const Sidebar = () => {
                                 <p className='text'>Dashboard</p>
                                 </Link>
                             </MenuItem>
-                            <MenuItem className={location === '/jds' ? 'active' : ''} onClick={() => setMenuCollapse(true)} >
+                            <MenuItem className={location.startsWith('/jd') ? 'active' : ''} onClick={() => setMenuCollapse(true)} >
                                 <Link to='/jds'>
                             <img className='JD-icon' src={JD_icon} alt='JD'/>
                                 <p className='text'>JDs</p>
                                 </Link>
                                 </MenuItem>
-                            <MenuItem className={location === '/cvs' ? 'active' : ''} onClick={() => setMenuCollapse(true)}>
+                            <MenuItem className={location.startsWith('/cv') ? 'active' : ''} onClick={() => setMenuCollapse(true)}>
                                 <Link to='/cvs'>
                             <img className='CV-icon' src={CV_icon} alt='JD'/>
                                 <p className='text'>CVs</p>
