@@ -44,7 +44,6 @@ const userController = {
 
     logout: async (req, res) => {
         try {
-            console.log("here")
             res.clearCookie('refreshtoken', { path: '/api/user/refresh_token' })
             return res.status(200).json({ error: { code: null, msg: null }, data: "Successfully Logged out" })
         }
