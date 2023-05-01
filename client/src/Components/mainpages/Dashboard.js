@@ -232,7 +232,7 @@ function Dashboard() {
             <>
               <p className='text2'>{allJDs.length}</p>
               <p className='text2'>
-                {increasedJds > 0 ?
+                {increasedJds >= 0 ?
                   (<>
                     <span>{increasedJds.toFixed(2)} %</span> <ArrowIndicator value={1} />
                   </>
@@ -250,7 +250,7 @@ function Dashboard() {
         <div className="box">
           <h2 className='text1'>Resumes</h2>
           {isLoadingCvs ? (<LoadingSpinner />) : successCvs ? (<><p className='text2'>{allCvs.length}</p>
-            <p className='text2'>{increasedCvs > 0 ? (
+            <p className='text2'>{increasedCvs >= 0 ? (
               <>
                 <span>{increasedCvs.toFixed(2)} %</span> <ArrowIndicator value={1} />
               </>
