@@ -31,20 +31,12 @@ function Login() {
         e.preventDefault()
         loginAPI({ ...user })
             .then(res => {
-                //console.log(res.data)
                 localStorage.setItem('firstLogin', true);
                 setIsLogged(true);
-
-                //alert("Logged in successfully")
                 showSuccessToast("Logged in successfully");
-                setToken(res.data.data.accessToken);
-                //window.location.href = '/'
-
                 navigate('/');
             })
             .catch(err => {
-                //console.log(err.response.data)
-                //alert(err.response.data.error.msg)
                 showErrorToast(err.response.data.error.msg)
             })
     }
@@ -99,7 +91,7 @@ function Login() {
                         </button>
                         </div>
                         <div className='label'>
-                            <text className='span.psw' position = 'center'><p className='text1'>Forgot Password?</p> </text>
+                            <text className='span.psw' position = 'center' onClick={() => navigate('/reset-password')}><p className='text1'>Forgot Password?</p> </text>
                         </div>
                     </form>
                     <ToastContainer/>

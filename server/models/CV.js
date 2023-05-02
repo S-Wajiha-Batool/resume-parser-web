@@ -52,4 +52,4 @@ const CVsSchema = new mongoose.Schema({
     {
         timestamps: true
     })
-module.exports = mongoose.model('cvs', CVsSchema)    
+module.exports = mongoose.model('cvs', CVsSchema, )    
