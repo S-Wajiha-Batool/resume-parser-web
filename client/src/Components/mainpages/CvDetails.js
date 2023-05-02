@@ -172,8 +172,12 @@ return (
                                             )}
                                         </Card.Body>
                                     </Card>
+                                    
+                                <button className='button1'>delete</button>
+                            <button className='button1'>Edit</button>
                                 </Col>
                             </Row>
+                            
                         </>
                     </div>
                 </Container>

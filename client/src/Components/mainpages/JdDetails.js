@@ -95,7 +95,7 @@ function JdDetails() {
                     <div>
                         <Row>
                             <Col>
-                                <h4 style={{color: '#004999', marginTop: '25px'}}>Job Description</h4>
+                                <h4 style={{color: 'Black', marginTop: '50px', style: 'bold'}}>Job Description</h4>
                             
                                 <UploadCvsModal jd={jd} showModal={showModal} handleCloseModal={handleCloseModal} tableRef={tableRef}/>
                                 <ul style={{listStyleType: 'none', marginTop: '20px', color: 'black'}}>
@@ -114,7 +114,10 @@ function JdDetails() {
                                     <li><b>Posted By: </b>{user.first_name + " " + user.last_name}</li>
                                     <li><b>Posted On: </b>{getDate(jd.createdAt)}</li>
                                 </ul>
-                                <Button style={{backgroundColor: '#1d9fc7', color: '#004999', marginTop: '15px'}} onClick={handleShowModal}>Add CV</Button>
+                                <Button className='button1' onClick={handleShowModal}>Add CV </Button>
+                                <Button className='button1' onClick={handleShowModal}>Delete </Button>
+                                <Button  className='button1' onClick={handleShowModal}>Edit</Button>
+
                             </Col>
                             <Col>
                                 <div>

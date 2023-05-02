@@ -1,8 +1,6 @@
 .card {
   background-color: #f0faff;
   color: #003366;
-  border-color: #003366;
-  size: 100vh;
   font-size: smaller;
 }
 
@@ -14,23 +12,23 @@
 
 .card-body {
   background-color: white;
-  color: #003366;
-  size: 100vh;
+  size: clac(100vh-100px);
 }
 
 .card-text {
   color: black;
-  font-size: 20px;
+  font-size: 15px;
 }
+.button1{
+  size: 400px;
+  background-color: #4a4b53;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 10px;
+  border: none;
+  cursor: pointer;
+  width: 20%;
 
-.btn-primary {
-  background-color: #ffffff;
-  border-color: #003366;
-  color: black;
-}
-
-.btn-primary:hover {
-  background-color: lightgrey;
 }
 
 /* media query for screens smaller than 768px */
