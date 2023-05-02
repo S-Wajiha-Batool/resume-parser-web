@@ -1,70 +1,63 @@
+.MuiTablePagination-displayedRows {
+    margin-bottom: 0;
+}
+
 .MuiTableCell-head {
-    background-color: #333333 !important; /* Set header background color */
-    color: white!important; /* Set header text color */
+    background-color: #d3d3d3 !important;
+    color: black !important;
+    font-weight: bold;
 }
 
-.MuiTableRow-root:nth-of-type(even) {
-    background-color: #333333 !important; /* Set even row background color */
-    color: white;
+.MTableHeader-header-83 .MuiTableCell-paddingCheckbox {
+    padding: 8px;
 }
 
+/* .MTableToolbar-actions-36 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 8px;
+  } */
 
-.text1{
-    font-size: 15px;
+
+.text1 {
+    font-size: 12px;
 }
+
 .orange {
     color: orange;
-  }
-  /* styles for screens smaller than 600px wide */
+}
+
+/* styles for screens smaller than 600px wide */
 @media screen and (max-width: 600px) {
-    .MuiTableCell-head {
-    background-color: #333333 !important;
-    color: white !important;
-    }
-    .MuiTableRow-root:nth-of-type(even) {
-    background-color: #333333 !important;
-    color: white;
-    }
+
     .text1 {
-    font-size: 12px;
+        font-size: 12px;
     }
+
     .orange {
-    color: orange;
+        color: orange;
     }
-    }
-    
-    /* styles for screens between 600px and 960px wide */
-    @media screen and (min-width: 600px) and (max-width: 960px) {
-    .MuiTableCell-head {
-    background-color: #333333 !important;
-    color: white !important;
-    }
-    .MuiTableRow-root:nth-of-type(even) {
-    background-color: #333333 !important;
-    color: white;
-    }
+}
+
+/* styles for screens between 600px and 960px wide */
+@media screen and (min-width: 600px) and (max-width: 960px) {
     .text1 {
-    font-size: 18px;
+        font-size: 18px;
     }
+
     .orange {
-    color: orange;
+        color: orange;
     }
-    }
-    
-    /* styles for screens larger than 960px wide */
-    @media screen and (min-width: 960px) {
-    .MuiTableCell-head {
-    background-color: #333333 !important;
-    color: white !important;
-    }
-    .MuiTableRow-root:nth-of-type(even) {
-    background-color: #333333 !important;
-    color: white;
-    }
+}
+
+/* styles for screens larger than 960px wide */
+@media screen and (min-width: 960px) {
     .text1 {
-    font-size: 24px;
+        font-size: 24px;
     }
+
     .orange {
-    color: orange;
+        color: orange;
     }
-    }
+}
