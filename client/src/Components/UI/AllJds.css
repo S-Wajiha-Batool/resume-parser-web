@@ -2,7 +2,7 @@
   /* max-width: 1300px;
   max-height: 1500px; */
   margin: 0 auto;
-  padding: 20px;
+  padding: 1.25em;
   background-color: #ffffff;
   
 }
@@ -12,18 +12,18 @@
   text-align: inherit;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-  padding: 15px 30px;
+  margin-bottom: 0.625em;
+  padding: 1.875em 3.75em;
   background-color: #333333;
 }
 
 .jd-list-title {
-  font-size: 50px;
+  font-size: 3.125em;
   display: inline;
   text-align: left;
   font-weight: bold;
   color: rgb(255, 255, 255);
-  margin: 10px;
+  margin: 0.625em;
   white-space: nowrap;
 }
 
@@ -32,8 +32,8 @@
   background-attachment: fixed;
   color: #000000;
   border: none;
-  padding: 15px;
-  font-size: 20px;
+  padding: 1.875em;
+  font-size: 1.25em;
   font-weight: bold;
   border-radius: 5px;
   cursor: pointer;
@@ -42,14 +42,14 @@
 .jd-list-table {
   background-color: #ffffff;
   border-radius: 5px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0.125em 0.5em rgba(0, 0, 0, 0.1);
 }
 
 
 /* styles for screens smaller than 960px wide */
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 60em) {
   .jd-list-container {
     max-width: 100%;
-    padding: 10px;
+    padding: 0.625em;
   }
 }

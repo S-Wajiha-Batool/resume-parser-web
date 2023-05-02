@@ -160,11 +160,8 @@ const JdTable = (props) => {
                   background: "#EEE",
                   borderRadius: "15px",
                 },
-                //pageSizeOptions: [5, 10, 20],
-                //pageSize: 5,
-                //paginationPosition: "bottom",
-                tableLayout: "fixed",
-                maxBodyHeight: "calc(100vh - 50px)",
+                tableLayout: "auto",
+                maxHeight: "calc(100vh - 50px)",
                 overflowY: "auto",
                 searchIcon: <SearchIcon color="primary" />,
               }}
