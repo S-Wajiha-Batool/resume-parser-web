@@ -94,7 +94,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Group >
-                        <Form.Label>Position</Form.Label>
+                        <Form.Label className='text3'>Position</Form.Label>
                         <Form.Control type='text'
                             name='position'
                             placeholder='Position'
@@ -104,7 +104,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                     </Form.Group>
                     <br />
                     <Form.Group>
-                        <Form.Label>
+                        <Form.Label className='text3'>
                             Department</Form.Label>
                         <Form.Select
                             name='department'
@@ -118,7 +118,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                     <br />
                     <Row>
                         <Form.Group>
-                            <Form.Label>Experience</Form.Label>
+                            <Form.Label className='text3'>Experience</Form.Label>
                             <Form.Select
                                 name='experience'
                                 value={jd.experience}
@@ -144,7 +144,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                         </Col> */}
                     <br />
                     <Row>
-                        <Form.Label>Qualification</Form.Label>
+                        <Form.Label className='text3'>Qualification</Form.Label>
                         {/* <StyledEngineProvider injectFirst> */}
                         <Autocomplete
                             isOptionEqualToValue={(option, value) => option[0] === value[0]}
@@ -176,7 +176,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                     <br />
 
                     <Row>
-                        <Form.Label>Skills</Form.Label>
+                        <Form.Label className='text3'>Skills</Form.Label>
                         {/* <StyledEngineProvider injectFirst> */}
                         <Autocomplete
                             isOptionEqualToValue={(option, value) => option.skill_name === value.skill_name}
@@ -192,7 +192,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                                     <Checkbox
                                         icon={icon}
                                         checkedIcon={checkedIcon}
-                                        style={{ marginRight: 8 }}
+                                        style={{ marginRight: 5 }}
                                         checked={selected}
                                     />
                                     {option.skill_name}
@@ -208,7 +208,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                     </Row>
                     <br />
                     <Row>
-                        <Form.Label>Universities</Form.Label>
+                        <Form.Label className='text3'>Universities</Form.Label>
                         {/* <StyledEngineProvider injectFirst> */}
                         <Autocomplete
                             isOptionEqualToValue={(option, value) => option[0] === value[0]}
@@ -240,7 +240,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                     <br />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant='primary' type='submit' disabled={isUploadingJd} onClick={!isUploadingJd ? handleSubmit : null}>
+                    <Button className='button' variant='primary' type='submit' disabled={isUploadingJd} onClick={!isUploadingJd ? handleSubmit : null}>
                         {isUploadingJd && <Spinner
                             as="span"
                             animation="border"

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, } from 'react';
-import { VictoryChart, VictoryAxis, VictoryBar, VictoryPie, VictoryLabel } from 'victory';
+import { VictoryChart, VictoryAxis, VictoryBar , VictoryPie, VictoryLabel } from 'victory';
 import '../UI/dashboard.css'
 import { GlobalState } from '../../GlobalState';
 import { getAllJdsAPI, getIncreasedJdsAPI, getJdCountForEachDeptAPI } from '../../API/JDAPI';
@@ -32,6 +32,8 @@ function Dashboard() {
   const [count, setCount] = useState(0);
   const [pie, setPie] = useState([]);
   const [hist, setHist] = useState([])
+
+  const maxY = Math.max(...hist.map(dataPoint => dataPoint.y));
 
   useEffect(() => {
     if (token) {
@@ -214,7 +216,7 @@ function Dashboard() {
     }
   }, [token, callbackCv])
 
-  const colorScale = ['#0055FF', '#0077FF', '#0099FF', '#00BBFF', '#00DDFF', '#00FFFF'];
+  const colorScale = [' #F5A623', '#50E3C2', '#9013FE', '#FF0000', '#800080', '#00BFFF'];
 
   if (allJDs.length == 0)
     return (
@@ -226,46 +228,45 @@ function Dashboard() {
   return (
     <div className='dashboard-container'>
       <div className="boxes-container">
-        <div className="box">
+        <div className = "box box-jd">
           <h2 className='text1'>Job Descriptions</h2>
           {isLoadingJds ? (<LoadingSpinner />) : successJds ? (
             <>
               <p className='text2'>{allJDs.length}</p>
               <p className='text2'>
                 {increasedJds >= 0 ?
-                  (<>
-                    <span>{increasedJds.toFixed(2)} %</span> <ArrowIndicator value={1} />
-                  </>
+                  (<div className='positive'>
+                    <span>{increasedJds.toFixed(2)} %</span> 
+                  </div>
                   ) : (
-                    <>
-                      <span>abs({increasedJds.toFixed(2)}) %</span> <ArrowIndicator value={-1} />
-                    </>)}
+                    <div className= 'negative'>
+                      <span>abs({increasedJds.toFixed(2)}) %</span> 
+                    </div>)}
               </p>
             </>)
             : (
               'Unable to fetch data'
             )}
         </div>
-
-        <div className="box">
+       
+        <div className= "box box-cv">
           <h2 className='text1'>Resumes</h2>
           {isLoadingCvs ? (<LoadingSpinner />) : successCvs ? (<><p className='text2'>{allCvs.length}</p>
             <p className='text2'>{increasedCvs >= 0 ? (
-              <>
-                <span>{increasedCvs.toFixed(2)} %</span> <ArrowIndicator value={1} />
-              </>
+              <div className='positive'>
+                <span >{increasedCvs.toFixed(2)} %</span> 
+              </div>
             ) : (
-              <>
-                <span>abs({increasedCvs.toFixed(2)}) %</span><ArrowIndicator value={-1} />
-              </>)}
+              <div className='negative'>
+                <span >({increasedCvs.toFixed(2)}) %</span> 
+              </div>)}
             </p>
           </>)
             : ('Unable to fetch data'
             )}
         </div>
-
-        <div className="box">
-          <h2 className='text1'>CVs Scoring greater than 80 %</h2>
+        <div className = "box box-count">
+          <h2 className='text1'>Resumes Scoring greater than 80 %</h2>
           {isLoadingCount ? (<LoadingSpinner />) : successCount ? (
             <p className='text2'>{count}</p>
           )
@@ -274,36 +275,53 @@ function Dashboard() {
             )}
         </div>
       </div>
-
+      
       <div className='charts-container'>
-        <div className='box histogram-box'>
-          <h2 className='text1'>Resumes Score Distribution</h2>
-          <div className='chart-container'>
-            {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
-              <VictoryChart>
-                <VictoryAxis
-                  label="Percentage"
-                  tickValues={['0-10%', '20-30%', '40-50%', '60-70%', '80-90%', '90-100%']}
-                  style={{ tickLabels: { fontSize: 10 } }}
-                />
-                <VictoryAxis
-                  dependentAxis
-                  label=" Count "
-                />
-                <VictoryBar
-                  data={hist}
-                  x="x"
-                  y="y"
-                  barWidth={17}
-                  style={{ data: { fill: '#2196F3' } }}
-                />
-              </VictoryChart>
-            )
-              : (
-                'Unable to fetch data'
-              )}
-          </div>
-        </div>
+      <div className='box histogram-box'>
+  <h2 className='text1'>Resumes Score Distribution</h2>
+  <div className='chart-container'>
+    {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
+      <VictoryChart domainPadding={{ x: 20 }}>
+        <VictoryAxis
+          style={{
+            axis: { stroke: "black", strokeWidth: 2.5 },
+            tickLabels: { 
+              fontSize: 7,
+              //textAnchor: 'e',
+            },
+            axisLabel: { 
+              fontSize: 12,
+            }
+          }}
+          label="Percentage"
+          scale={{ x: "linear", y: "linear", yDomain: [0, maxY] }}
+          //tickValues={['0-10%', '20-30%', '40-50%', '60-70%', '80-90%', ' 90-100%' ]}
+        />
+        <VictoryAxis
+          dependentAxis
+          style={{
+            axis: { stroke: "black", strokeWidth: 2 },
+            axisLabel: { 
+              fontSize: 12, 
+              padding: '0 40px' 
+            }
+          }}
+          label="Count"
+        />
+        <VictoryBar
+          data={hist}
+          x="x"
+          y="y"
+          style={{ data: { fill: 'lightgray' } }}
+          barRatio={0.7}
+        />
+      </VictoryChart>
+    )
+      : (
+        'Unable to fetch data'
+      )}
+  </div>
+</div> 
         <div className="box pie-chart-box">
 
           <h2 className='text1'>Department-wise Job Descriptions</h2>

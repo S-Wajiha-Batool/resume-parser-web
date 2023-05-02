@@ -1,8 +1,10 @@
 .jd-list-container {
-  max-width: 960px;
+  /* max-width: 1300px;
+  max-height: 1500px; */
   margin: 0 auto;
   padding: 20px;
-  background-color: #f0f4f8;
+  background-color: #ffffff;
+  
 }
 
 .jd-list-header {
@@ -10,34 +12,31 @@
   text-align: inherit;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   padding: 15px 30px;
-  background-color: #82cce6;
+  background-color: #333333;
 }
 
 .jd-list-title {
-  font-size: 45px;
+  font-size: 50px;
   display: inline;
-  text-align: center;
+  text-align: left;
   font-weight: bold;
-  color: #1f1f1f;
-  margin: 0;
+  color: rgb(255, 255, 255);
+  margin: 10px;
+  white-space: nowrap;
 }
 
 .jd-list-upload-btn {
   display: block;
-  background-color: rgba(5, 83, 240, 0.941);
-  color: #1f1f1f;
+  background-attachment: fixed;
+  color: #000000;
   border: none;
-  padding: 5px 10px;
-  font-size: 18px;
+  padding: 15px;
+  font-size: 20px;
   font-weight: bold;
-  border-radius: 15px;
+  border-radius: 5px;
   cursor: pointer;
-}
-
-.jd-list-upload-btn:hover {
-  background-color: #106ed9;
 }
 
 .jd-list-table {
@@ -46,6 +45,11 @@
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.jd-list-upload-modal {
-  background-color: #4b9ff3;
+
+/* styles for screens smaller than 960px wide */
+@media screen and (max-width: 960px) {
+  .jd-list-container {
+    max-width: 100%;
+    padding: 10px;
+  }
 }

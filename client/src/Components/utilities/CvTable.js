@@ -11,7 +11,52 @@ import { deleteCVAPI } from '../../API/CVAPI';
 import { GlobalState } from '../../GlobalState';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import DeleteModal from './DeleteModal';
-import '../UI/CvTable.css'
+//import '../UI/CvTable.css'
+import Theme from '../theme/theme'
+import { orange } from '@mui/material/colors';
+
+const customTheme = createTheme({
+    palette: {
+        primary: {
+          main: '#00ADEF',
+        },
+        secondary: {
+          main: '#FFC107',
+        },
+        background: {
+          default: '#f5f5f5',
+          paper: '#ffffff',
+        },
+      },
+      typography: {
+        fontFamily: 'Roboto, sans-serif',
+        fontSize: 14,
+        fontWeightRegular: 400,
+        fontWeightMedium: 500,
+        fontWeightBold: 700,
+      },
+      overrides: {
+        MuiTableCell: {
+          root: {
+            borderBottom: 'none',
+          },
+          head: {
+            fontWeight: 'bold',
+          },
+        },
+        MuiTable: {
+          root: {
+            borderCollapse: 'separate',
+            borderSpacing: '0 10px',
+          },
+        },
+        MuiTableSortLabel: {
+          active: {
+            color: '#00ADEF',
+          },
+        },
+      },
+  });
 
 const CvTable = (props) => {
     var moment = require('moment')
@@ -27,15 +72,16 @@ const CvTable = (props) => {
     const [tableData, setTableData] = state.CVAPI.tableData
     const [token] = state.UserAPI.token;
     const columns = [
-        { title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { background: "#1d9fc7" }, headerStyle: { color: "black" } },
+        { title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { background: "#333333" }, headerStyle: { color: "black" } },
         {
             title: "Experience", field: "total_experience",
             searchable: true, export: true
         },
         {
             title: "Links", field: "links", render: (rowData) => <ul>
-                {rowData.links.map((name, index) => <li key={index}><a href={name}>{name}</a></li>)}
+                {rowData.links.map((name, index) => <li  key={index}><a href={name}>{name}</a></li>)}
             </ul>, searchable: true, export: true
+           
         },
         { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
     ]
@@ -43,11 +89,11 @@ const CvTable = (props) => {
     const getDate = (d) => {
         return moment(d).format("Do MMMM YYYY")
     }
-
+    
     return (
-        <>
+        <div className="text1">
             <DeleteModal showModal={showDeleteModal} handleCloseModal={handleCloseDeleteModal} data={selectedItem} target={"cv"}/>
-            <ThemeProvider theme={defaultMaterialTheme}>
+            <ThemeProvider theme={customTheme}>
                 <MaterialTable columns={columns} data={tableData} icons={tableIcons}
                     actions={[
                         // {
@@ -76,25 +122,27 @@ const CvTable = (props) => {
                     options={{
                         sorting: true, search: true,
                         searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
-                        filtering: true, paging: true, pageSizeOptions: [2, 5, 10, 20, 25, 50, 100], pageSize: 5,
+                        filtering: false, paging: true, pageSize: 5,
                         paginationType: "stepped", showFirstLastPageButtons: false, paginationPosition: "bottom", exportButton: true,
-                        exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1, selection: true,
+                        exportAllData: true, exportFileName: "TableData", actionsColumnIndex: -1, selection: true,
                         //showSelectAllCheckbox: true, showTextRowsSelected: true,
                         selectionProps: rowData => ({
                             // disabled: rowData.age == null,
                             // color:"primary"
                         }),
-                        grouping: true,
+                        grouping: false,
                         columnsButton: true,
                         rowStyle: (data, index) => index % 2 === 0 ? { background: "#f5f5f5" } : null,
                         //headerStyle: { background: "#f44336", color: "#fff" },
                         actionsColumnIndex: -1,
                         selection: false,
                     }}
-                    title="Resumes"
+                    
+                    title=""
+                   
                 />
             </ThemeProvider>
-        </>
+        </div>
     )
 };
 

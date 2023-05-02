@@ -24,10 +24,14 @@ const Sidebar = () => {
         //condition checking to change state from true to false and vice versa
         menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
     };
+    const closeSidebar = () => {
+        setMenuCollapse(true);
+    };
     const state = useContext(GlobalState);
     const [isLogged, setIsLogged] = state.UserAPI.isLogged;
     const [token, setToken] = state.UserAPI.token;
     const navigate = useNavigate();
+
 
 
     const logoutUser = (e) => {

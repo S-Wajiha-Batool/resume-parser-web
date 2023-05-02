@@ -6,11 +6,11 @@
   }
   
   .arrow-up-green {
-    border-width: 0 9px 15px 9px;
+    border-width: 0 12px 20px 12px;
     border-color: transparent transparent green transparent;
   }
   
   .arrow-down-red {
-    border-width: 15px 9px 0 9px;
+    border-width: 20px 12px 0 12px;
     border-color: red transparent transparent transparent;
   }

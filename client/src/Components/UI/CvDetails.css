@@ -1,34 +1,50 @@
 .card {
-    background-color: #f0faff;
-    color: #003366;
-    border-color: #003366;
-    size: 100vh;
+  background-color: #f0faff;
+  color: #003366;
+  border-color: #003366;
+  size: 100vh;
+  font-size: smaller;
+}
+
+.card-header {
+  background-color: #003366;
+  color: #f0faff;
+  font-size: medium;
+}
+
+.card-body {
+  background-color: white;
+  color: #003366;
+  size: 100vh;
+}
+
+.card-text {
+  color: black;
+  font-size: 20px;
+}
+
+.btn-primary {
+  background-color: #ffffff;
+  border-color: #003366;
+  color: black;
+}
+
+.btn-primary:hover {
+  background-color: lightgrey;
+}
+
+/* media query for screens smaller than 768px */
+@media only screen and (max-width: 768px) {
+  .card {
     font-size: smaller;
+    height: auto;
   }
-  
-  .card-header {
-    background-color: #003366;
-    color: #f0faff;
-    font-size: small;
-  }
-  
+
   .card-body {
-    background-color: #f0faff;
-    color: #003366;
-    size: 100vh;
     font-size: smaller;
   }
-  .card-text{
-      color: black;
-      font-size: smaller;
+
+  .card-text {
+    font-size: smaller;
   }
-  
-  .btn-primary {
-    background-color: #003366;
-    border-color: #003366;
-  }
-  
-  .btn-primary:hover {
-    background-color: #f0faff;
-    color: #003366;
-  }
+}

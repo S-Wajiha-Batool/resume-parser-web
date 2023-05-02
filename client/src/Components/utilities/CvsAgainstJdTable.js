@@ -10,6 +10,7 @@ import { Modal, Button } from 'react-bootstrap'
 import { GlobalState } from '../../GlobalState';
 import { showSuccessToast, showErrorToast } from './Toasts';
 import DeleteModal from './DeleteModal';
+import '../UI/CvsAgainstJdTable.css'
 
 const CvsAgainstJdTable = (props) => {
 
@@ -28,7 +29,7 @@ const CvsAgainstJdTable = (props) => {
     const [cvAgainstJdTableData, setAgainstJdTableData] = state.CVAPI.cvAgainstJdTableData;
     const columns = [
         { title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
-        { title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { background: "#009688" }, headerStyle: { color: "#fff" },filterPlaceholder: "filter" },
+        { title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { background: "#1d9fc7" }, headerStyle: { color: "#fff" },filterPlaceholder: "filter" },
         { title: "Email", field: "emails", render: (rowData) => <ul>{rowData.emails.map((email,index) => <li key={index}>{email}</li>)}</ul>, filterPlaceholder: "filter" },
         { title: "Score", field: "weighted_percentage", filterPlaceholder: "filter" },
         // { title: "Status", field: "hire_status", filterPlaceholder: "filter" },
@@ -86,7 +87,7 @@ const CvsAgainstJdTable = (props) => {
                     }),
                     grouping: true,
                     columnsButton: true,
-                    rowStyle: (data, index) => index % 2 === 0 ? { background: "#f5f5f5" } : null,
+                    rowStyle: (data, index) => index % 2 === 0 ? { background: "#1d9fc7" } : null,
                     //headerStyle: { background: "#f44336", color: "#fff" },
                     actionsColumnIndex: -1,
                     selection: false,

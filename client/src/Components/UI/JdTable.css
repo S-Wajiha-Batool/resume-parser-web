@@ -1,0 +1,78 @@
+.MuiTableBody-root {
+    width: 1000px;
+    max-height: 900px; /* set a fixed height */
+    overflow-y: auto; /* enable vertical scrolling */
+  }
+  .MuiToolbar-root {
+    display: flex;
+    justify-content: space-between;
+}
+
+.MuiTypography-h6 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 30px;
+}
+
+.MuiTable-root {
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    width: 100%;
+    text-align: left;
+}
+
+.MuiTableHead-root {
+    background-color: #f2f2f2;
+}
+
+.MuiTableRow-root:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.MuiTableCell-root {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.MuiTableCell-head {
+    font-weight: bold;
+}
+
+.MuiTablePagination-root {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.MuiTablePagination-selectRoot {
+    margin-right: 20px;
+}
+
+.MuiInputBase-input {
+    font-size: 14px;
+}
+
+.MuiButton-root {
+    background-color: #3f51b5;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px 16px;
+    text-transform: uppercase;
+}
+
+.MuiButton-root:hover {
+    background-color: #303f9f;
+}
+.custom-table tbody tr td {
+    padding: 8px;
+
+  }
+  .MTablePagination-toolbar-2 {
+    color: black;
+  }
+  .table-container {
+    height: calc(100vh - 50px); /* Replace 150px with the height of any other fixed elements on your page */
+    overflow-y: auto;
+  }
