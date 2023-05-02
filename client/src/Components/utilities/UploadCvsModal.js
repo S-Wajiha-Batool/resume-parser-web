@@ -6,7 +6,7 @@ import { Checkbox, TextField, Autocomplete } from '@mui/material';
 import { GlobalState } from '../../GlobalState';
 import { parseCvsAPI } from '../../API/CVAPI';
 import { getAllCvsAPI, matchCvsAPI } from '../../API/CVAPI';
-import { showErrorToast } from './Toasts';
+import { showErrorToast, showSuccessToast } from './Toasts';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import '../UI/UploadCvsModal.css'
@@ -127,7 +127,8 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                         .then(res => {
                             console.log(res.data)
                             setIsMatching(false);
-                            setScoresPC(res.data.data);
+                            setMatchingDonePC(true)
+                            setScoresPC(res.data.data)
                         })
                         .catch(err => {
                             console.log(err.response.data.error.msg)
@@ -135,10 +136,11 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                                 showErrorToast("CV Matching failed")
                             }
                             setIsMatching(false);
+                            setMatchingDonePC(false)
                         })
                         .finally(() => {
-                            setMatchingDonePC(true)
                             setCallbackJdDetails(!callbackJdDetails)
+                            showSuccessToast("CVs uploaded successfully")
                         })
 
                     //this.tableRef.current.onQueryChange();
@@ -188,11 +190,6 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
             setIsMatching(false);
         }
     }
-
-    // const onFileChangeFromPC = (e) => {
-
-    //     inputRef.current.click();
-    // };
 
     const onFileChangeFromServer = (option) => {
         setMatchingDoneServer(false)
@@ -327,7 +324,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                                     name="file"
                                     style={{ display: "none" }}
                                     onChange={handleDisplayFileDetails}
-                                    accept="application/msword, application/pdf"
+                                    accept="application/pdf"
                                 />
                                 <div className="file-box">
                                     <div className="file_row">
