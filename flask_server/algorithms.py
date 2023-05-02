@@ -15,13 +15,17 @@ import xml.etree.ElementTree as ET
 import fuzzywuzzy
 from fuzzywuzzy import fuzz
 import sklearn
-from sklearn.metrics.pairwise import cosine_similarity
 import datetime
 import json
 import numpy
 import string
 from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline
 import parsing_constants
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import TfidfVectorizer
+from fuzzywuzzy import fuzz
+
+#parsing algo#
 
 PHONE_REG = re.compile(parsing_constants.PHONE_REGEX)
 EMAIL_REG = re.compile(parsing_constants.EMAIL_REGEX)
@@ -211,6 +215,134 @@ def down_cast(obj):
     if isinstance(obj, numpy.int64): 
         return int(obj)
 
+
+#matching algo#
+
+#match university, returns 1 if uni name in cv and returns 0 if uni name not in cv
+def uni_matching(text, jd_data):
+    unis = jd_data["universities"]
+    for key, value in unis.items():
+        if key in text or value in text:
+            return 1
+    return 0
+
+def qualifications_matching(text, jd_data):
+    qualis = jd_data["qualification"]
+    for key, value in qualis.items():
+        if key in text or value in text:
+            return 1
+    return 0
+
+
+#matching years of experience
+def exp_matching(cv_data, jd_data):
+    if jd_data["experience"] == 'None':
+        return 0
+    
+    exp_JD = float(jd_data["experience"].split()[0])
+
+    
+    #print(exp_JD)
+    exp_CV = float(cv_data["total_experience"])
+    if exp_CV is None:
+        return 0
+    # Calculate the percentage of matching experience
+    match_percentage = (exp_CV / exp_JD) 
+
+    # Cap the match percentage at 100% to avoid exceeding 100%
+    match_percentage = min(match_percentage, 1)
+
+    return match_percentage
+
+#matching skills based on keywords and producing a percentage match
+def skills_matching(cv_data, jd_data):
+    skills_CV = cv_data['skills']
+    if skills_CV is None:
+        return 0
+    if len(jd_data['skills']) == 0:
+        return 0
+    #print(skills_CV)
+    skills_JD = [skill["skill_name"] for skill in jd_data["skills"]]
+    #print(skills_JD)
+    # Count the number of matching elements
+    matching_count = 0
+    for elem in skills_JD:
+        if elem in skills_CV:
+            matching_count += 1
+    
+    # Calculate the percentage of matching elements
+    matching_percentage = (matching_count / len(skills_JD))
+
+    # Cap the match percentage at 100% to avoid exceeding 100%
+    matching_percentage = min(matching_percentage, 1)
+    
+    return matching_percentage
+
+#using cosine method
+#The cosine similarity ranges from 0 (completely dissimilar) to 1 (completely similar), with 1 indicating perfect similarity.
+def cosine_sim_match(cv_data, jd_data):
+    skills_CV = cv_data['skills']
+    if skills_CV is None:
+        return 0
+    if len(jd_data['skills']) == 0:
+        return 0
+    skills_JD = [skill["skill_name"] for skill in jd_data["skills"]]
+   # Convert the input arrays to strings for vectorization
+    text1 = ' '.join(map(str, skills_JD))
+    text2 = ' '.join(map(str, skills_CV))
+
+    # Create TfidfVectorizer object
+    vectorizer = TfidfVectorizer()
+
+    # Fit and transform the input arrays
+    tfidf_matrix = vectorizer.fit_transform([text1, text2])
+
+    # Calculate the cosine similarity
+    cosine_sim = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])[0][0]
+
+    return cosine_sim
+
+#using jaccard similarity. 0 to 1 ka scale
+def jaccard_similarity(cv_data, jd_data):
+    skills_CV = cv_data['skills']
+    if skills_CV is None:
+        return 0
+    if len(jd_data['skills']) == 0:
+        return 0
+    skills_JD = [skill["skill_name"] for skill in jd_data["skills"]]
+    set1 = set(skills_JD)
+    set2 = set(skills_CV)
+    intersection = len(set1.intersection(set2))
+    union = len(set1.union(set2))
+    similarity = intersection / union if union != 0 else 0
+    return similarity
+
+#0 to 100 scale
+def fuzzy_matching(cv_data, jd_data):
+    skills_CV = cv_data['skills']
+    if skills_CV is None:
+        return 0
+    if len(jd_data['skills']) == 0:
+        return 0
+    skills_JD = [skill["skill_name"] for skill in jd_data["skills"]]
+    similarity_scores = []
+    for item1 in skills_JD:
+        for item2 in skills_CV:
+            similarity = fuzz.token_set_ratio(item1, item2)
+            similarity_scores.append(similarity)
+    avg_similarity = (sum(similarity_scores) / len(similarity_scores)) / 100
+    return avg_similarity
+
+def bigboy(cv_text, cv, jd):
+    skills:float = skills_matching(cv, jd)
+    exp:float = exp_matching(cv, jd)
+    uni: float = uni_matching(cv_text, jd)
+    qualf:float = qualifications_matching(cv_text,jd)
+
+    match_score = (skills + exp + uni + qualf) / 4
+
+    return match_score
+
 # Setup flask server
 app = Flask(__name__) 
   
@@ -263,9 +395,14 @@ def parse_cv():
 def match_cv(): 
     data = request.get_json() 
     print(data)
-    result = [6,7]
-    #for cv in data:
-
+    jd =  data['jd']
+    print(jd)
+    result = []
+    for cv in data['cvs']:
+        print(cv['cv_path'])
+        text:str = extract_text_from_pdf('../server/' + cv['cv_path']).lower()
+        score:float = bigboy(text, cv, jd)
+        result.append(score)
     # Return data in json format 
     #print(result)
     return json.dumps(result)
