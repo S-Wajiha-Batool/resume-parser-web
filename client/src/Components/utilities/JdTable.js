@@ -15,7 +15,7 @@ import EditJdModal from '../utilities/EditJdModal';
 import DeleteModal from './DeleteModal';
 import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Delete';
-//import '../UI/JdTable.css'
+import '../UI/JdTable.css'
 import theme from '../theme/themeJD.js';
 
 const JdTable = (props) => {
@@ -106,6 +106,7 @@ const JdTable = (props) => {
       
           <ThemeProvider theme={defaultMaterialTheme}>
             <MaterialTable
+              style={{ overflowY: "scroll" }}
               columns={columns}
               data={tableData}
               icons={tableIcons}
