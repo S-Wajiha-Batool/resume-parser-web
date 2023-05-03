@@ -12,7 +12,7 @@ import { GlobalState } from '../../GlobalState';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import DeleteModal from './DeleteModal';
 import '../UI/CvTable.css'
-import Theme from '../theme/theme'
+//import Theme from '../theme/theme'
 import { orange } from '@mui/material/colors';
 
 const customTheme = createTheme({});
@@ -50,7 +50,7 @@ const CvTable = (props) => {
   }
 
   return (
-    <div className="text1">
+    <div>
       <DeleteModal showModal={showDeleteModal} handleCloseModal={handleCloseDeleteModal} data={selectedItem} target={"cv"} />
       <ThemeProvider theme={customTheme}>
         <MaterialTable columns={columns} data={tableData} icons={tableIcons}
@@ -104,6 +104,7 @@ const CvTable = (props) => {
       </ThemeProvider>
     </div>
   )
+
 };
 
 export default CvTable;

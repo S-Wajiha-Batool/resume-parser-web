@@ -86,7 +86,7 @@ form {
 }
 
 /* Submit Button */
-input[type="submit"] {
+.input[type="submit"] {
   background-color: #1b82ef;
   color: #fff;
   padding: 10px 20px;
@@ -97,21 +97,18 @@ input[type="submit"] {
   font-weight: bold;
 }
 
-input[type="submit"]:hover {
+.input[type="submit"]:hover {
   background-color: #0069d9;
 }
 
-button {
+.button {
   background-color: #216de9;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
   border: none;
   cursor: pointer;
-}
-
-button:hover{
-  opacity: 0.9;
+  width: 100%;
 }
 
 

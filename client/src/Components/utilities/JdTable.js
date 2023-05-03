@@ -15,8 +15,8 @@ import EditJdModal from '../utilities/EditJdModal';
 import DeleteModal from './DeleteModal';
 import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Delete';
-import '../UI/JdTable.css'
-import theme from '../theme/theme.js';
+//import '../UI/JdTable.css'
+import theme from '../theme/themeJD.js';
 
 const JdTable = (props) => {
     var moment = require('moment')
@@ -64,7 +64,7 @@ const JdTable = (props) => {
                     <div>-</div>}
             </ul>, filterPlaceholder: "filter", searchable: true, export: true
         },
-        { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
+        { title: "Posted On", field: "createdAt", render: (rowData) => <div >{getDate(rowData)}</div> },
     ]
 
     // useEffect(() => {
@@ -141,7 +141,7 @@ const JdTable = (props) => {
                 navigate(`/jd/${rowData._id}`);
               }}
               options={{
-                sorting: true,
+                sorting: false,
                 search: true,
                 searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
                 filtering: false,
@@ -156,7 +156,7 @@ const JdTable = (props) => {
             paginationType: "normal",
             showFirstLastPageButtons: false, paginationPosition: "bottom",
                 tableLayout: "auto",
-                maxHeight: "calc(100vh - 50px)",
+                maxHeight: "calc(100vh - 150px)",
                 overflowY: "auto",
             headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif' },
             actionsColumnIndex: -1,

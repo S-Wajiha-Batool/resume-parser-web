@@ -1,9 +1,9 @@
 .MuiTableBody-root {
+    size: 100vh;
     width: 1000px;
     max-height: 900px; /* set a fixed height */
-    overflow-y: auto; /* enable vertical scrolling */
   }
-  .MuiToolbar-root {
+.custom-table  .MuiToolbar-root {
     display: flex;
     justify-content: space-between;
 }

@@ -4,6 +4,7 @@
   margin: 0 auto;
   padding: 1.25em;
   background-color: #ffffff;
+  table-layout: fixed;
   
 }
 
@@ -25,18 +26,6 @@
   color: rgb(255, 255, 255);
   margin: 0.625em;
   white-space: nowrap;
-}
-
-.jd-list-upload-btn {
-  display: block;
-  background-attachment: fixed;
-  color: #000000;
-  border: none;
-  padding: 1.875em;
-  font-size: 1.25em;
-  font-weight: bold;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
 .jd-list-table {

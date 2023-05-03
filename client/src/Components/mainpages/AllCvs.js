@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef, createRef } from 'react';
 import CvTable from '../utilities/CvTable';
-//import '../UI/AllCvs.css';
+import '../UI/allCvs.css';
 import { GlobalState } from '../../GlobalState';
 import { getAllCvsAPI } from '../../API/CVAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
@@ -47,7 +47,7 @@ function AllCvs() {
             <LoadingSpinner /> :
             success ?
                 <> <Container>
-                    <div>
+                    <div className='text4'>
                             <CvTable
                                 className='table'
                             />

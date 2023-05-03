@@ -32,7 +32,7 @@ const Sidebar = () => {
     const [token, setToken] = state.UserAPI.token;
     const navigate = useNavigate();
 
-
+    const [selectedItem, setSelectedItem] = useState(null);
 
     const logoutUser = (e) => {
         e.preventDefault()
@@ -71,7 +71,10 @@ const Sidebar = () => {
                     </SidebarHeader>
                     <SidebarContent color='blue'>
                         <Menu>
-                            <MenuItem className={location === '/' ? 'active' : ''} onClick={() => setMenuCollapse(true)} > 
+                            <MenuItem className={location === '/' ? 'active' : ''} onClick={() => {
+                                setMenuCollapse(true);
+                            } 
+                            }>
                             <Link to='/'>
                                 <img className='home-icon' src={home_icon} alt='Dashboard'/> 
                                 <p className='text'>Dashboard</p>
