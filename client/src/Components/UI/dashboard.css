@@ -1,7 +1,7 @@
 /* Main container */
 .dashboard-container {
   width: 100vw; /* Make the component fill the entire screen horizontally */
-  height: 50vh;
+  height: 40vh;
 }
 
 /* Boxes container */
@@ -11,6 +11,7 @@
   padding: 20px;
   flex-direction: row;
   margin: 5px;
+  width: 80%;
 }
 /* 
  .box {
@@ -34,6 +35,8 @@
   width: auto;
   padding: 10px;
   margin: 10px;
+  margin-bottom: 15%;
+  height: 40%;
 }
 
 /* Histogram box */
@@ -70,7 +73,18 @@
   box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
   margin: 20px;
   border-radius: 5px;
+  height: 40%;
 }
+/* .chart1-box{
+  background-color: #ffffff;
+  color: #333333;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
+  margin: 20px;
+  border-radius: 5px;
+  height: 30%;
+} */
 /* Chart container */
 .chart-container {
   width: 100%;
@@ -79,11 +93,12 @@
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
+  height: 40%;
 }
 
 /* Victory chart */
 .victory-chart {
-  height: 450px;
+  height: 350px;
   width: 400px;
   background-color: #f7f1f1;
   border-radius: 10px;
@@ -171,13 +186,13 @@
      /* orange */
     color: black;
     text-align: left;
-  padding: 20px;
-  width: calc(33.33% - 20px);
-  height: 170px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
-  margin: 10px;
-  border-radius: 5px;
+    padding: 20px;
+    width: calc(33.33% - 90px);
+    height: 170px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
+    margin: 10px;
+    border-radius: 5px;
   }
   
   .box-count {

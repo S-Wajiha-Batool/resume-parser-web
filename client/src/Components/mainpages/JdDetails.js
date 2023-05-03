@@ -114,7 +114,6 @@ function JdDetails() {
                                     <li><b>Posted By: </b>{user.first_name + " " + user.last_name}</li>
                                     <li><b>Posted On: </b>{getDate(jd.createdAt)}</li>
                                 </ul>
-                                <Button className='button1' onClick={handleShowModal}>Add CV </Button>
                                 <Button className='button1' onClick={handleShowModal}>Delete </Button>
                                 <Button  className='button1' onClick={handleShowModal}>Edit</Button>
 
