@@ -13,8 +13,10 @@ import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { Spinner } from 'react-bootstrap';
 import EditJdModal from '../utilities/EditJdModal';
 import DeleteModal from './DeleteModal';
-
-import '../UI/JdTable.css'
+import SearchIcon from '@material-ui/icons/Search';
+import DeleteIcon from '@material-ui/icons/Delete';
+//import '../UI/JdTable.css'
+import theme from '../theme/themeJD.js';
 
 const JdTable = (props) => {
     var moment = require('moment')
@@ -36,7 +38,7 @@ const JdTable = (props) => {
 
     const columns = [
         //{ title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
-        { title: "Position", field: "position", sorting: false, filtering: false, cellStyle: { background: "#1d9fc7", fontWeight: 'bold' }, headerStyle: { color: "#fff" },  },
+        { title: "Position", field: "position", sorting: false, filtering: false, cellStyle: { background: "#333333", fontWeight: 'bold', color:'white' }, headerStyle: { color: "#fff" },  },
         { title: "Department", field: "department", filterPlaceholder: "filter" },
         {
             title: "Skills", field: "skills", grouping: false,
@@ -62,7 +64,7 @@ const JdTable = (props) => {
                     <div>-</div>}
             </ul>, filterPlaceholder: "filter", searchable: true, export: true
         },
-        { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
+        { title: "Posted On", field: "createdAt", render: (rowData) => <div >{getDate(rowData)}</div> },
     ]
 
     // useEffect(() => {
@@ -86,72 +88,92 @@ const JdTable = (props) => {
 
     return (
         <>
-            {/* edit modal */}
-            {showEditModal && <EditJdModal showModal={showEditModal} handleCloseModal={handleCloseEditModal} oldJd={selectedItem} />
-            }            
-            {/* delete modal */}
-            <DeleteModal showModal={showDeleteModal} handleCloseModal={handleCloseDeleteModal} data={selectedItem} target={"jd"}/>
-            
-            <ThemeProvider theme={defaultMaterialTheme}>
-
-                <MaterialTable columns={columns} data={tableData} icons={tableIcons}
-                    actions={[
-                        {
-                            icon: () => <AddBox />,
-                            tooltip: "Add new row",
-                            isFreeAction: true,
-                            onClick: (e, data) => handleShowModal(),
-                            // isFreeAction:true
-                        },
-                        {
-                            icon: () => <Edit />,
-                            tooltip: "Edit",
-                            onClick: (e, rowData) => {
-                                handleShowEditModal();
-                                setSelectedItem(rowData)
-                            },
-                            position: "row"
-                        },
-                        {
-                            icon: () => <DeleteOutline />,
-                            tooltip: "Delete",
-                            onClick: (e, rowData) => {
-                                handleShowDeleteModal();
-                                setSelectedItem(rowData)
-                            },
-                            position: "row"
-                        }
-
-                    ]}
-
-                    //onSelectionChange={(selectedRows) => console.log(selectedRows)}
-                    onRowClick={(event, rowData) => {
-                        console.log(rowData);
-                        navigate(`/jd/${rowData._id}`);
-                    }}
-                    options={{
-                        sorting: true, search: true,
-                        searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
-                        filtering: true, paging: true, pageSizeOptions: [2, 5, 10, 20, 25, 50, 100], pageSize: 5,
-                        paginationType: "stepped", showFirstLastPageButtons: false, paginationPosition: "bottom", exportButton: true,
-                        exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1, selection: true,
-                        //showSelectAllCheckbox: true, showTextRowsSelected: true,
-                        selectionProps: rowData => ({
-                            // disabled: rowData.age == null,
-                            // color:"primary"
-                        }),
-                        grouping: true,
-                        columnsButton: true,
-                        rowStyle: (data, index) => index % 2 === 0 ? { background: "#f5f5f5" } : null,
-                        //headerStyle: { background: "#f44336", color: "#fff" },
-                        actionsColumnIndex: -1,
-                        selection: false,
-                    }}
-                    title="Job Descriptions"
+          {/* edit modal */}
+          {showEditModal && (
+            <EditJdModal
+              showModal={showEditModal}
+              handleCloseModal={handleCloseEditModal}
+              oldJd={selectedItem}
+            />
+          )}
+          {/* delete modal */}
+          <DeleteModal
+            showModal={showDeleteModal}
+            handleCloseModal={handleCloseDeleteModal}
+            data={selectedItem}
+            target={"jd"}
+          />
+      
+          <ThemeProvider theme={theme}>
+            <MaterialTable
+              className="custom-table"
+              columns={columns}
+              data={tableData}
+              icons={tableIcons}
+              actions={[
+                {
+                  icon: () => <AddBox />,
+                  tooltip: "Add new row",
+                  isFreeAction: true,
+                  onClick: (e, data) => handleShowModal(),
+                  // isFreeAction:true
+                },
+                {
+                  icon: () => <Edit />,
+                  tooltip: "Edit",
+                  onClick: (e, rowData) => {
+                    handleShowEditModal();
+                    setSelectedItem(rowData);
+                  },
+                  position: "row",
+                },
+                {
+                  icon: () => <DeleteOutline />,
+                  tooltip: "Delete",
+                  onClick: (e, rowData) => {
+                    handleShowDeleteModal();
+                    setSelectedItem(rowData);
+                  },
+                  position: "row",
+                },
+              ]}
+              onRowClick={(event, rowData) => {
+                console.log(rowData);
+                navigate(`/jd/${rowData._id}`);
+              }}
+              options={{
+                sorting: false,
+                search: true,
+                searchFieldAlignment: "right",
+                searchAutoFocus: true,
+                searchFieldVariant: "standard",
+                filtering: false,
+                actionsColumnIndex: -1,
+                grouping: false,
+                exportAllData: true,
+                exportButton: true,
+                columnsButton: true,
+                rowStyle: (rowData) => ({
+                  backgroundColor: rowData.tableData.checked ? "#EEE" : "#FFF",
+                }),
+                searchFieldStyle: {
+                  background: "#EEE",
+                  borderRadius: "15px",
+                },
+                tableLayout: "auto",
+                maxHeight: "calc(100vh - 150px)",
+                overflowY: "auto",
+                pageSize: 4,
+                searchIcon: <SearchIcon color="primary" 
                 />
-            </ThemeProvider>
+              }}
+              title=""
+
+              
+            />
+          </ThemeProvider>
         </>
-    )
+      );
     //     return (
     //         <Table>
     //             <TableHead>

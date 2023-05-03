@@ -5,12 +5,82 @@
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-
-.MuiTextField-root:hover {
-    color: #2e8b57;
-  }
-
-
   .MuiInput-underline:hover:not(.Mui-disabled):before{
     border-bottom: 0 !important;
+}
+.modal-title {
+  color: rgb(255, 255, 255);
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 25px;
+}
+.text3{
+  color: black;
+}
+
+/* Style for the modal header */
+.modal-header {
+  background-color: #333333;
+  color: rgb(49, 152, 236);
+}
+
+/* Style for the modal title */
+.modal-title {
+  font-weight: bold;
+}
+
+/* Style for the form labels */
+.text3 {
+  font-weight: bold;
+  color: #343a40;
+}
+
+/* Style for the form select options */
+.option {
+  color: #343a40;
+}
+
+/* Style for the checkboxes in the autocomplete */
+.MuiCheckbox-colorSecondary.Mui-checked {
+  color: #007bff;
+}
+
+/* Style for the form submit button */
+
+
+/* Style for the form submit button when disabled */
+.btn-primary:disabled {
+  background-color: #007bff;
+  border-color: #007bff;
+  opacity: 0.5;
+}
+
+/* Style for the spinner next to the form submit button */
+.spinner-border {
+  color: #007bff;
+}
+
+/* Style for the autocomplete input */
+.MuiAutocomplete-root .MuiAutocomplete-inputRoot {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+/* Style for the autocomplete listbox */
+.MuiAutocomplete-listbox {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* Style for the autocomplete options */
+.MuiAutocomplete-option {
+  background-color: #fff;
+  color: #343a40;
+  font-weight: normal;
+}
+
+/* Style for the autocomplete options when selected */
+.MuiAutocomplete-option[data-focus="true"] {
+  background-color: #333333;
+  color: #fff;
 }

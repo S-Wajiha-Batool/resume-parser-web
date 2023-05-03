@@ -97,6 +97,15 @@ export const logoutAPI = async (token) => {
     )
 }
 
+export const sendEmailAPI = async (email) => {
+    return await axios.post("api/user/send_email", email)
+}
+
+export const changePasswordAPI = async (user) => {
+    console.log(user)
+    return await axios.post("api/user/change_password", user)
+}
+
 export const getUserAPI = async (id, token) => {
     console.log('in')
     return await axios.get(`/api/user/profile/${id}`, {

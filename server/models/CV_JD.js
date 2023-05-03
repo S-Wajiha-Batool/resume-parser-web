@@ -16,12 +16,6 @@ const CV_JD_Schema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    hire_status:{
-        type: String,
-        required: true,
-        enum: ["Rejected", "Pending", "Accepted"],
-        default: "Pending",
-    },
     is_active_cv_jd:{
         type: Boolean,
         default: true

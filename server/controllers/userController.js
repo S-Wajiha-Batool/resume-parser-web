@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const User = require("../models/Users")
+const Otp = require("../models/Otp")
 const CryptoJS = require("crypto-js");
 const jwt = require('jsonwebtoken');
 const { spawn } = require('child_process');
@@ -69,6 +70,64 @@ const userController = {
         }
     },
 
+    sendEmail: async (req, res) => {
+        try {
+            let user_email = req.body.email;
+            console.log(user_email)
+            if (!user_email) return res.status(404).json({ error: { code: 404, msg: "No email found" }, data: null })
+
+            let user = await User.findOne({email: user_email});
+
+            if (!user) return res.status(404).json({ error: { code: 404, msg: "No user found" }, data: null })
+console.log(user)
+            let otpCode = Math.floor((Math.random()*10000) + 1);
+            let otpData = new Otp({
+                email: user_email,
+                code: otpCode,
+                expires_in: new Date().getTime() + 300*1000 //5 mins
+            })
+
+            let otpResponse = await otpData.save();
+            if (!otpResponse) return res.status(404).json({ error: { code: 404, msg: "Error in generating OTP. Please try again" }, data: null })
+
+            mailer(user_email, otpCode)
+            return res.status(200).json({ error: { code: null, msg: null }, data: "OTP generated successfully" })
+        }
+        catch (err) {
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+        }
+    },
+
+    changePassword: async (req, res) => {
+        try {
+            let {user_email, user_otp, user_password }= req.body;
+
+            if (!user_email) return res.status(404).json({ error: { code: 404, msg: "Email not found" }, data: null })
+            if (!user_otp) return res.status(404).json({ error: { code: 404, msg: "OTP not found" }, data: null })
+            if (!user_password) return res.status(404).json({ error: { code: 404, msg: "Password not found" }, data: null })
+            if (user_password.length < 8) return res.status(200).json({ error: { code: 404, msg: "Password should be atleast 8 characters long" }, data: null })
+
+            let otp = await Otp.findOne({email: user_email, code: user_otp});
+
+            if (!otp) return res.status(404).json({ error: { code: 404, msg: "Invalid OTP" }, data: null })
+
+            let currentTime = new Date().getTime();
+            let diff = otp.expires_in - currentTime;
+            if (diff < 0) return res.status(404).json({ error: { code: 404, msg: "OTP expired" }, data: null })
+
+            let user = await User.findOne({email: user_email})
+            console.log(user)
+            user.password = CryptoJS.AES.encrypt(user_password, process.env.SECRET_KEY)
+            let saved_user = await user.save();
+
+            if (!saved_user) return res.status(404).json({ error: { code: 404, msg: "Error in updating password. Please try again" }, data: null })
+            return res.status(200).json({ error: { code: null, msg: null }, data: "Password changed successfully" })
+        }
+        catch (err) {
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+        }
+    },
+
     createUser: async (req, res) => {
         const loggedin_user = await User.findOne({ _id: req.user.id });
         const newUser = new User({
@@ -130,7 +189,7 @@ const userController = {
                     res.status(403).json({ error: { code: res.statusCode, msg: "Permission Denied" }, data: null })
                 }
                 else {
-                    res.status(200).json({ error: { code: null, msg: err }, data: selected_users });
+                    res.status(200).json({ error: { code: null, msg: err }, data: selected_user });
                 }
             }
         }
@@ -275,65 +334,8 @@ const userController = {
         }
     },
 
-    getUserDetails: async(req,res) =>{
-        
-    },
-
-    testPython: async (req, res) => {
-        try {
-            // const childPython = spawn('python', ['./script.py', 'node.js', 'python']);
-
-            // childPython.stdout.on('data', (data) => {
-            //     console.log(`The new random number is: ${data}`)
-            //     return res.status(200).json({ error: { code: null, msg: null }, data: `The new random number is: ${data}` })
-
-            // });
-
-            // childPython.stderr.on('data', (data) => {
-            //     console.error(`There was an error: ${data}`);
-            //     return res.status(200).json({ error: { code: null, msg: null }, data: data })
-            // });
-
-            // childPython.on('close', (code) => {
-            //     console.log(`child process exited with code ${code}`);
-            // });
-
-
-            // This variable contains the data
-            // you want to send 
-            var data = {
-                array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-            }
-
-            var options = {
-                method: 'POST',
-                uri: 'http://127.0.0.1:5000/parse_cv',
-                body: data,
-                json: true
-            };
-
-            var sendrequest = await request(options)
-                .then(function (parsedBody) {
-                    console.log(parsedBody);
-                    let result;
-                    result = parsedBody['result'];
-                    console.log("Sum of Array from Python: ", result);
-                    return res.status(200).json({ error: { code: res.statusCode, msg: err }, data: result })
-
-                })
-                .catch(function (err) {
-                    return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
-                });
-
-        } catch (err) {
-            return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null })
-        }
-    },
-
     
 }
-
-
 
 const createAccessToken = (user) => {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
@@ -342,5 +344,36 @@ const createAccessToken = (user) => {
 const createRefreshToken = (user) => {
     return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
 }
+
+const mailer = (email, otp, res) => {
+    var nodemailer = require('nodemailer');
+    var transporter = nodemailer.createTransport({
+        service: "gmail",
+        port:587,
+        secure: false,
+        auth: {
+            user: "tnasir13579@gmail.com",
+            pass: "truszmziiomcukvp"
+        }
+    })
+
+    var mailOptions = {
+        from: "tnasir13579@gmail.com",
+        to: email,
+        subject: "Password Reset Link",
+        text: `Hello! Use the following OTP to reset your password : ${otp}. Please note that the OTP will expire in 5 minutes.`
+    }
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            console.log(error)
+            return res.status(404).json({ error: { code: 404, msg: "Error in sending email. Please try again" }, data: null })
+        }
+        else
+        {
+            console.log("Email sent " + info.response)
+        }
+    })}
+    
 
 module.exports = userController

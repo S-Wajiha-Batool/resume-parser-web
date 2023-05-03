@@ -93,68 +93,47 @@ function JdDetails() {
             success ?
                 <Container>
                     <div>
-                        <>
-                                {/* <Col><h4>Job Description</h4></Col>
-                                <Col className='uploadCv_btn'>
-                                    <Button onClick={handleShowModal}>Add CV</Button>
-                                </Col> */}
-                                <UploadCvsModal jd = {jd} showModal={showModal} handleCloseModal={handleCloseModal} tableRef = {tableRef}/>
-                            <Row>
-                                <Col>
-                                    <Card
-                                        bg='light'
-                                        text='dark'
-                                        style={{ width: '18rem' }}
-                                        className="mb-2"
-                                    >
-                                    <Card.Header className="bg-primary text-white">{jd.position}</Card.Header>
-                                        <Card.Body>
-                                            <Card.Title>  </Card.Title>
-                                            <Card.Subtitle>Department</Card.Subtitle>
-                                            <Card.Text>{jd.department}</Card.Text>
+                        <Row>
+                            <Col>
+                                <h4 style={{color: 'Black', marginTop: '50px', style: 'bold'}}>Job Description</h4>
+                            
+                                <UploadCvsModal jd={jd} showModal={showModal} handleCloseModal={handleCloseModal} tableRef={tableRef}/>
+                                <ul style={{listStyleType: 'none', marginTop: '20px', color: 'black'}}>
+                                    <li><b>Position: </b>{jd.position}</li>
+                                    <li><b>Department: </b>{jd.department}</li>
+                                    <li><b>Experience: </b>{jd.experience}</li>
+                                    <li><b>Qualification: </b>{jd.qualification && Object.entries(jd.qualification).length > 0 ?
+                                        Object.entries(jd.qualification).map((option, index) => <span key={index}>{option[1] + " (" + option[0] + ")"}</span>)
+                                        :
+                                        <span>-</span>}</li>
+                                    <li><b>Universities: </b>{jd.universities && Object.entries(jd.universities).length > 0 ?
+                                        Object.entries(jd.universities).map((option, index) => <span key={index}>{option[1] + " (" + option[0] + ")"}</span>)
+                                        :
+                                        <span>-</span>}</li>
+                                    <li><b>Skills: </b>{getSkills(jd.skills).length > 0 ? getSkills(jd.skills).map((skill, index) => <span key={index}>{skill}, </span>) : <span>-</span>}</li>
+                                    <li><b>Posted By: </b>{user.first_name + " " + user.last_name}</li>
+                                    <li><b>Posted On: </b>{getDate(jd.createdAt)}</li>
+                                </ul>
+                                <Button className='button1' onClick={handleShowModal}>Add CV </Button>
+                                <Button className='button1' onClick={handleShowModal}>Delete </Button>
+                                <Button  className='button1' onClick={handleShowModal}>Edit</Button>
 
-                                        <Card.Subtitle>Experience</Card.Subtitle>
-                                        <Card.Text>{jd.experience}</Card.Text>
-
-                                            <Card.Subtitle>Qualification</Card.Subtitle>
-                                            <Card.Text>{jd.qualification && Object.entries(jd.qualification).length > 0 ?
-                                                Object.entries(jd.qualification).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)
-                                                :
-                                                <div>-</div>}</Card.Text>
-
-                                            <Card.Subtitle>Universities</Card.Subtitle>
-                                            <Card.Text>{jd.universities && Object.entries(jd.universities).length > 0 ?
-                                                Object.entries(jd.universities).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)
-                                                :
-                                                <div>-</div>}</Card.Text>
-
-                                            <Card.Subtitle>Skills</Card.Subtitle>
-                                            <Card.Text>{getSkills(jd.skills).length > 0 ? getSkills(jd.skills).map((skill, index) => <li key={index}>{skill}</li>) : <div>-</div>}</Card.Text>
-
-                                        <Card.Subtitle>Posted By</Card.Subtitle>
-                                        <Card.Text>{user.first_name + " " + user.last_name}</Card.Text>
-
-                                            <Card.Subtitle>Posted On</Card.Subtitle>
-                                            <Card.Text>{getDate(jd.createdAt)}</Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                                <Col>
-                                    <div>
-                                        <CvTable
-                                            className='table'
-                                            data={cvs}
-                                            handleShowModal={handleShowModal}
-                                            tableRef={tableRef}
-                                        />
-                                    </div>
-                                </Col>
-                            </Row>
-                        </>
+                            </Col>
+                            <Col>
+                                <div>
+                                    <CvTable
+                                        className='table'
+                                        data={cvs}
+                                        handleShowModal={handleShowModal}
+                                        tableRef={tableRef}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
                     </div>
                 </Container>
                 : <div>Jd not found</div>
-    )
+    )    
 }
 
 export default JdDetails
