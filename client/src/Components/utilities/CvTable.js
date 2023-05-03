@@ -15,9 +15,7 @@ import '../UI/CvTable.css'
 import Theme from '../theme/theme'
 import { orange } from '@mui/material/colors';
 
-const customTheme = createTheme({
-
-});
+const customTheme = createTheme({});
 
 const CvTable = (props) => {
   var moment = require('moment')
@@ -56,6 +54,7 @@ const CvTable = (props) => {
       <DeleteModal showModal={showDeleteModal} handleCloseModal={handleCloseDeleteModal} data={selectedItem} target={"cv"} />
       <ThemeProvider theme={customTheme}>
         <MaterialTable columns={columns} data={tableData} icons={tableIcons}
+        style={{fontFamily: 'Open Sans, sans-serif'}}
           actions={[
             {
               icon: () => <DeleteOutline />,
@@ -74,9 +73,7 @@ const CvTable = (props) => {
             navigate(`/cv/${rowData._id}`);
           }}
           options={{
-            headerStyle: {
-              fontWeight: 'bold',
-            },
+            
             sorting: true, search: true,
             searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
             filtering: false,
@@ -95,9 +92,11 @@ const CvTable = (props) => {
             columnsButton: true,
             //rowStyle: (data, index) => index % 2 !== 0 ? { background: "#d3d3d3 " } : null,
             rowStyle:  { background: "#00000" },
-            headerStyle: { background: "#d3d3d3 ", color: "#fff" },
+            headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif' },
             actionsColumnIndex: -1,
             selection: false,
+            rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : null,
+
           }}
           title=""
 

@@ -38,7 +38,7 @@ const JdTable = (props) => {
 
     const columns = [
         //{ title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
-        { title: "Position", field: "position", sorting: false, filtering: false, cellStyle: { background: "#333333", fontWeight: 'bold', color:'white' }, headerStyle: { color: "#fff" },  },
+        { title: "Position", field: "position", sorting: false, filtering: false, cellStyle: { fontWeight: "bold" }, headerStyle: { color: "black" }  },
         { title: "Department", field: "department", filterPlaceholder: "filter" },
         {
             title: "Skills", field: "skills", grouping: false,
@@ -104,9 +104,8 @@ const JdTable = (props) => {
             target={"jd"}
           />
       
-          <ThemeProvider theme={theme}>
+          <ThemeProvider theme={defaultMaterialTheme}>
             <MaterialTable
-              className="custom-table"
               columns={columns}
               data={tableData}
               icons={tableIcons}
@@ -144,30 +143,27 @@ const JdTable = (props) => {
               options={{
                 sorting: true,
                 search: true,
-                searchFieldAlignment: "right",
-                searchAutoFocus: true,
-                searchFieldVariant: "standard",
+                searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
                 filtering: false,
                 actionsColumnIndex: -1,
                 grouping: false,
                 exportAllData: true,
                 exportButton: true,
                 columnsButton: true,
-                rowStyle: (rowData) => ({
-                  backgroundColor: rowData.tableData.checked ? "#EEE" : "#FFF",
-                }),
-                searchFieldStyle: {
-                  background: "#EEE",
-                  borderRadius: "15px",
-                },
+                paging: true,
+            pageSize: 5,
+            pageSizeOptions: [],
+            paginationType: "normal",
+            showFirstLastPageButtons: false, paginationPosition: "bottom",
                 tableLayout: "auto",
                 maxHeight: "calc(100vh - 50px)",
                 overflowY: "auto",
-                searchIcon: <SearchIcon color="primary" />,
+            headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif' },
+            actionsColumnIndex: -1,
+            selection: false,
+            rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : { background: "#00000" }
               }}
-              title=""
-
-              
+              title=""   
             />
           </ThemeProvider>
         </>

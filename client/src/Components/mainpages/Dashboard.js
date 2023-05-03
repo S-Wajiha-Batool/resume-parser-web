@@ -2,12 +2,15 @@ import React, { useState, useContext, useEffect, } from 'react';
 import { VictoryChart, VictoryAxis, VictoryBar , VictoryPie, VictoryLabel } from 'victory';
 import '../UI/dashboard.css'
 import { GlobalState } from '../../GlobalState';
+import { Row, Col } from 'react-bootstrap';
+
 import { getAllJdsAPI, getIncreasedJdsAPI, getJdCountForEachDeptAPI } from '../../API/JDAPI';
 import { getAllCvsAPI, getIncreasedCvsAPI, getHigestScoringCvsCountAPI, getCvDistributionAPI } from '../../API/CVAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import ArrowIndicator from './arrowindicator';
 import '../UI/arrowindicator.css'
+import Title from '../utilities/Title';
 
 function Dashboard() {
 
@@ -227,20 +230,21 @@ function Dashboard() {
 
   return (
     <div className='dashboard-container'>
-      <div className="boxes-container">
+      <Title title={"Dashboard"}/>
+      <Row>
         <div className = "box box-jd">
           <h2 className='text1'>Job Descriptions</h2>
           {isLoadingJds ? (<LoadingSpinner />) : successJds ? (
             <>
               <p className='text2'>{allJDs.length}</p>
-              <p className='text2'>
+              <p >
                 {increasedJds >= 0 ?
-                  (<div className='positive'>
-                    <span>{increasedJds.toFixed(2)} %</span> 
+                  (<div>
+                    <span className='text3'>{increasedJds.toFixed(2)} % increase since last week</span> <ArrowIndicator value={1} />
                   </div>
                   ) : (
-                    <div className= 'negative'>
-                      <span>abs({increasedJds.toFixed(2)}) %</span> 
+                    <div>
+                      <span className='text3'>abs({increasedJds.toFixed(2)}) %</span> <ArrowIndicator value={-1} />
                     </div>)}
               </p>
             </>)
@@ -249,16 +253,16 @@ function Dashboard() {
             )}
         </div>
        
-        <div className= "box box-cv">
+        <div className= "box box-jd">
           <h2 className='text1'>Resumes</h2>
           {isLoadingCvs ? (<LoadingSpinner />) : successCvs ? (<><p className='text2'>{allCvs.length}</p>
             <p className='text2'>{increasedCvs >= 0 ? (
-              <div className='positive'>
-                <span >{increasedCvs.toFixed(2)} %</span> 
+              <div>
+                    <span className='text3'>{increasedCvs.toFixed(2)} % increase since last week</span> <ArrowIndicator value={1} />
               </div>
             ) : (
-              <div className='negative'>
-                <span >({increasedCvs.toFixed(2)}) %</span> 
+              <div>
+                      <span className='text3'>abs({increasedCvs.toFixed(2)}) %</span> <ArrowIndicator value={-1} />
               </div>)}
             </p>
           </>)
@@ -274,10 +278,10 @@ function Dashboard() {
               'Unable to fetch data'
             )}
         </div>
-      </div>
+      </Row>
       
-      <div className='charts-container'>
-      <div className='box histogram-box'>
+      <Row >
+      <Col md ={5} className = 'chart-box'>
   <h2 className='text1'>Resumes Score Distribution</h2>
   <div className='chart-container'>
     {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
@@ -321,9 +325,8 @@ function Dashboard() {
         'Unable to fetch data'
       )}
   </div>
-</div> 
-        <div className="box pie-chart-box">
-
+</Col> 
+        <Col md= {5} className='chart-box'>
           <h2 className='text1'>Department-wise Job Descriptions</h2>
           <div className="chart-container">
             {isLoadingPie ? (<LoadingSpinner />) : successPie ? (
@@ -333,8 +336,8 @@ function Dashboard() {
                 'Unable to fetch data'
               )}
           </div>
-        </div>
-      </div>
+        </Col>
+      </Row>
     </div>
   )
 
