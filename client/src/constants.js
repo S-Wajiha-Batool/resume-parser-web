@@ -178,6 +178,7 @@ export const unis = {
     "EE": "External Examiner",
     "BBA": "Bachelor of Business Administration",
     "BSc": "Bachelor of Science",
+    "BSCS": "Bachelor of Science in Computer Science",
     "BCom": "Bachelor of Commerce",
     "BD": "Bachelor of Divinity",
     "NQF": "National Qualification Framework",
