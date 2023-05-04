@@ -16,7 +16,6 @@ import DeleteModal from './DeleteModal';
 import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Delete';
 import '../UI/JdTable.css'
-import theme from '../theme/themeJD.js';
 import Title from './Title';
 
 const JdTable = (props) => {
