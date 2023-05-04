@@ -1,114 +1,13 @@
-.material-table {
-    font-size: 14px;
-  }
-  
-  .MuiPaper-root {
-    box-shadow: none;
-  }
-  
-  .MuiTableCell-head {
-    font-weight: bold;
-  }
-  
-  .MuiToolbar-root {
-    padding: 0px;
-  }
-  
-  .MuiInputBase-input {
-    font-size: 14px;
-  }
-  
-  .MuiInputBase-root {
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 8px;
-  }
-  
-  .MuiTablePagination-actions button {
-    font-size: 14px;
-    color: #333;
-  }
-  
-  .MuiTablePagination-root {
-    border-top: 1px solid #ccc;
-    margin-top: 16px;
-  }
-  
-  .MuiTablePagination-input {
-    font-size: 14px;
-  }
-  
-  .MuiTablePagination-select {
-    font-size: 14px;
-  }
-  
-  .MuiTablePagination-selectIcon {
-    top: 10px;
-  }
-  
-  .MuiTableRow-root:hover {
-    background-color: #f0f8ff;
-  }
-  
-  .MuiTableCell-body {
-    font-size: 14px;
-  }
-  
-  .MuiTableSortLabel-root:hover {
-    color: #333;
-  }
-  
-  .MuiTableSortLabel-active {
-    color: #333;
-  }
-  
-  .MuiTableSortLabel-icon {
-    color: #333;
-  }
-  
-  .MuiTableSortLabel-root.MuiTableSortLabel-active .MuiTableSortLabel-icon {
-    color: #333;
-  }
-  
-  .MuiTableHead-root {
-    background-color: #2196f3;
-    color: #fff;
-  }
-  
-  .MuiTablePagination-caption {
-    font-size: 14px;
-  }
-  
-  .MuiIconButton-root {
-    padding: 8px;
-  }
-  
-  .MuiSvgIcon-root {
-    font-size: 20px;
-  }
-  
-  .MuiInput-underline:before {
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .MuiInput-underline:hover:not(.Mui-disabled):before {
-    border-bottom: 1px solid #2196f3;
-  }
-  
-  .MuiInput-underline:after {
-    border-bottom: 2px solid #2196f3;
-  }
-  
-  .MuiTableRow-root:nth-child(even) {
-    background-color: #e3f2fd;
-  }
-  
-  .MuiButton-containedPrimary {
-    background-color: #2196f3;
-  }
-  
-  .MuiButton-containedPrimary:hover {
-    background-color: #1976d2;
-  }
-  
+.MuiTablePagination-displayedRows {
+  margin-bottom: 0;
+}
+
+.MuiTableCell-head {
+  background-color: #d3d3d3 !important;
+  color: black !important;
+  font-weight: bold;
+}
+
+.MTableHeader-header-83 .MuiTableCell-paddingCheckbox {
+  padding: 8px;
+}

@@ -29,16 +29,11 @@ const CvsAgainstJdTable = (props) => {
     const [cvAgainstJdTableData, setAgainstJdTableData] = state.CVAPI.cvAgainstJdTableData;
     const columns = [
         { title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
-        { title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { background: "#1d9fc7" }, headerStyle: { color: "#fff" },filterPlaceholder: "filter" },
-        { title: "Email", field: "emails", render: (rowData) => <ul>{rowData.emails.map((email,index) => <li key={index}>{email}</li>)}</ul>, filterPlaceholder: "filter" },
-        { title: "Score", field: "weighted_percentage", filterPlaceholder: "filter" },
-        // { title: "Status", field: "hire_status", filterPlaceholder: "filter" },
+        { title: "Name", field: "full_name", sorting: false, filtering: false},
+        { title: "Email", field: "emails", render: (rowData) => <ul>{rowData.emails.map((email,index) => <li key={index}>{email}</li>)}</ul> },
+        { title: "Score", field: "weighted_percentage" },
         { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
     ]
-
-    // useEffect(() => {
-    //     setTableData(data);
-    // }, [callbackJdDetails])
 
     const getDate = (d) => {
         return moment(d).format("Do MMMM YYYY")
@@ -47,7 +42,6 @@ const CvsAgainstJdTable = (props) => {
     return (
         <>
         <DeleteModal showModal={showDeleteModal} handleCloseModal={handleCloseDeleteModal} data={selectedItem} target={"cvAgainstJd"}/>
-
         <ThemeProvider theme={defaultMaterialTheme}>
             <MaterialTable columns={columns} data={cvAgainstJdTableData} icons={tableIcons} tableRef={tableRef}
                 actions={[
@@ -77,22 +71,20 @@ const CvsAgainstJdTable = (props) => {
                 options={{
                     sorting: true, search: true,
                     searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
-                    filtering: true, paging: true, pageSizeOptions: [2, 5, 10, 20, 25, 50, 100], pageSize: 5,
-                    paginationType: "stepped", showFirstLastPageButtons: false, paginationPosition: "bottom", exportButton: true,
+                    paging: true,
+                    pageSize: 5,
+                    pageSizeOptions: [],
+                    paginationType: "normal", paginationPosition: "bottom", exportButton: true,
                     exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1, selection: true,
                     showSelectAllCheckbox: true, showTextRowsSelected: true,
-                    selectionProps: rowData => ({
-                        // disabled: rowData.age == null,
-                        // color:"primary"
-                    }),
-                    grouping: true,
                     columnsButton: true,
-                    rowStyle: (data, index) => index % 2 === 0 ? { background: "#1d9fc7" } : null,
-                    //headerStyle: { background: "#f44336", color: "#fff" },
+                    headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif' },
                     actionsColumnIndex: -1,
                     selection: false,
+                    rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : { background: "#00000" }
+                      
                 }}
-                title="CVs"
+                title=""
             />
         </ThemeProvider>
         </>
