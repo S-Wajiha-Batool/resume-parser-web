@@ -8,6 +8,7 @@ import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import UploadJdModal from '../utilities/UploadJdModal';
 import { colors } from '@mui/material';
+import Title from '../utilities/Title';
 
 
 const FormData = require('form-data');
@@ -76,6 +77,7 @@ function AllJds() {
                 <h1 className="jd-list-title">Job Descriptions</h1>
                 <Button background-color= 'blue' className="jd-list-upload-btn"  onClick={handleShowModal}>Add JD</Button>
               </div> */}
+            <Title title={"Job Descriptions"}/>
               <JdTable className="jd-list-table" data={allJDs} handleShowModal={handleShowModal} />
               <UploadJdModal className="jd-list-upload-modal" showModal={showModal} handleCloseModal={handleCloseModal} />
             </div>

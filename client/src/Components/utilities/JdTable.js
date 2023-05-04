@@ -17,6 +17,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Delete';
 import '../UI/JdTable.css'
 import theme from '../theme/themeJD.js';
+import Title from './Title';
 
 const JdTable = (props) => {
     var moment = require('moment')
@@ -38,7 +39,7 @@ const JdTable = (props) => {
 
     const columns = [
         //{ title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
-        { title: "Position", field: "position", sorting: false, filtering: false, cellStyle: { fontWeight: "bold" }, headerStyle: { color: "black" }  },
+        { title: "Position", field: "position", sorting: false, cellStyle: { fontWeight: "bold" }, headerStyle: { color: "black" } , },
         { title: "Department", field: "department", filterPlaceholder: "filter" },
         {
             title: "Skills", field: "skills", grouping: false,
@@ -106,7 +107,6 @@ const JdTable = (props) => {
       
           <ThemeProvider theme={defaultMaterialTheme}>
             <MaterialTable
-              style={{ overflowY: "scroll" }}
               columns={columns}
               data={tableData}
               icons={tableIcons}
@@ -142,6 +142,8 @@ const JdTable = (props) => {
                 navigate(`/jd/${rowData._id}`);
               }}
               options={{
+                minBodyHeight: "60vh",
+                maxBodyHeight: "60vh",
                 sorting: false,
                 search: true,
                 searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",

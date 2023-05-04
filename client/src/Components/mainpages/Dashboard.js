@@ -219,7 +219,7 @@ function Dashboard() {
     }
   }, [token, callbackCv])
 
-  const colorScale = [' #F5A623', '#50E3C2', '#9013FE', '#FF0000', '#800080', '#00BFFF'];
+  const colorScale = [' #73556E', '#9FA1A6', '#F2AA6B', '#F28F6B', '#D97373', '#00BFFF'];
 
   if (allJDs.length == 0)
     return (
@@ -253,7 +253,7 @@ function Dashboard() {
             )}
         </div>
        
-        <div className= "box box-jd">
+        <div className= "box box-cv">
           <h2 className='text1'>Resumes</h2>
           {isLoadingCvs ? (<LoadingSpinner />) : successCvs ? (<><p className='text2'>{allCvs.length}</p>
             <p className='text2'>{increasedCvs >= 0 ? (

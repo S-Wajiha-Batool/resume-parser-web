@@ -1,8 +1,11 @@
 .MuiTableBody-root {
     size: 100vh;
     width: 1000px;
-    max-height: 900px; /* set a fixed height */
   }
+
+.MuiPaper-root{
+    margin-right: 15px;
+}
 .custom-table  .MuiToolbar-root {
     display: flex;
     justify-content: space-between;
@@ -14,7 +17,6 @@
     border: 1px solid #ddd;
     font-size: 14px;
     width: 100%;
-    text-align: left;
 }
 
 .MuiTableHead-root {
@@ -24,7 +26,9 @@
 
 .MuiTableCell-root {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 5px;
+    text-align: center;
+
 }
 
 .MuiTablePagination-displayedRows {

@@ -73,7 +73,8 @@ const CvTable = (props) => {
             navigate(`/cv/${rowData._id}`);
           }}
           options={{
-            
+            minBodyHeight: "60vh",
+            maxBodyHeight: "60vh",
             sorting: true, search: true,
             searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
             filtering: false,

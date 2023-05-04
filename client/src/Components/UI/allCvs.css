@@ -1,3 +1,6 @@
-.text4{
-    font-size: 12;
+.cv-container{
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    table-layout: fixed;
 }

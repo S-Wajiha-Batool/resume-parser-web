@@ -1,3 +1,10 @@
+.main-container{
+  margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    table-layout: fixed;
+}
+
 .uploadCv_btn{
     display: flex;
     justify-content: flex-end;
@@ -5,10 +12,7 @@
 /* JdDetails.css */
 
 /* Set the background color to white*/
-body {
-    background-color: #ffffff;
-    ;
-  }
+
   
   
   

@@ -29,8 +29,8 @@ const CvsAgainstJdTable = (props) => {
     const [cvAgainstJdTableData, setAgainstJdTableData] = state.CVAPI.cvAgainstJdTableData;
     const columns = [
         { title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
-        { title: "Name", field: "full_name", sorting: false, filtering: false},
-        { title: "Email", field: "emails", render: (rowData) => <ul>{rowData.emails.map((email,index) => <li key={index}>{email}</li>)}</ul> },
+        { title: "Name", field: "full_name", sorting: false, filtering: false },
+        { title: "Email", field: "emails", render: (rowData) => <ul>{rowData.emails.map((email, index) => <li key={index}>{email}</li>)}</ul> },
         { title: "Score", field: "weighted_percentage" },
         { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
     ]
@@ -41,52 +41,54 @@ const CvsAgainstJdTable = (props) => {
 
     return (
         <>
-        <DeleteModal showModal={showDeleteModal} handleCloseModal={handleCloseDeleteModal} data={selectedItem} target={"cvAgainstJd"}/>
-        <ThemeProvider theme={defaultMaterialTheme}>
-            <MaterialTable columns={columns} data={cvAgainstJdTableData} icons={tableIcons} tableRef={tableRef}
-                actions={[
-                    {
-                        icon: () => <AddBox />,
-                        tooltip: "Add new row",
-                        isFreeAction: true,
-                        onClick: (e, data) => handleShowModal(),
-                        // isFreeAction:true
-                    },
-                    {
-                        icon: () => <DeleteOutline />,
-                        tooltip: "Delete",
-                        onClick: (e, rowData) => {
-                            handleShowDeleteModal();
-                            setSelectedItem(rowData)
+            <DeleteModal showModal={showDeleteModal} handleCloseModal={handleCloseDeleteModal} data={selectedItem} target={"cvAgainstJd"} />
+            <ThemeProvider theme={defaultMaterialTheme}>
+                <MaterialTable columns={columns} data={cvAgainstJdTableData} icons={tableIcons} tableRef={tableRef}
+                    actions={[
+                        {
+                            icon: () => <AddBox />,
+                            tooltip: "Add new row",
+                            isFreeAction: true,
+                            onClick: (e, data) => handleShowModal(),
+                            // isFreeAction:true
                         },
-                        position: "row"
-                    }
+                        {
+                            icon: () => <DeleteOutline />,
+                            tooltip: "Delete",
+                            onClick: (e, rowData) => {
+                                handleShowDeleteModal();
+                                setSelectedItem(rowData)
+                            },
+                            position: "row"
+                        }
 
-                ]}
+                    ]}
 
-                onRowClick={(event, rowData) => {
-                    console.log(rowData);
-                    navigate(`/cv/${rowData.CV_ID}`);
-                }}
-                options={{
-                    sorting: true, search: true,
-                    searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
-                    paging: true,
-                    pageSize: 5,
-                    pageSizeOptions: [],
-                    paginationType: "normal", paginationPosition: "bottom", exportButton: true,
-                    exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1, selection: true,
-                    showSelectAllCheckbox: true, showTextRowsSelected: true,
-                    columnsButton: true,
-                    headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif' },
-                    actionsColumnIndex: -1,
-                    selection: false,
-                    rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : { background: "#00000" }
-                      
-                }}
-                title=""
-            />
-        </ThemeProvider>
+                    onRowClick={(event, rowData) => {
+                        console.log(rowData);
+                        navigate(`/cv/${rowData.CV_ID}`);
+                    }}
+                    options={{
+                        minBodyHeight: "60vh",
+                        maxBodyHeight: "60vh",
+                        sorting: true, search: true,
+                        searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
+                        paging: true,
+                        pageSize: 5,
+                        pageSizeOptions: [],
+                        paginationType: "normal", paginationPosition: "bottom", exportButton: true,
+                        exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1, selection: true,
+                        showSelectAllCheckbox: true, showTextRowsSelected: true,
+                        columnsButton: true,
+                        headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif' },
+                        actionsColumnIndex: -1,
+                        selection: false,
+                        rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : { background: "#00000" }
+
+                    }}
+                    title=""
+                />
+            </ThemeProvider>
         </>
     )
 };

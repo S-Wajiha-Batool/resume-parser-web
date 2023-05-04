@@ -2,6 +2,7 @@
 .dashboard-container {
   width: 100vw; /* Make the component fill the entire screen horizontally */
   height: 50vh;
+  padding: 20px;
 }
 
 /* Boxes container */
@@ -169,6 +170,7 @@
 
   .box-jd {
      /* orange */
+     background-color: 	#f7e1d3;
     color: black;
     text-align: left;
   padding: 20px;
@@ -179,8 +181,21 @@
   margin: 10px;
   border-radius: 5px;
   }
-  
+  .box-cv {
+    /* orange */
+    background-color: 	  #e5f9cd    ;
+   color: black;
+   text-align: left;
+ padding: 20px;
+ width: calc(33.33% - 20px);
+ height: 170px;
+ margin-bottom: 20px;
+ box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
+ margin: 10px;
+ border-radius: 5px;
+ }
   .box-count {
+    background-color: 	#dfecf8;
     color: black;
     text-align: center;
     padding: 30px;
