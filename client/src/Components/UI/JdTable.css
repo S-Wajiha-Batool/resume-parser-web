@@ -43,6 +43,6 @@
 
 
   .table-container {
-    height: calc(100vh - 50px); /* Replace 150px with the height of any other fixed elements on your page */
+    height: calc(100vh - 350px); /* Replace 150px with the height of any other fixed elements on your page */
     overflow-y: auto;
   }
