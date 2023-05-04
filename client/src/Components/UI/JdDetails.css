@@ -1,28 +1,63 @@
-.main-container{
+.main-container {
   margin: 0 auto;
-    padding: 20px;
-    background-color: #ffffff;
-    table-layout: fixed;
+  padding: 20px;
+  background-color: #ffffff;
+  table-layout: fixed;
 }
 
-.uploadCv_btn{
-    display: flex;
-    justify-content: flex-end;
+.desc-container {
+  height: 80vh;
+  max-width: 350px;
+  overflow-y: auto;
+  border-radius: 5px;
+  border: 1px solid #d3d3d3;
+  padding: 10px;
 }
+
+.table-container {
+  height: 80vh;
+}
+
+.title {
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.key {
+  font-weight: bold;
+  color: #2d2d2d
+}
+
+.value {
+}
+
+.line {
+  color: #626262;
+}
+
+.line2 {
+  color: #d3d3d3;
+}
+
+.uploadCv_btn {
+  display: flex;
+  justify-content: flex-end;
+}
+
 /* JdDetails.css */
 
 /* Set the background color to white*/
 
-  
-  
-  
-  /* Set the background color of the card header to white */
-  .card-header {
-    background-color: #fff;
-  }
-  
-  /* Set the background color of the card body to blue */
-  .card-body {
-    background-color: white;
-  }
-  
+
+
+
+/* Set the background color of the card header to white */
+.card-header {
+  background-color: #fff;
+}
+
+/* Set the background color of the card body to blue */
+.card-body {
+  background-color: white;
+}

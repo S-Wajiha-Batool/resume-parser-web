@@ -84,9 +84,8 @@ const CvsAgainstJdTable = (props) => {
                         actionsColumnIndex: -1,
                         selection: false,
                         rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : { background: "#00000" }
-
                     }}
-                    title=""
+                    title="Ranked CVs"
                 />
             </ThemeProvider>
         </>

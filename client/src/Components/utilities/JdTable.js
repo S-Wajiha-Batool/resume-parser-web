@@ -42,34 +42,30 @@ const JdTable = (props) => {
         { title: "Department", field: "department", filterPlaceholder: "filter" },
         {
             title: "Skills", field: "skills", grouping: false,
-            render: (rowData) => <ul>{getSkills(rowData.skills).length > 0 ? getSkills(rowData.skills).map((skill, index) => <li key={index}>{skill}</li>) : <div> - </div>}</ul>,
+            render: (rowData) => { return getSkills(rowData.skills).length > 0 ? <ul>{getSkills(rowData.skills).map((skill, index) => <li key={index}>{skill}</li>)}</ul> : <div>-</div>},
         },
         {
             title: "Experience", field: "experience",
             searchable: true, export: true
         },
         {
-            title: "Qualification", field: "qualification", render: (rowData) => <ul>
-                {rowData.qualification && Object.entries(rowData.qualification).length > 0 ?
-                    Object.entries(rowData.qualification).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)
+            title: "Qualification", field: "qualification", render: (rowData) => 
+                {return rowData.qualification && Object.entries(rowData.qualification).length > 0 ?
+                  <ul>{Object.entries(rowData.qualification).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
                     :
                     <div>-</div>}
-            </ul>, searchable: true, export: true
+            , searchable: true, export: true
         },
         {
-            title: "Universities", field: "universities", render: (rowData) => <ul>
-                {rowData.universities && Object.entries(rowData.universities).length > 0 ?
-                    Object.entries(rowData.universities).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)
+            title: "Universities", field: "universities", render: (rowData) => 
+                {return rowData.universities && Object.entries(rowData.universities).length > 0 ?
+                    <ul>{Object.entries(rowData.universities).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
                     :
-                    <div>-</div>}
-            </ul>, filterPlaceholder: "filter", searchable: true, export: true
+                    <div>-</div>},
+                    filterPlaceholder: "filter", searchable: true, export: true
         },
         { title: "Posted On", field: "createdAt", render: (rowData) => <div >{getDate(rowData)}</div> },
     ]
-
-    // useEffect(() => {
-    //     setTableData(data);
-    // }, [callback])
 
     const getSkills = (skills) => {
         console.log(skills)
@@ -102,8 +98,7 @@ const JdTable = (props) => {
             handleCloseModal={handleCloseDeleteModal}
             data={selectedItem}
             target={"jd"}
-          />
-      
+          />      
           <ThemeProvider theme={defaultMaterialTheme}>
             <MaterialTable
               columns={columns}

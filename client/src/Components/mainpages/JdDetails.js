@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, createRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom'
 import { GlobalState } from '../../GlobalState';
 import { getJdAPI } from '../../API/JDAPI'
@@ -10,9 +11,14 @@ import LoadingSpinner from '../utilities/LoadingSpinner';
 import UploadCvsModal from '../utilities/UploadCvsModal';
 import CvTable from '../utilities/CvsAgainstJdTable';
 import Title from '../utilities/Title';
+import Edit from '@material-ui/icons/Edit';
+import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import EditJdModal from '../utilities/EditJdModal';
+import DeleteModal from '../utilities/DeleteModal';
 
 function JdDetails() {
     var moment = require('moment')
+    const navigate = useNavigate('');
     const state = useContext(GlobalState);
     const [showModal, setShowModal] = useState(false);
     const handleCloseModal = () => setShowModal(false);
@@ -29,6 +35,13 @@ function JdDetails() {
     const tableRef = createRef();
     const [cvAgainstJdTableData, setCvAgainstJdTableData] = state.CVAPI.cvAgainstJdTableData
 
+    const [showEditModal, setShowEditModal] = useState(false);
+    const handleCloseEditModal = () => setShowEditModal(false);
+    const handleShowEditModal = () => setShowEditModal(true);
+
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const handleCloseDeleteModal = () => setShowDeleteModal(false);
+    const handleShowDeleteModal = () => setShowDeleteModal(true);
 
     useEffect(() => {
         if (token) {
@@ -73,7 +86,7 @@ function JdDetails() {
 
 
         }
-    }, [token, callbackJdDetails])
+    }, [token, callbackJdDetails, showEditModal, showDeleteModal])
 
     const getSkills = (skills) => {
         console.log(skills)
@@ -94,39 +107,62 @@ function JdDetails() {
             success ?
                 <div className='main-container'>
                     <div>
-                    <UploadCvsModal jd={jd} showModal={showModal} handleCloseModal={handleCloseModal} tableRef={tableRef}/>
-                        <Title title = {`Job Role: ${jd.position}`}/>
+                        <UploadCvsModal jd={jd} showModal={showModal} handleCloseModal={handleCloseModal} tableRef={tableRef} />
+                        <DeleteModal
+                            showModal={showDeleteModal}
+                            handleCloseModal={handleCloseDeleteModal}
+                            data={jd}
+                            target={"jd"}
+                        />
+                        <EditJdModal
+                            showModal={showEditModal}
+                            handleCloseModal={handleCloseEditModal}
+                            oldJd={jd}
+                        />
+
+                        <Title title={`Job Role: ${jd.position}`} />
                         <Row>
-                            <Col>
-                                <h4 style={{ style: 'bold'}}>Description</h4>                            
-                                    <div className='key'>Position: </div> 
-                                    <div className='value'>{jd.position}</div>
+                            <Col className='desc-container'>
+                                <div className='title'>
+                                    <h4 style={{ style: 'bold' }}>Description</h4>
+                                    <div className='icons'>
+                                        <Button onClick={handleShowEditModal}><span><Edit /></span></Button>
+                                        <Button onClick={handleShowDeleteModal}><span><DeleteOutline /></span></Button>
+                                    </div>
+                                </div>
+                                <hr className='line' />
+                                <div className='details'>
                                     <div className='key'>Department: </div>
                                     <div className='value'>{jd.department}</div>
+                                    <hr className='line2' />
                                     <div className='key'>Experience: </div>
                                     <div className='value'>{jd.experience}</div>
+                                    <hr className='line2' />
                                     <div className='key'>Qualification: </div>
-                                    <div className='value>'>{jd.qualification && Object.entries(jd.qualification).length > 0 ?
-                                        Object.entries(jd.qualification).map((option, index) => <span key={index}>{option[1] + " (" + option[0] + ")"}</span>)
-                                        :
-                                        <span>-</span>}</div>
+                                    <div className='value>'>
+                                        {jd.qualification && Object.entries(jd.qualification).length > 0 ?
+                                            <ul>{Object.entries(jd.qualification).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
+                                            :
+                                            <div>-</div>}
+                                    </div>
+                                    <hr className='line2' />
                                     <div className='key'>Universities: </div>
-                                    <div className='value'>{jd.universities && Object.entries(jd.universities).length > 0 ?
-                                        Object.entries(jd.universities).map((option, index) => <span key={index}>{option[1] + " (" + option[0] + ")"}</span>)
+                                    <div className='value'> {jd.universities && Object.entries(jd.universities).length > 0 ?
+                                        <ul>{Object.entries(jd.universities).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
                                         :
-                                        <span>-</span>}</div>
+                                        <div>-</div>}</div>
+                                    <hr className='line2' />
                                     <div className='key'>Skills: </div>
-                                    <div className='value'>{getSkills(jd.skills).length > 0 ? getSkills(jd.skills).map((skill, index) => <span key={index}>{skill}, </span>) : <span>-</span>}</div>
+                                    <div className='value'>{getSkills(jd.skills).length > 0 ? <ul>{getSkills(jd.skills).map((skill, index) => <li key={index}>{skill}</li>)}</ul> : <div> - </div>}</div>
+                                    <hr className='line2' />
                                     <div className='key'>Posted By: </div>
                                     <div className='value'>{user.first_name + " " + user.last_name}</div>
+                                    <hr className='line2' />
                                     <div className='key'>Posted On: </div>
                                     <div className='value'>{getDate(jd.createdAt)}</div>
-
-                                <Button className='button1' onClick={handleShowModal}>Add CV </Button>
-                                <Button className='button1' onClick={handleShowModal}>Delete </Button>
-                                <Button  className='button1' onClick={handleShowModal}>Edit</Button>
+                                </div>
                             </Col>
-                            <Col>
+                            <Col className='table-container'>
                                 <div>
                                     <CvTable
                                         className='table'
@@ -138,9 +174,9 @@ function JdDetails() {
                             </Col>
                         </Row>
                     </div>
-                </div>
+                </div >
                 : <div>Jd not found</div>
-    )    
+    )
 }
 
 export default JdDetails
