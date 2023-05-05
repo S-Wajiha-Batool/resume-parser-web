@@ -16,6 +16,7 @@ import JD_icon from '../images/job-description.png'
 import CV_icon from '../images/cv.png'
 import logout_icon from '../images/logout.png'
 import menu_icon from '../images/menu.png'
+import close_icon from '../images/close.png'
 
 const Sidebar = () => {
     const location = window.location.pathname;
@@ -58,18 +59,19 @@ const Sidebar = () => {
                 {/* collapsed props to change menu size using menucollapse state */}
                 <ProSidebar collapsed={menuCollapse}>
                     <SidebarHeader>
-                        {menuCollapse ?
+                        {menuCollapse ? (
                         <div className='heading' onClick={menuIconClick}>
                         <img className='menu-icon' src={menu_icon} alt='MENU'/>
-                        </div> : 
+                        </div> ):( 
                         <>
-                        <div onClick={menuIconClick}></div>
+                        <div onClick={menuIconClick}> 
+                        <img className='menu-icon' src={close_icon} alt='MENU'/></div>
                          <div className="logotext">
                             <p className='logotext'>Resume Parser</p>
                         </div>
-                        </>}
+                        </>)}
                     </SidebarHeader>
-                    <SidebarContent color='blue'>
+                    <SidebarContent>
                         <Menu>
                             <MenuItem className={location === '/' ? 'active' : ''} onClick={() => {
                                 setMenuCollapse(true);
@@ -103,6 +105,10 @@ const Sidebar = () => {
                         </Menu>
                     </SidebarFooter>
                 </ProSidebar>
+                {/* Translucent shade to cover the rest of the screen */}
+    {!menuCollapse && (
+      <div className="translucent-shade" onClick={menuIconClick}></div>
+    )}
             </div>
         
     );

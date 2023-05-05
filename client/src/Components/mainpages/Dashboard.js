@@ -229,9 +229,9 @@ function Dashboard() {
     )
 
   return (
-    <div className='dashboard-container'>
+    <div>
       <Title title={"Dashboard"}/>
-      <Row>
+      <Row >
         <div className = "box box-jd">
           <h2 className='text1'>Job Descriptions</h2>
           {isLoadingJds ? (<LoadingSpinner />) : successJds ? (
@@ -255,8 +255,11 @@ function Dashboard() {
        
         <div className= "box box-cv">
           <h2 className='text1'>Resumes</h2>
-          {isLoadingCvs ? (<LoadingSpinner />) : successCvs ? (<><p className='text2'>{allCvs.length}</p>
-            <p className='text2'>{increasedCvs >= 0 ? (
+          {isLoadingCvs ? (<LoadingSpinner />) : successCvs ? (
+          <>
+          <p className='text2'>{allCvs.length}</p>
+
+            <p>{increasedCvs >= 0 ? (
               <div>
                     <span className='text3'>{increasedCvs.toFixed(2)} % increase since last week</span> <ArrowIndicator value={1} />
               </div>
@@ -279,18 +282,16 @@ function Dashboard() {
             )}
         </div>
       </Row>
-      
-      <Row >
-      <Col md ={5} className = 'chart-box'>
+      <Row  style={{ marginTop: '-20px' }}>
+        <div className = 'histogram-box'>
   <h2 className='text1'>Resumes Score Distribution</h2>
-  <div className='chart-container'>
     {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
       <VictoryChart domainPadding={{ x: 20 }}>
         <VictoryAxis
           style={{
             axis: { stroke: "black", strokeWidth: 2.5 },
             tickLabels: { 
-              fontSize: 7,
+              fontSize: 8,
               //textAnchor: 'e',
             },
             axisLabel: { 
@@ -324,21 +325,20 @@ function Dashboard() {
       : (
         'Unable to fetch data'
       )}
-  </div>
-</Col> 
-        <Col md= {5} className='chart-box'>
+      </div>
+      <div className='pie-chart-box'>
           <h2 className='text1'>Department-wise Job Descriptions</h2>
-          <div className="chart-container">
+        
             {isLoadingPie ? (<LoadingSpinner />) : successPie ? (
-              <VictoryPie data={pie} colorScale={colorScale} />
+              <VictoryPie  data={pie} colorScale={colorScale}/>
             )
               : (
                 'Unable to fetch data'
               )}
-          </div>
-        </Col>
+        </div>
       </Row>
-    </div>
+      </div>
+    
   )
 
 }
