@@ -86,7 +86,7 @@ function JdDetails() {
 
 
         }
-    }, [token, callbackJdDetails, showEditModal, showDeleteModal])
+    }, [token, callbackJdDetails, showEditModal])
 
     const getSkills = (skills) => {
         console.log(skills)
@@ -120,11 +120,11 @@ function JdDetails() {
                             oldJd={jd}
                         />
 
-                        <Title title={`Job Role: ${jd.position}`} />
+                        <Title title={`Job Details`} />
                         <Row>
                             <Col className='desc-container'>
-                                <div className='title'>
-                                    <h4 style={{ style: 'bold' }}>Description</h4>
+                                <div className='heading'>
+                                    <h4 style={{ style: 'bold' }}>{jd.position}</h4>
                                     <div className='icons'>
                                         <Button onClick={handleShowEditModal}><span><Edit /></span></Button>
                                         <Button onClick={handleShowDeleteModal}><span><DeleteOutline /></span></Button>
