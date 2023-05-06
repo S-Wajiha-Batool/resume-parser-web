@@ -3,7 +3,6 @@ import { VictoryChart, VictoryAxis, VictoryBar , VictoryPie, VictoryLabel } from
 import '../UI/dashboard.css'
 import { GlobalState } from '../../GlobalState';
 import { Row, Col } from 'react-bootstrap';
-
 import { getAllJdsAPI, getIncreasedJdsAPI, getJdCountForEachDeptAPI } from '../../API/JDAPI';
 import { getAllCvsAPI, getIncreasedCvsAPI, getHigestScoringCvsCountAPI, getCvDistributionAPI } from '../../API/CVAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
@@ -282,9 +281,9 @@ function Dashboard() {
             )}
         </div>
       </Row>
-      <Row  style={{ marginTop: '-20px' }}>
+      <Row>
         <div className = 'histogram-box'>
-  <h2 className='text1'>Resumes Score Distribution</h2>
+        <h2 className='text1'>Resumes Score Distribution</h2>
     {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
       <VictoryChart domainPadding={{ x: 20 }}>
         <VictoryAxis
