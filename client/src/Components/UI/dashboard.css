@@ -1,4 +1,3 @@
-/* Main container */
 
 
 /* Histogram box */
@@ -110,21 +109,22 @@ border-radius: 5px;
 
 @media (min-width: 992px) {
   .box {
-    width: calc(33.33% - 20px);
+    width: calc(33.33% - 40px);
   }
   
   .histogram-box {
-    width: 60%;
+    width: calc(58% - 40px);
     position: absolute;
     bottom: 0;
     left: 20px;
   }
   
   .pie-chart-box {
-  width: 35%;
+  width: calc(35% - 40px);
   position: absolute;
   bottom: 0;
-  right: 25px;
+  right: 30px;
+  margin: 20px;
   }
   
   .charts-container {
