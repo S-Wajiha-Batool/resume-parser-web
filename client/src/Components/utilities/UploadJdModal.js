@@ -157,7 +157,7 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
 
 
     return (
-        <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal show={showModal} onHide={handleCloseModal} centered>
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add Job Description</Modal.Title>
@@ -173,7 +173,10 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                             onChange={onChangeInput} />
                     </Form.Group>
                     <br />
-                    <Form.Group>
+                    
+                    <Row>
+                        <Col>
+                        <Form.Group>
                         <Form.Label className='form-label'>
                             Department</Form.Label>
                         <Form.Select
@@ -185,19 +188,21 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                             })}
                         </Form.Select>
                     </Form.Group>
-                    <br />
-                    <Row>
-                        <Form.Group>
-                            <Form.Label className='form-label'>Experience</Form.Label>
-                            <Form.Select
-                                name='experience'
-                                value={jd.experience}
-                                onChange={onChangeInput}>
-                                {experience.map((d, key) => {
-                                    return <option className='option' key={key} value={d}>{d}</option>;
-                                })}
-                            </Form.Select>
-                        </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group>
+                                <Form.Label className='form-label'>Experience</Form.Label>
+                                <Form.Select
+                                    name='experience'
+                                    value={jd.experience}
+                                    onChange={onChangeInput}>
+                                    {experience.map((d, key) => {
+                                        return <option className='option' key={key} value={d}>{d}</option>;
+                                    })}
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                        
                     </Row>
                     {/* <Col>
                             <Form.Group>

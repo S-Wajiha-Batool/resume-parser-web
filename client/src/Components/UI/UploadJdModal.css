@@ -8,19 +8,34 @@
   .MuiInput-underline:hover:not(.Mui-disabled):before{
     border-bottom: 0 !important;
 }
+
+.modal-dialog {
+  max-height: 80vh;
+}
+
 .modal-title {
   color: rgb(255, 255, 255);
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 25px;
-}
-.text3{
-  color: black;
 }
 
 .MuiAutocomplete-popper {
   overflow: hidden !important;
+}
+
+.custom-close-button button {
+  color: #fff;
+}
+
+.modal-body {
+  overflow-y: auto;
+  max-height: 75vh;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #2d2d2d
 }
 
 /* Style for the modal header */
@@ -61,9 +76,6 @@
 }
 
 /* Style for the spinner next to the form submit button */
-.spinner-border {
-  color: #007bff;
-}
 
 /* Style for the autocomplete input */
 .MuiAutocomplete-root .MuiAutocomplete-inputRoot {
