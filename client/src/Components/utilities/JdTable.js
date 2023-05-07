@@ -16,7 +16,7 @@ import DeleteModal from './DeleteModal';
 import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Delete';
 import '../UI/JdTable.css'
-import theme from '../theme/themeJD.js';
+import Title from './Title';
 
 const JdTable = (props) => {
     var moment = require('moment')
@@ -38,38 +38,34 @@ const JdTable = (props) => {
 
     const columns = [
         //{ title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
-        { title: "Position", field: "position", sorting: false, filtering: false, cellStyle: { fontWeight: "bold" }, headerStyle: { color: "black" }  },
+        { title: "Position", field: "position", sorting: false, cellStyle: { fontWeight: "bold" }, headerStyle: { color: "black" } , },
         { title: "Department", field: "department", filterPlaceholder: "filter" },
         {
             title: "Skills", field: "skills", grouping: false,
-            render: (rowData) => <ul>{getSkills(rowData.skills).length > 0 ? getSkills(rowData.skills).map((skill, index) => <li key={index}>{skill}</li>) : <div> - </div>}</ul>,
+            render: (rowData) => { return getSkills(rowData.skills).length > 0 ? <ul>{getSkills(rowData.skills).map((skill, index) => <li key={index}>{skill}</li>)}</ul> : <div>-</div>},
         },
         {
             title: "Experience", field: "experience",
             searchable: true, export: true
         },
         {
-            title: "Qualification", field: "qualification", render: (rowData) => <ul>
-                {rowData.qualification && Object.entries(rowData.qualification).length > 0 ?
-                    Object.entries(rowData.qualification).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)
+            title: "Qualification", field: "qualification", render: (rowData) => 
+                {return rowData.qualification && Object.entries(rowData.qualification).length > 0 ?
+                  <ul>{Object.entries(rowData.qualification).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
                     :
                     <div>-</div>}
-            </ul>, searchable: true, export: true
+            , searchable: true, export: true
         },
         {
-            title: "Universities", field: "universities", render: (rowData) => <ul>
-                {rowData.universities && Object.entries(rowData.universities).length > 0 ?
-                    Object.entries(rowData.universities).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)
+            title: "Universities", field: "universities", render: (rowData) => 
+                {return rowData.universities && Object.entries(rowData.universities).length > 0 ?
+                    <ul>{Object.entries(rowData.universities).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
                     :
-                    <div>-</div>}
-            </ul>, filterPlaceholder: "filter", searchable: true, export: true
+                    <div>-</div>},
+                    filterPlaceholder: "filter", searchable: true, export: true
         },
         { title: "Posted On", field: "createdAt", render: (rowData) => <div >{getDate(rowData)}</div> },
     ]
-
-    // useEffect(() => {
-    //     setTableData(data);
-    // }, [callback])
 
     const getSkills = (skills) => {
         console.log(skills)
@@ -87,7 +83,7 @@ const JdTable = (props) => {
   
 
     return (
-        <>
+        <div height='80%'>
           {/* edit modal */}
           {showEditModal && (
             <EditJdModal
@@ -102,11 +98,9 @@ const JdTable = (props) => {
             handleCloseModal={handleCloseDeleteModal}
             data={selectedItem}
             target={"jd"}
-          />
-      
+          />      
           <ThemeProvider theme={defaultMaterialTheme}>
             <MaterialTable
-              style={{ overflowY: "scroll" }}
               columns={columns}
               data={tableData}
               icons={tableIcons}
@@ -142,6 +136,8 @@ const JdTable = (props) => {
                 navigate(`/jd/${rowData._id}`);
               }}
               options={{
+                minBodyHeight: "60vh",
+                maxBodyHeight: "60vh",
                 sorting: false,
                 search: true,
                 searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
@@ -151,23 +147,22 @@ const JdTable = (props) => {
                 exportAllData: true,
                 exportButton: true,
                 columnsButton: true,
-                paging: true,
-            pageSize: 5,
-            pageSizeOptions: [],
-            paginationType: "normal",
-            showFirstLastPageButtons: false, paginationPosition: "bottom",
+                //paging: true,
+            //PageSize: '80%',
+            //pageSizeOptions: [],
+            //paginationType: "normal",
+            //showFirstLastPageButtons: false, paginationPosition: "bottom",
                 tableLayout: "auto",
-                maxHeight: "calc(100vh - 150px)",
+                //maxHeight: "calc(100vh - 150px)",
                 overflowY: "auto",
             headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif' },
-            actionsColumnIndex: -1,
             selection: false,
             rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : { background: "#00000" }
               }}
               title=""   
-            />
+              />
           </ThemeProvider>
-        </>
+        </div>
       );
     //     return (
     //         <Table>

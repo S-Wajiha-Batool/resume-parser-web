@@ -348,6 +348,7 @@ app = Flask(__name__)
   
 @app.route('/parse_cv', methods = ['POST']) 
 def parse_cv(): 
+    print('start')
     data = request.get_json() 
     print(data)
     result = []
@@ -388,7 +389,8 @@ def parse_cv():
 
         result.append({"full_name": name_modified, "phone_number": phone_number, "emails": emails, "skills": skills, "total_experience": total_experience,"experience_by_job": experience_by_job, "links": links })
     # Return data in json format 
-    print(result)
+    print('end')
+
     return json.dumps(result)
    
 @app.route('/match_cv', methods = ['POST']) 

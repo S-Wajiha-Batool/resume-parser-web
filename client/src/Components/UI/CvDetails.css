@@ -1,24 +1,48 @@
-.card {
-  background-color: #f0faff;
-  color: #003366;
-  font-size: smaller;
+.main-container {
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  table-layout: fixed;
 }
 
-.card-header {
-  background-color: #003366;
-  color: #f0faff;
-  font-size: medium;
+.description-container {
+  height: 80vh;
+  max-width: 100%;
+  overflow-y: auto;
+  border-radius: 5px;
+  border: 1px solid #d3d3d3;
+  padding: 10px;
 }
 
-.card-body {
-  background-color: white;
-  size: clac(100vh-100px);
+.pdf-container {
+  height: 80vh;
 }
 
-.card-text {
-  color: black;
-  font-size: 15px;
+.jd-row{
+  display: flex;
+  justify-content: space-between;
 }
+
+
+.heading {
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.key {
+  font-weight: bold;
+  color: #2d2d2d
+}
+
+.line {
+  color: #626262;
+}
+
+.line2 {
+  color: #d3d3d3;
+}
+
 .button1{
   size: 400px;
   background-color: #4a4b53;
@@ -31,18 +55,4 @@
 
 }
 
-/* media query for screens smaller than 768px */
-@media only screen and (max-width: 768px) {
-  .card {
-    font-size: smaller;
-    height: auto;
-  }
 
-  .card-body {
-    font-size: smaller;
-  }
-
-  .card-text {
-    font-size: smaller;
-  }
-}

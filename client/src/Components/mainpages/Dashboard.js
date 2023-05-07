@@ -3,7 +3,6 @@ import { VictoryChart, VictoryAxis, VictoryBar , VictoryPie, VictoryLabel } from
 import '../UI/dashboard.css'
 import { GlobalState } from '../../GlobalState';
 import { Row, Col } from 'react-bootstrap';
-
 import { getAllJdsAPI, getIncreasedJdsAPI, getJdCountForEachDeptAPI } from '../../API/JDAPI';
 import { getAllCvsAPI, getIncreasedCvsAPI, getHigestScoringCvsCountAPI, getCvDistributionAPI } from '../../API/CVAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
@@ -219,7 +218,7 @@ function Dashboard() {
     }
   }, [token, callbackCv])
 
-  const colorScale = [' #F5A623', '#50E3C2', '#9013FE', '#FF0000', '#800080', '#00BFFF'];
+  const colorScale = [' #73556E', '#9FA1A6', '#F2AA6B', '#F28F6B', '#D97373', '#00BFFF'];
 
   if (allJDs.length == 0)
     return (
@@ -229,9 +228,9 @@ function Dashboard() {
     )
 
   return (
-    <div className='dashboard-container'>
+    <div>
       <Title title={"Dashboard"}/>
-      <Row>
+      <Row >
         <div className = "box box-jd">
           <h2 className='text1'>Job Descriptions</h2>
           {isLoadingJds ? (<LoadingSpinner />) : successJds ? (
@@ -253,10 +252,13 @@ function Dashboard() {
             )}
         </div>
        
-        <div className= "box box-jd">
+        <div className= "box box-cv">
           <h2 className='text1'>Resumes</h2>
-          {isLoadingCvs ? (<LoadingSpinner />) : successCvs ? (<><p className='text2'>{allCvs.length}</p>
-            <p className='text2'>{increasedCvs >= 0 ? (
+          {isLoadingCvs ? (<LoadingSpinner />) : successCvs ? (
+          <>
+          <p className='text2'>{allCvs.length}</p>
+
+            <p>{increasedCvs >= 0 ? (
               <div>
                     <span className='text3'>{increasedCvs.toFixed(2)} % increase since last week</span> <ArrowIndicator value={1} />
               </div>
@@ -279,18 +281,16 @@ function Dashboard() {
             )}
         </div>
       </Row>
-      
-      <Row >
-      <Col md ={5} className = 'chart-box'>
-  <h2 className='text1'>Resumes Score Distribution</h2>
-  <div className='chart-container'>
+      <Row>
+        <div className = 'histogram-box'>
+        <h2 className='text1'>Resumes Score Distribution</h2>
     {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
       <VictoryChart domainPadding={{ x: 20 }}>
         <VictoryAxis
           style={{
             axis: { stroke: "black", strokeWidth: 2.5 },
             tickLabels: { 
-              fontSize: 7,
+              fontSize: 8,
               //textAnchor: 'e',
             },
             axisLabel: { 
@@ -324,21 +324,20 @@ function Dashboard() {
       : (
         'Unable to fetch data'
       )}
-  </div>
-</Col> 
-        <Col md= {5} className='chart-box'>
+      </div>
+      <div className='pie-chart-box'>
           <h2 className='text1'>Department-wise Job Descriptions</h2>
-          <div className="chart-container">
+        
             {isLoadingPie ? (<LoadingSpinner />) : successPie ? (
-              <VictoryPie data={pie} colorScale={colorScale} />
+              <VictoryPie  data={pie} colorScale={colorScale}/>
             )
               : (
                 'Unable to fetch data'
               )}
-          </div>
-        </Col>
+        </div>
       </Row>
-    </div>
+      </div>
+    
   )
 
 }

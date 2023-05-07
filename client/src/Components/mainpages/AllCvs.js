@@ -6,6 +6,7 @@ import { getAllCvsAPI } from '../../API/CVAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
+import Title from '../utilities/Title';
 
 function AllCvs() {
     const state = useContext(GlobalState);
@@ -46,13 +47,12 @@ function AllCvs() {
         isLoading ?
             <LoadingSpinner /> :
             success ?
-                <> <Container>
-                    <div className='text4'>
+                <> <div className='cv-container'>
+                    <Title title={"Resumes"}/>
                             <CvTable
                                 className='table'
                             />
-                    </div>
-                </Container>
+                </div>
                 </>
                 : "No Jds found"
     )

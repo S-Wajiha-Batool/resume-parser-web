@@ -19,6 +19,10 @@
   color: black;
 }
 
+.MuiAutocomplete-popper {
+  overflow: hidden !important;
+}
+
 /* Style for the modal header */
 .modal-header {
   background-color: #333333;
