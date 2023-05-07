@@ -34,8 +34,14 @@ function Dashboard() {
   const [count, setCount] = useState(0);
   const [pie, setPie] = useState([]);
   const [hist, setHist] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const maxY = Math.max(...hist.map(dataPoint => dataPoint.y));
+
+  useEffect(() => {
+    if (!isLoadingJds, !isLoadingCvs, !isLoadingCount, !isLoadingHist, !isLoadingPie)
+      setIsLoading(false)
+  },[isLoadingJds, isLoadingCvs, isLoadingCount, isLoadingHist, isLoadingPie])
 
   useEffect(() => {
     if (token) {
@@ -220,15 +226,15 @@ function Dashboard() {
 
   const colorScale = [' #73556E', '#9FA1A6', '#F2AA6B', '#F28F6B', '#D97373', '#00BFFF'];
 
-  if (allJDs.length == 0)
-    return (
-      <div className='dashboard-container'>
-        <div className='text2'> - No Job Descriptions Uploaded - </div>
-      </div>
-    )
+ 
 
   return (
-    <div>
+    isLoading ?
+            <LoadingSpinner /> :
+    allJDs.length == 0 ? <div className='dashboard-container'>
+    <div className='text2'> - No Job Descriptions Uploaded - </div>
+  </div> : 
+    <div className='dashboard-container'>
       <Title title={"Dashboard"}/>
       <Row >
         <div className = "box box-jd">
