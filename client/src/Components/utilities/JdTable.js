@@ -36,6 +36,10 @@ const JdTable = (props) => {
     const handleCloseEditModal = () => setShowEditModal(false);
     const handleShowEditModal = () => setShowEditModal(true);
 
+    const getDate = (d) => {
+      return moment(d).format("Do MMMM YYYY")
+  }
+
     const columns = [
         //{ title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
         { title: "Position", field: "position", sorting: false, cellStyle: { fontWeight: "bold" }, headerStyle: { color: "black" } , },
@@ -64,7 +68,7 @@ const JdTable = (props) => {
                     <div>-</div>},
                     filterPlaceholder: "filter", searchable: true, export: true
         },
-        { title: "Posted On", field: "createdAt", render: (rowData) => <div >{getDate(rowData)}</div> },
+        { title: "Posted On", field: "createdAt", render: (rowData) => <div >{getDate(rowData.createdAt)}</div> },
     ]
 
     const getSkills = (skills) => {
@@ -76,10 +80,7 @@ const JdTable = (props) => {
         return a;
     }
 
-    const getDate = (d) => {
-        return moment(d).format("Do MMMM YYYY")
-    }
-
+  
   
 
     return (

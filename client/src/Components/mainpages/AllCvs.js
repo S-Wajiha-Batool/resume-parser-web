@@ -49,6 +49,7 @@ function AllCvs() {
             success ?
                 <> <div className='cv-container'>
                     <Title title={"Resumes"}/>
+                    <div className='page-title'></div>
                             <CvTable
                                 className='table'
                             />

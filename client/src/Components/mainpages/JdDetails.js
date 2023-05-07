@@ -120,15 +120,18 @@ function JdDetails() {
                             oldJd={jd}
                         />
 
-                        <Title title={`Job Details`} />
+                        <div className='page-title'>
+                            <Title title={`Job Details`} />
+                            <div className='icons'>
+                                        <Button className = "custom-btn jd-btn" onClick={handleShowEditModal}><span><Edit className="icon-btn-class"/></span> Edit</Button>
+                                        <Button className = "custom-btn-sec jd-btn" onClick={handleShowDeleteModal}><span><DeleteOutline className="icon-btn-class"/></span> Delete</Button>
+                                    </div>
+                        </div>
+                        
                         <Row>
                             <Col className='desc-container'>
                                 <div className='heading'>
-                                    <h4 style={{ style: 'bold' }}>{jd.position}</h4>
-                                    <div className='icons'>
-                                        <Button onClick={handleShowEditModal}><span><Edit /></span></Button>
-                                        <Button onClick={handleShowDeleteModal}><span><DeleteOutline /></span></Button>
-                                    </div>
+                                    <h4 style={{ fontWeight: 'bold', marginBottom:0 }}>{jd.position}</h4>
                                 </div>
                                 <hr className='line' />
                                 <div className='details'>
@@ -153,7 +156,7 @@ function JdDetails() {
                                         <div>-</div>}</div>
                                     <hr className='line2' />
                                     <div className='key'>Skills: </div>
-                                    <div className='value'>{getSkills(jd.skills).length > 0 ? <ul>{getSkills(jd.skills).map((skill, index) => <li key={index}>{skill}</li>)}</ul> : <div> - </div>}</div>
+                                    <div className='value'>{getSkills(jd.skills).length > 0 ? <div id="tag-container">{getSkills(jd.skills).map((skill, index) => <span className="tag" key={index}>{skill}</span>)}</div> : <div> - </div>}</div>
                                     <hr className='line2' />
                                     <div className='key'>Posted By: </div>
                                     <div className='value'>{user.first_name + " " + user.last_name}</div>

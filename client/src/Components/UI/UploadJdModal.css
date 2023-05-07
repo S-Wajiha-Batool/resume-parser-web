@@ -78,10 +78,7 @@
 /* Style for the spinner next to the form submit button */
 
 /* Style for the autocomplete input */
-.MuiAutocomplete-root .MuiAutocomplete-inputRoot {
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-}
+
 
 /* Style for the autocomplete listbox */
 .MuiAutocomplete-listbox {

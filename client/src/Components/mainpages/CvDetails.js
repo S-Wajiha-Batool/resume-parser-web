@@ -83,18 +83,21 @@ function CvDetails() {
                         data={cv}
                         target={"cv"}
                     />
-                    <Title title={`CV Details`} />
+                    <div className='page-title'>
+                        <Title title={`CV Details`} />
+                        <div className='icons'>
+                            <Button className="custom-btn-sec jd-btn" onClick={handleShowDeleteModal}><span><DeleteOutline className="icon-btn-class" /></span> Delete</Button>
+                        </div>
+
+                    </div>
 
                     <Row>
                         <Col className='description-container'>
                             <div className='heading'>
-                                <h4 style={{ style: 'bold' }}>{cv.cv_original_name}</h4>
-                                <div className='icons'>
-                                    <Button onClick={handleShowDeleteModal}><span><DeleteOutline /></span></Button>
-                                </div>
+                                <h4 style={{ fontWeight: 'bold', marginBottom:0 }}>{cv.cv_original_name}</h4>
                             </div>
                             <hr className='line' />
-
+                            <div className='details'>
                             <div className='key'>Emails</div>
                             <div className="value">
                                 {cv.emails.length > 0 ? <ul>{cv.emails.map((email, index) =>
@@ -109,30 +112,30 @@ function CvDetails() {
 
                             <div className='key'>Experience</div>
                             <div className="value">
-                                
-                                    {cv.experience_by_job ? (
-                                        <ul>{Object.entries(cv.experience_by_job).map(([key, value]) => (
-                                            <li key={key}>
-                                                {key}: {value}
-                                            </li>
-                                        ))}</ul>
-                                    ) : (
-                                        <div>-</div>
-                                    )}
-                                    {cv.total_experience ? (
-                                        <li>Total: {cv.total_experience}</li>
-                                    ) : null}
-                                
+
+                                {cv.experience_by_job ? (
+                                    <ul>{Object.entries(cv.experience_by_job).map(([key, value]) => (
+                                        <li key={key}>
+                                            {key}: {value}
+                                        </li>
+                                    ))}</ul>
+                                ) : (
+                                    <div>-</div>
+                                )}
+                                {cv.total_experience ? (
+                                    <li>Total: {cv.total_experience}</li>
+                                ) : null}
+
                             </div>
                             <hr className='line2' />
 
                             <div className="key">Skills</div>
                             <div className="value">
                                 {cv.skills.length !== 0 ? (
-                                    <ul style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                                    <div id="tag-container" style={{ maxHeight: '200px', overflowY: 'auto' }}>
                                         {cv.skills.map((name, index) => (
-                                            <li key={index}>{name}</li>
-                                        ))}</ul>
+                                            <span className="tag" key={index}>{name}</span>
+                                        ))}</div>
                                 ) : (
                                     <div>-</div>)}
                             </div>
@@ -174,18 +177,22 @@ function CvDetails() {
                                             return (
                                                 <div key={jd.JD_ID} className='jd-row'>
                                                     <span onClick={() => navigate(`/jd/${jd.JD_ID}`)}>
-                                                        {jd.position} 
+                                                        <i>{jd.position}</i>
                                                     </span>
-                                                    <span>{jd.weighted_percentage} </span>
+                                                    <hr className='middle-line'/>
+                                                    <span>{jd.weighted_percentage} </span> 
                                                 </div>
                                             );
                                         })}
                                     </div>
                                 </>
+
                             )}
+                                </div>
+
                         </Col>
                         <Col className='pdf-container'>
-                            <iframe id='pdf-frame' src={require(`../../../../server/uploaded_CVs/${cv.cv_path.replace(/^.*[\\\/]/, '')}#toolbar=0`)} height="100%" />
+                            <iframe id='pdf-frame' src={require(`../../../../server/uploaded_CVs/${cv.cv_path.replace(/^.*[\\\/]/, '')}#toolbar=0`)} width="100%" overflowY="auto" height="100%"/>
                         </Col>
                     </Row>
 

@@ -56,14 +56,19 @@ function UploadJdModal({ showModal, handleCloseModal }) {
 
     const handleSubmit = (e) => {
         const form = e.currentTarget;
-        if (form.checkValidity() === false) {
+        /* if (form.checkValidity() === false) {
             e.preventDefault();
             e.stopPropagation();
         }
         setValidated(true);
-        console.log('in submit')
+        console.log('in submit') */
+        
         e.preventDefault()
-        try {
+        if (jd.position === "") {
+            showErrorToast("Position cannot be empty");
+        }
+        else {
+            try {
             setIsUploadingJd(true);
             addJdAPI(jd, token)
                 .then(res => {
@@ -88,44 +93,21 @@ function UploadJdModal({ showModal, handleCloseModal }) {
             showErrorToast("Error in CV upload")
             setIsUploadingJd(false)
         }
+        }
+        
 
     }
 
-
-    function useForkRef(refA, refB) {
-        return React.useMemo(() => {
-            if (refA == null && refB == null) {
-                return null;
-            }
-            return (refValue) => {
-                if (refA) {
-                    if (typeof refA === 'function') {
-                        refA(refValue);
-                    } else {
-                        refA.current = refValue;
-                    }
-                }
-                if (refB) {
-                    if (typeof refB === 'function') {
-                        refB(refValue);
-                    } else {
-                        refB.current = refValue;
-                    }
-                }
-            };
-        }, [refA, refB]);
-    }
-
-
-    const useStyles = makeStyles({
+    const useStyles = makeStyles((theme) => ({
         listbox: {
-          '&::-webkit-scrollbar': {
-            display: 'none',
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
+            '-ms-overflow-style': 'none',
+            scrollbarWidth: 'none',
           },
-          '-ms-overflow-style': 'none',
-          scrollbarWidth: 'none',
-        },
-      });
+      }));
+  
       const classes = useStyles();
 
 
@@ -143,7 +125,7 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
         <FixedSizeList height={height} itemCount={itemCount} itemSize={itemSize}>
           {({ index, style }) => (
             <div style={{ ...style, display: 'flex', alignItems: 'center' }}key={index} aria-selected={false} role="option">
-            {children[index]}
+            <div  style={{width: "100%"}}>{children[index]}</div>
           </div>
           )}
         </FixedSizeList>
@@ -152,13 +134,9 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
   );
 });
 
-      
-
-
-
     return (
         <Modal show={showModal} onHide={handleCloseModal} centered>
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form  onSubmit={handleSubmit}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add Job Description</Modal.Title>
                 </Modal.Header>
@@ -276,7 +254,6 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                                     {option.skill_name}
                                 </li>
                             )}
-                            style={{ width: 500 }}
                             ListboxComponent={ListboxComponent}
                             renderInput={(params) => (
                                 <TextField required {...params} placeholder="Skills" />
@@ -318,7 +295,7 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                     <br />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant='primary' type='submit' disabled={isUploadingJd} onClick={!isUploadingJd ? handleSubmit : null}>
+                    <Button className="custom-btn" variant='primary' type='submit' disabled={isUploadingJd} onClick={!isUploadingJd ? handleSubmit : null}>
                         {isUploadingJd && <Spinner
                             as="span"
                             animation="border"

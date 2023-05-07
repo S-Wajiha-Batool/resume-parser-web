@@ -110,6 +110,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
 
     const handleUploadPC = async (e) => {
         e.preventDefault()
+
         let formdata = new FormData();
         for (let i = 0; i < cvsPC.files.length; i++) {
             formdata.append(`files`, cvsPC.files[i])
@@ -142,8 +143,6 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                             setCallbackJdDetails(!callbackJdDetails)
                             showSuccessToast("CVs uploaded successfully")
                         })
-
-                    //this.tableRef.current.onQueryChange();
                 })
                 .catch(err => {
                     console.log(err)
@@ -253,7 +252,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
     const getFileNamesFromPC = () => {
         let rows = [];
         for (let i = 0; i < cvsPC.files.length; i++) {
-            rows.push(<div className='file_row'>
+            rows.push(<div className='file_row1'>
                 <span>
                     {cvsPC.files[i].name}
                 </span>
@@ -265,13 +264,13 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                 </span>}
             </div>)
         }
-        return <div>{rows}</div>
+        return <div className='filename-box'>{rows}</div>
     }
 
     const getFileNamesFromServer = () => {
         let rows = [];
         for (let i = 0; i < cvsServer.length; i++) {
-            rows.push(<div className='file_row'>
+            rows.push(<div className='file_row1'>
                 <span>
                     {cvsServer[i].cv_original_name}
                 </span>
@@ -328,16 +327,17 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                                 />
                                 <div className="file-box">
                                     <div className="file_row">
-                                        <span>
+                                        <span className='file-count'>
                                             {cvsPC.files.length == 0 && 'No files chosen'}
-                                            {cvsPC.files.length != 0 && `${cvsPC.files.length} files chosen`}
+                                            {cvsPC.files.length == 1 && `1 file chosen`}
+                                            {(cvsPC.files.length != 0 && cvsPC.files.length != 1) && `${cvsPC.files.length} files chosen`}
+
                                         </span>
                                         <span>
                                             <label htmlFor='files'>
-                                                <a className={`btn btn-primary ${!fileLimit ? '' : 'disabled'} `}>Upload Files</a>
+                                                <a className={`upload-cv-btn custom-btn-sec btn btn-primary ${!fileLimit ? '' : 'disabled'} `}>Upload Files</a>
                                                 {/* <Button type="button">Upload File</Button> */}
                                             </label>
-
                                         </span>
                                     </div>
                                     {
@@ -349,7 +349,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                             </Form.Group>
                         </Form>
                         <Modal.Footer>
-                            <Button variant='primary' type='submit' disabled={isParsing || isMatching || matchingDonePC} onClick={!isParsing && !isMatching ? handleUploadPC : null}>
+                            <Button className='custom-btn done-btn' variant='primary' type='submit' disabled={isParsing || isMatching || matchingDonePC || cvsPC.files.length == 0} onClick={!isParsing && !isMatching ? handleUploadPC : null}>
                                 {isParsing && <Spinner
                                     as="span"
                                     animation="border"
@@ -371,8 +371,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                         </Modal.Footer>
                     </Tab>
                     <Tab eventKey="server" title="From Server">
-                        <Row>
-
+                        <Row className='cv-dropdown'>
                             {!loading && <Autocomplete
                                 isOptionEqualToValue={(option, value) => option._id === value._id}
                                 multiple
@@ -398,12 +397,13 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                                             style={{ marginRight: 8 }}
                                             checked={selected}
                                         />
-                                        {console.log(selected)}
-                                        <div>{option.cv_original_name}
-                                        </div>
-                                        <a onClick={() => resetCvsPCOnClickingView(option)} href={require(`../../../../server/uploaded_CVs/${option.cv_path.replace(/^.*[\\\/]/, '')}`)} target="_blank"
+                                        <div className='file_row'>
+                                           <span>{option.cv_original_name}</span>
+                                        <span><a className="view-link" onClick={() => resetCvsPCOnClickingView(option)} href={require(`../../../../server/uploaded_CVs/${option.cv_path.replace(/^.*[\\\/]/, '')}`)} target="_blank"
                                             rel="noreferrer">View
-                                        </a>
+                                        </a> </span>
+                                        </div>
+                                        
                                     </li>
                                 )}
                                 style={{ width: 500 }}
@@ -416,7 +416,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                             getFileNamesFromServer()
                         }
                         <Modal.Footer>
-                            <Button variant='primary' type='submit' disabled={isMatching || matchingDoneServer} onClick={!isMatching ? handleUploadServer : null}>
+                            <Button className='custom-btn done-btn' variant='primary' type='submit' disabled={isMatching || matchingDoneServer || cvsServer.length==0} onClick={!isMatching ? handleUploadServer : null}>
                                 {isMatching && <Spinner
                                     as="span"
                                     animation="border"

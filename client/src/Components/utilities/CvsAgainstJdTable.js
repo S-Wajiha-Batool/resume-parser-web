@@ -32,7 +32,7 @@ const CvsAgainstJdTable = (props) => {
         { title: "Name", field: "full_name", sorting: false, filtering: false },
         { title: "Email", field: "emails", render: (rowData) => <ul>{rowData.emails.map((email, index) => <li key={index}>{email}</li>)}</ul> },
         { title: "Score", field: "weighted_percentage" },
-        { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
+        { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData.createdAt)}</div> },
     ]
 
     const getDate = (d) => {
@@ -68,6 +68,8 @@ const CvsAgainstJdTable = (props) => {
                         console.log(rowData);
                         navigate(`/cv/${rowData.CV_ID}`);
                     }}
+                    titleClassName="my-custom-title-class"
+
                     options={{
                         minBodyHeight: "60vh",
                         maxBodyHeight: "60vh",
