@@ -1,21 +1,20 @@
 /* Default styles */
-.dashboard-container {
+.dashboard-container { 
+  margin: 0 auto;
   padding: 20px;
   background-color: #ffffff;
-  table-layout: fixed;
-
+  height:100vh
 }
 .histogram-box {
   background-color: #ffffff;
   color: #000000;
   text-align: left;
   padding: 20px;
-  width: 52%;
+  width: calc(60% - 40px);
   box-sizing: border-box;
   box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
   border-radius: 5px;
-  margin-right: 20px;
-  margin: 20px;
+  margin: 10px;
 }
 
 .pie-chart-box {
@@ -23,12 +22,48 @@
   color: #000000;
   text-align: left;
   padding: 20px;
-  width: 33%;
+  width: 40%;
   box-sizing: border-box;
   box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
   border-radius: 5px;
+  margin: 10px;
+}
+
+.chart{
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  height: 100%;
+}
+
+.cont{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.row-1{
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 20px;
+}
+.row-2{
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  align-items: center;
   margin: 20px;
 }
+
+
+.box{
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
 
 .box-jd {
   background-color: #f7e1d3;
