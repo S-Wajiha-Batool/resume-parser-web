@@ -139,7 +139,7 @@ const CVController = {
                     full_name: cv.full_name,
                     phone_number: cv.phone_number,
                     emails: cv.emails,
-                    total_experience: cv.experience,
+                    total_experience: cv.total_experience,
                     experience_by_job: cv.experience_by_job,
                     //qualification: cv.qualification,
                     skills: cv.skills,

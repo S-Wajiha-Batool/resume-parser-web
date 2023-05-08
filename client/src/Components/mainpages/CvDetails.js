@@ -123,7 +123,7 @@ function CvDetails() {
                                     <div>-</div>
                                 )}
                                 {cv.total_experience ? (
-                                    <li>Total: {cv.total_experience}</li>
+                                    <div>Total: {cv.total_experience}</div>
                                 ) : null}
 
                             </div>
