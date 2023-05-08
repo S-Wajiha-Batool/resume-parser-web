@@ -1,219 +1,243 @@
 #header {
-    position: absolute;
-    width: 220px;
-    color: #fff;
-  }
-  
-  #header .pro-sidebar-header {
-    display: flex;
-    justify-content: inherit;
-  }
-  
-  #header .pro-sidebar {
-    width: 100%;
-    min-width: 100%;
-    height: 100vh;
-    background-color: #333333;
-  }
-  
-  #header .pro-sidebar.collapsed {
-    width: 80px;
-    min-width: 80px;
-    box-shadow: none;
-  }
-  
-  #header .pro-sidebar-inner {
-    background-color: transparent;
-  }
-  
-  #header .pro-sidebar-layout {
-    overflow-y: hidden;
-    height: 100vh;
-  }
-  
-  #header .pro-sidebar-layout .logotext {
-    font-size: 23px;
-    padding: 20px;
-    font-weight: bold;
-    color: #ffffff;
-    margin-left: 35px;
-  }
-  
-  #header .pro-sidebar-layout ul {
-    padding: 0;
-  }
-  
-  #header .pro-sidebar-layout ul .pro-inner-item {
-    color: #ffffff;
-    margin: 10px 0;
-    margin-bottom: auto;
-    font-weight: bold;
-  }
-  
-  #header .pro-sidebar-layout ul .pro-inner-item .pro-icon-wrapper {
-    background-color: #4a4a4a;
-    color: #ffffff;
-  }
-  
-  #header .pro-sidebar-layout ul .pro-inner-item .pro-icon-wrapper .pro-item-content {
-    color: #ffffff;
-  }
-  
-  #header .pro-sidebar-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
-  
-  #header .pro-sidebar-footer .pro-inner-item {
-    color: #ffffff;
-    font-weight: bold;
-  }
-  
-  #header .pro-sidebar-footer .pro-inner-item .pro-icon-wrapper {
-    background-color: #4a4a4a;
-    color: #ffffff;
-  }
-  
-  #header .pro-sidebar-footer .pro-inner-item .pro-icon-wrapper .pro-item-content {
-    color: #ffffff;
-    padding: auto;
-  }
-  
-  /* Menu item styles */
-  .menu-icon {
-    /* position: fixed;
+  position: absolute;
+  width: 220px;
+  color: #fff;
+}
+
+#header .pro-sidebar-header {
+  display: flex;
+  justify-content: inherit;
+  height: 76px;
+}
+
+#header .pro-sidebar {
+  width: 100%;
+  min-width: 100%;
+  height: 100vh;
+  background-color: #333333;
+}
+
+#header .pro-sidebar.collapsed {
+  width: 80px;
+  min-width: 80px;
+  box-shadow: none;
+}
+
+#header .pro-sidebar-inner {
+  background-color: transparent;
+}
+
+#header .pro-sidebar-layout {
+  overflow-y: hidden;
+  height: 100vh;
+}
+
+#header .pro-sidebar-layout .logotext {
+  font-size: 23px;
+  padding: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-left: 35px;
+}
+
+#header .pro-sidebar-layout ul {
+  padding: 0;
+}
+
+#header .pro-sidebar-layout ul .pro-inner-item {
+  color: #ffffff;
+  margin: 10px 0;
+  margin-bottom: auto;
+  font-weight: bold;
+}
+
+#header .pro-sidebar-layout ul .pro-inner-item .pro-icon-wrapper {
+  background-color: #4a4a4a;
+  color: #ffffff;
+}
+
+#header .pro-sidebar-layout ul .pro-inner-item .pro-icon-wrapper .pro-item-content {
+  color: #ffffff;
+}
+
+#header .pro-sidebar-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+#header .pro-sidebar-footer .pro-inner-item {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+#header .pro-sidebar-footer .pro-inner-item .pro-icon-wrapper {
+  background-color: #4a4a4a;
+  color: #ffffff;
+}
+
+#header .pro-sidebar-footer .pro-inner-item .pro-icon-wrapper .pro-item-content {
+  color: #ffffff;
+  padding: auto;
+}
+
+/* Menu item styles */
+.menu-icon {
+  /* position: fixed;
     width: 15px;
     height: 15px;
     margin-top: 2px;
     margin-bottom: 15px; */
-    position: fixed;
-    width: 30px;
-    height: 30px;
-    margin-bottom: auto;
-    margin-top: auto;
-    color: #ffffff;
-    margin-bottom: 5px;
-  }
-
-  .close-icon{
-    position: fixed;
-    width: 15px;
-    height: 15px;
-    margin-top: 2px;
-    margin-bottom: 15px; 
-  }
-
-  .home-icon {
-    position: fixed;
-    width: 30px;
-    height: 30px;
-    margin-bottom: auto;
-    margin-top: auto;
-    color: #ffffff;
-    margin-bottom: 5px;
-  }
-  
-  .JD-icon {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    margin-bottom: 5px;
-  }
-  
-  .CV-icon {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    margin-top: auto;
-    margin-bottom: auto;
-  }
-  
-  .logout-icon {
-    position: absolute;
-    width: 38px;
-    height: 38px;
-    margin-top: auto;
-    margin-bottom: auto;
-  }
-  
-  .text {
-    color: #ffffff;
-    text-align: end;
-    margin-top: 7px;
-    margin-bottom: 5px;
-    margin-left: 50px;
-  }
-  .active-menu {
-    background-color: rgba(255, 255, 255, 0.384);
-    /* other styles for the active state */
-  }
-  
-  /* Menu item hover styles */
-  #header .pro-menu .pro-menu-item:hover {
-    background-color: #4a4a4a;
-  }
-  
-  #header .pro-menu .pro-menu-item:hover .text {
-    color: #ffffff !important;
-  }
-  
-  
-  #header .pro-menu .pro-menu-item:hover .pro-icon-wrapper .pro-item-content {
-    color: #4a4a4a !important;
-  }
-  
-  /* Menu item active styles */
-  #header .pro-menu .pro-menu-item.active {
-    background-color:  rgba(0, 0, 0, 0.6); 
-    color: #4a4a4a;
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  margin-bottom: auto;
+  margin-top: auto;
+  color: #ffffff;
+  margin-bottom: 5px;
 }
+
+.pro-menu {
+  width: 100%
+}
+
+.pro-item-content {
+  flex-grow: 0 !important;
+  flex-shrink: 0;
+  height:30px;
+}
+
+.pro-inner-item {
+  margin:0;
+}
+
+.close-icon {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  margin-bottom: auto;
+  margin-top: auto;
+  margin-left: 20px;
+  color: #ffffff;
+  margin-bottom: 0.833px;
+}
+
+.home-icon {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  margin-bottom: auto;
+  margin-top: auto;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.JD-icon {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 5px;
+}
+
+.CV-icon {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.logout-icon {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.text {
+  color: #ffffff;
+  text-align: end;
+  margin-top: 7px;
+  margin-bottom: 5px;
+  margin-left: 50px;
+}
+
+.active-menu {
+  background-color: rgba(255, 255, 255, 0.384);
+  /* other styles for the active state */
+}
+
+/* Menu item hover styles */
+#header .pro-menu .pro-menu-item:hover {
+  background-color: #4a4a4a;
+}
+
+#header .pro-menu .pro-menu-item:hover .text {
+  color: #ffffff !important;
+}
+
+
+#header .pro-menu .pro-menu-item:hover .pro-icon-wrapper .pro-item-content {
+  color: #4a4a4a !important;
+}
+
+/* Menu item active styles */
+#header .pro-menu .pro-menu-item.active {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #4a4a4a;
+}
+
 #header .pro-sidebar.collapsed {
-    width: 80px;
-    min-width: 80px;
-    box-shadow: none;
-  }
-  
-  #header .pro-sidebar.collapsed .pro-menu-item-text {
-    display: none;
-  }
-  
-  #header .pro-sidebar.collapsed .home-icon,
-  #header .pro-sidebar.collapsed .JD-icon,
-  #header .pro-sidebar.collapsed .CV-icon,
-  #header .pro-sidebar.collapsed .logout-icon {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  #header .pro-sidebar.collapsed .home-icon {
-    top: 8px;
-  }
-  
-  #header .pro-sidebar.collapsed .JD-icon {
-    top: 8px;
-  }
-  
-  #header .pro-sidebar.collapsed .CV-icon {
-    top: 8px;
-  }
-  
-  #header .pro-sidebar.collapsed .logout-icon {
-    bottom: 8px;
-  }
-  .sidebar {
-    position: fixed;
-    top: 30%;
-    right: 0;
-    width: 20%;
-  }
-  .translucent-shade {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Change the alpha value to adjust the level of transparency */
-    z-index: 999; /* Make sure the shade is positioned behind the sidebar */
-  }
+  width: 80px;
+  min-width: 80px;
+  box-shadow: none;
+}
+
+#header .pro-sidebar.collapsed .pro-menu-item-text {
+  display: none;
+}
+
+#header .pro-sidebar.collapsed .home-icon,
+#header .pro-sidebar.collapsed .JD-icon,
+#header .pro-sidebar.collapsed .CV-icon,
+#header .pro-sidebar.collapsed .logout-icon {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#header .pro-sidebar.collapsed .home-icon {
+  top: 8px;
+}
+
+#header .pro-sidebar.collapsed .JD-icon {
+  top: 8px;
+}
+
+#header .pro-sidebar.collapsed .CV-icon {
+  top: 8px;
+}
+
+#header .pro-sidebar.collapsed .logout-icon {
+  bottom: 8px;
+}
+
+.sidebar {
+  position: fixed;
+  top: 30%;
+  right: 0;
+  width: 20%;
+}
+
+.translucent-shade {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* Change the alpha value to adjust the level of transparency */
+  z-index: 999;
+  /* Make sure the shade is positioned behind the sidebar */
+}

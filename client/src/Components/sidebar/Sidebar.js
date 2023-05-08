@@ -70,11 +70,9 @@ const Sidebar = () => {
                         </Menu>):( 
                             
                         <>
-                        <div onClick={menuIconClick}> 
+                        <div className='heading' onClick={menuIconClick}> 
                         <img className='close-icon' src={close_icon} alt='MENU'/></div>
-                         <div>
-                            <p className='logotext'>Parser</p>
-                        </div>
+                            <div className='logotext'>Parser</div>
                         </>)}
                     </SidebarHeader>
                     <SidebarContent>
