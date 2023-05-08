@@ -2,38 +2,55 @@
   margin: 0 auto;
   padding: 20px;
   background-color: #ffffff;
-  table-layout: fixed;
+  height:100vh
+  
+}
+
+.cont{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.row-1{
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.row-2 {
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-content: center;
+  height: auto;
+  margin: 0 auto;
 }
 
 /* Histogram box */
 .histogram-box {
   background-color: #ffffff;
   color: #000000;
-  text-align: left;
   padding: 20px;
-  width: calc(60%-100px);
   text-align: center;
   box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
   border-radius: 5px;
-  height: 65%;
-  margin: 20px;
-  margin-left: 80px;
+  margin: 20px auto; /* center the box horizontally */
+
 }
 
 /* Pie chart box */
-.pie-chart-box 
-{
+.pie-chart-box {
   background-color: #ffffff;
   color: #000000;
   text-align: left;
   padding: 20px;
-  width: calc(35%-150px);
   text-align: center;
   box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
   border-radius: 5px;
-  height: 65%;
-  margin: 20px;
-  margin-left: 10px;
+  margin: 20px auto; /* center the box horizontally */
 }
 
 
@@ -88,30 +105,29 @@ border-radius: 5px;
 }
 
 .text3 {
-  color:rgb(75, 73, 73);
-  font-size: 16px;
-  font-weight: none;
-  background-color: #ececec;
+  color:rgb(68, 67, 67);
+  font-size: 14px;
+  font-weight: 300px;
+  background-color: #ececec70;
   border-radius: 5px;
   padding: 3px;
   font-style: italic;
 }
 
-.positive{
-  background-color: green;
-  align-items: center;
-  font-size: 24px;
-  display: inline;
-}
-.negative{
-  background-color: red;
-  align-items: center;
-  font-size: 32px;
-  display: inline;
+.box{
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
 }
 
+.chart{
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  height: 100%;
+}
 
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
   .box {
     width: calc(33.33% - 40px);
   }
@@ -134,5 +150,5 @@ border-radius: 5px;
   .charts-container {
   margin-top: 0;
   }
-  }
+  } */
 

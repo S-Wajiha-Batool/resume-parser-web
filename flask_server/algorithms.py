@@ -208,7 +208,8 @@ def calculate_experience_for_each_job(dates_and_text):
             previous_date = date
         else:
             experience = (date - previous_date).days / 365
-            if title != '' and experience !=0:
+            if title != '' and experience!=0:
+                print(f"Experience as {title}: {experience:.2f} years")
                 experience_dict[title] = experience
             total_experience += experience
             previous_date = date
@@ -250,12 +251,15 @@ def exp_matching(cv_data, jd_data):
     if 'experience' not in jd_data:
         return 0
     
-    exp_JD = float(jd_data["experience"].split()[0])
-
-    
-    exp_CV = float(cv_data["total_experience"])
-    if exp_CV is None:
+    if jd_data['experience'] == 'None':
         return 0
+
+    exp_JD = float(jd_data["experience"].split()[0])
+   
+    if 'total_experience' not in cv_data:
+        return 0
+
+    exp_CV = float(cv_data["total_experience"])
     # Calculate the percentage of matching experience
     match_percentage = (exp_CV / exp_JD) 
 
@@ -360,11 +364,10 @@ def parse_cv():
     data = request.get_json() 
     result = []
     for file in data:
-        text:str = extract_text_from_pdf('../server/uploaded_CVs/' + file).lower()
+        text:str = extract_text_from_pdf('../server/uploaded_CVs/' + file)
+        print(text)
         dates:list = extract_dates(text)
         #years_of_exp = calculate_experience(dates)
-        total_experience = calculate_experience_for_each_job(extract_dates_and_text(text))
-        print('te', total_experience)
         experience_by_job, total_experience = calculate_experience_for_each_job(extract_dates_and_text(text))
         print(experience_by_job, total_experience)
         name_modified = extract_names_modified(nlp, text)
@@ -376,6 +379,7 @@ def parse_cv():
         if(len(skills)==0):
             skill_extractor = SkillExtractor(nlp, SKILL_DB, PhraseMatcher)
             skills = skill_extractor.annotate(text)
+        skills = list(set([for skill in skills skill.lower()]))
         links = extract_links(text)
     
 

@@ -232,11 +232,12 @@ function Dashboard() {
     isLoading ?
             <LoadingSpinner /> :
     allJDs.length == 0 ? <div className='dashboard-container'>
-    <div className='text2'> - No Job Descriptions Uploaded - </div>
+    <div className='text3'> - No Job Descriptions Uploaded - </div>
   </div> : 
     <div className='dashboard-container'>
       <Title title={"Dashboard"}/>
-      <Row >
+      <div className='cont'>
+      <div className='row-1' >
         <div className = "box box-jd">
           <h2 className='text1'>Job Descriptions</h2>
           {isLoadingJds ? (<LoadingSpinner />) : successJds ? (
@@ -286,12 +287,12 @@ function Dashboard() {
               'Unable to fetch data'
             )}
         </div>
-      </Row>
-      <Row>
-        <div className = 'histogram-box'>
+      </div>
+      <div className='row-2'>
+        <div className = 'chart histogram-box'>
         <h2 className='text1'>Resumes Score Distribution</h2>
     {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
-      <VictoryChart domainPadding={{ x: 20 }}>
+      <VictoryChart domainPadding={{ x: 20 }} >
         <VictoryAxis
           style={{
             axis: { stroke: "black", strokeWidth: 2.5 },
@@ -331,9 +332,8 @@ function Dashboard() {
         'Unable to fetch data'
       )}
       </div>
-      <div className='pie-chart-box'>
-          <h2 className='text1'>Department-wise Job Descriptions</h2>
-        
+      <div className='chart pie-chart-box'>
+          <h2 className='text1'>Department-wise Job Descriptions</h2>        
             {isLoadingPie ? (<LoadingSpinner />) : successPie ? (
               <VictoryPie  data={pie} colorScale={colorScale}/>
             )
@@ -341,7 +341,8 @@ function Dashboard() {
                 'Unable to fetch data'
               )}
         </div>
-      </Row>
+      </div>
+      </div>
       </div>
     
   )

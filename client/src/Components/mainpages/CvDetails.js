@@ -112,15 +112,14 @@ function CvDetails() {
 
                             <div className='key'>Experience</div>
                             <div className="value">
-
-                                {cv.experience_by_job ? (
+                                {Object.keys(cv.experience_by_job).length !== 0 ? (
                                     <ul>{Object.entries(cv.experience_by_job).map(([key, value]) => (
                                         <li key={key}>
                                             {key}: {value}
                                         </li>
                                     ))}</ul>
                                 ) : (
-                                    <div>-</div>
+                                    null
                                 )}
                                 {cv.total_experience ? (
                                     <div>Total: {cv.total_experience}</div>
