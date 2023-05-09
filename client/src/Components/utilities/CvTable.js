@@ -31,18 +31,39 @@ const CvTable = (props) => {
   const [tableData, setTableData] = state.CVAPI.tableData
   const [token] = state.UserAPI.token;
   const columns = [
-    { title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { fontWeight: "bold" }, headerStyle: { color: "black" } },
     {
-      title: "Experience", field: "total_experience",
-      searchable: true, export: true
+      title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: {
+        fontWeight: "bold", textAlign: 'center',
+        verticalAlign: 'middle'
+      }, headerStyle: { color: "black" }
     },
     {
-      title: "Links", field: "links", render: (rowData) => <ul>
+      title: "Email", field: "emails", cellStyle: {
+          textAlign: 'center',
+          verticalAlign: 'middle'
+      }, render: (rowData) => { return rowData.emails.length > 0 ? (<div>{rowData.emails[0]}</div>) : <div>-</div> }
+  },
+  {
+    title: "Contact#", field: "phone_number", cellStyle: {
+        textAlign: 'center',
+        verticalAlign: 'middle'
+    }, render: (rowData) => { return rowData.phone_number ? (<div>{rowData.phone_number}</div>) : <div>-</div> }
+},
+    {
+      title: "Links", field: "links", cellStyle: {
+        textAlign: 'center',
+        verticalAlign: 'middle'
+      }, render: (rowData) => <ul>
         {rowData.links.map((name, index) => <li key={index}><a href={name}>{name}</a></li>)}
       </ul>, searchable: true, export: true
 
     },
-    { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData.createdAt)}</div> },
+    {
+      title: "Posted On", field: "createdAt", cellStyle: {
+        textAlign: 'center',
+        verticalAlign: 'middle'
+      }, render: (rowData) => <div>{getDate(rowData.createdAt)}</div>
+    },
   ]
 
   const getDate = (d) => {
@@ -54,7 +75,7 @@ const CvTable = (props) => {
       <DeleteModal showModal={showDeleteModal} handleCloseModal={handleCloseDeleteModal} data={selectedItem} target={"cv"} />
       <ThemeProvider theme={customTheme}>
         <MaterialTable columns={columns} data={tableData} icons={tableIcons}
-        style={{fontFamily: 'Open Sans, sans-serif'}}
+          style={{ fontFamily: 'Open Sans, sans-serif' }}
           actions={[
             {
               icon: () => <DeleteOutline />,
@@ -79,7 +100,7 @@ const CvTable = (props) => {
             searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
             filtering: false,
             paging: true,
-            pageSize: 5,
+            pageSize: 10,
             pageSizeOptions: [],
             paginationType: "normal",
             showFirstLastPageButtons: false, paginationPosition: "bottom", exportButton: true,
@@ -92,8 +113,9 @@ const CvTable = (props) => {
             grouping: false,
             columnsButton: true,
             //rowStyle: (data, index) => index % 2 !== 0 ? { background: "#d3d3d3 " } : null,
-            rowStyle:  { background: "#00000" },
-            headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif' },
+            rowStyle: { background: "#00000" },
+            headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif',textAlign: 'center',
+            verticalAlign: 'middle'},
             actionsColumnIndex: -1,
             selection: false,
             rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : null,

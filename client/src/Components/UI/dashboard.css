@@ -249,7 +249,7 @@ margin: 20px;
   flex-direction: row;
   margin-bottom: 30px; 
   margin: 10px;
-  align-items: initial;
+  align-items: center;
 }
 
 .row-2 {
@@ -261,8 +261,8 @@ margin: 20px;
 
 .chart {  
   border: 1px solid #ccc;
-  height: auto;
-  width: 48%;
+  height: 100%;
+  width: 45%;
 }
 
 .histogram-box {

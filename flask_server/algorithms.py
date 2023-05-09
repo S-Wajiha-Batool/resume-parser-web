@@ -410,14 +410,104 @@ def parse_cv():
 def match_cv(): 
     data = request.get_json() 
     print(data)
-    jd =  data['jd']
-    result = []
-    for cv in data['cvs']:
-        text:str = extract_text_from_pdf('../server/' + cv['cv_path']).lower()
-        score:float = bigboy(text, cv, jd)
-        result.append(score)
+    jd_data =  data['jd']
+    cv_data_array = data['cvs']
+
+    final_scores = []
+    for cv_data in cv_data_array:
+        scores = {}
+        resume_text:str = extract_text_from_pdf('../server/' + cv_data['cv_path'])
+        skills_match_score = 0
+
+        if 'skills' in jd_data:
+            for skill in jd_data["skills"]:
+                for surface_form in skill["low_surface_forms"]:
+                    for cv_skill in cv_data["skills"]:
+                        match_score = fuzz.token_set_ratio(surface_form, cv_skill)
+                        if match_score > skills_match_score:
+                            skills_match_score = match_score
+                if(skills_match_score>100):
+                    scores["skills"] = 100
+                scores["skills"] = skills_match_score
+        else:
+            scores["skills"] = 100
+        
+        if 'universities' in jd_data:
+            jd_universities = jd_data["universities"]
+            matched_universities = set()
+            for uni_key, uni_value in jd_universities.items():
+                pattern = r"\b" + re.escape(uni_value) + r"\b"
+                if re.search(pattern, resume_text, re.IGNORECASE):
+                    matched_universities.add(uni_key)
+                pattern = r"\b" + re.escape(uni_key) + r"\b"
+                if re.search(pattern, resume_text, re.IGNORECASE):
+                    matched_universities.add(uni_key)
+            if matched_universities:
+                scores["universities_match_score"] = 100
+            else:
+                scores["universities_match_score"] = 0
+        else:
+            scores["universities_match_score"] = 100
+
+        experience_match_score = 50
+        jd_experience = 0
+
+        if 'experience' in jd_data:
+            if jd_data["experience"].startswith("10+"):
+                jd_experience = 10
+            else:
+                try:
+                    jd_experience = int(jd_data["experience"].split()[0])
+                except ValueError:
+                    jd_experience = 0
+        else:
+            jd_experience = 0
+
+        if(jd_experience>0):
+            if(cv_data['total_experience']/jd_experience>0.75):
+                experience_match_score = 100
+            
+            if(cv_data['total_experience']/jd_experience<0.30):
+                experience_match_score = 30
+        
+            scores['experience_match_score'] = experience_match_score
+        else:
+            scores['experience_match_score'] = 100
+
+        if 'qualification' in jd_data:
+            jd_qualifications = jd_data["qualification"]
+            matched_quals = set()
+            for qual_key, qual_value in jd_qualifications.items():
+                for line in resume_text.split('\n'):
+                    ratio = fuzz.token_set_ratio(line, qual_value)
+                    if ratio >= 80:
+                        matched_quals.add(qual_key)
+                        break
+                for word in line.split():
+                    ratio = fuzz.token_set_ratio(word, qual_key)
+                    if ratio >= 80:
+                        matched_quals.add(qual_key)
+                        break
+                        
+            if matched_quals:
+                scores['qualification_match_score'] = 100
+            else:
+                scores['qualification_match_score'] = 0
+                scores['qualification_match_score'] = scores['qualification_match_score'] * 0.5
+        else:
+            scores['qualification_match_score'] = 100
+        
+        total_score = 0
+        for key, value in scores.items():
+            total_score += value
+        total_score = total_score / (len(scores) * 100) * 100
+
+        scores["total_score"] = round(total_score)
+        final_scores.append(round(total_score))
+
+
     # Return data in json format 
-    return json.dumps(result)
+    return json.dumps(final_scores)
 
 if __name__ == "__main__": 
     app.run(port=5000, debug=True)

@@ -115,15 +115,15 @@ function CvDetails() {
                                     {Object.keys(cv.experience_by_job).length !== 0 ? (
                                         <ul>{Object.entries(cv.experience_by_job).map(([key, value]) => (
                                             <li key={key}>
-                                                <span className='job'>{key}</span> - {Math.round((value * 12)) == 1 && <span> {Math.round((value * 12))} month</span>} {Math.round((value * 12)) != 1 && <span> {Math.round((value * 12))} months</span>}
+                                                <span>{key}</span> - {Math.round((value * 12)) == 1 && <span> <b>{Math.round((value * 12))} month</b></span>} {Math.round((value * 12)) != 1 && <span> <b>{Math.round((value * 12))} months</b></span>}
                                             </li>
                                         ))}</ul>
                                     ) : (
                                         null
                                     )}
                                     {cv.total_experience ?
-                                        (Math.round(cv.total_experience * 12) === 1 ? <span className='total-exp'>Total exp: {Math.round(cv.total_experience * 12)} month</span>
-                                            : <span className='total-exp'>Total exp: {Math.round(cv.total_experience * 12)} months</span>)
+                                        (Math.round(cv.total_experience * 12) === 1 ? <span className='total-exp'>Total exp: <b>{Math.round(cv.total_experience * 12)} month</b></span>
+                                            : <span className='total-exp'>Total exp: <b>{Math.round(cv.total_experience * 12)} months</b></span>)
                                         : null}
 
                                 </div>
@@ -181,7 +181,7 @@ function CvDetails() {
                                                         </span>
                                                         <span className='middle-line-span'>
                                                         <hr className='middle-line' /></span>
-                                                        <span className='perc'>{jd.weighted_percentage} </span>
+                                                        <span className='perc'>{jd.weighted_percentage} %</span>
                                                     </div>
                                                 );
                                             })}

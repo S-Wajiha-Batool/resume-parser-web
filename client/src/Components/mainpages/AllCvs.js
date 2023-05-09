@@ -31,8 +31,8 @@ function AllCvs() {
                     .catch(err => {
                         console.log(err.response.data.error.msg)
                         if (err.response.data.error.code == 500) {
-                        showErrorToast("CV fetching failed")
-                    }
+                            showErrorToast("CV fetching failed")
+                        }
                     })
                     .finally(() => {
                         setIsLoading(false);
@@ -48,11 +48,10 @@ function AllCvs() {
             <LoadingSpinner /> :
             success ?
                 <> <div className='cv-container'>
-                    <Title title={"Resumes"}/>
-                    <div className='page-title'></div>
-                            <CvTable
-                                className='table'
-                            />
+                    <div className='page-title'><Title title={"Resumes"} /></div>
+                    <CvTable
+                        className='table'
+                    />
                 </div>
                 </>
                 : "No Jds found"

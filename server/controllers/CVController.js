@@ -146,7 +146,8 @@ const CVController = {
                     //universities: cv.universities,
                     links: cv.links,
                     cv_path: req.files[index].path,
-                    cv_original_name: req.files[index].originalname
+                    cv_original_name: req.files[index].originalname,
+                    insertion_order: index 
                     //cv_name: req.files[index].name
                 });
 
@@ -158,6 +159,8 @@ const CVController = {
             }))
 
             await Promise.all(promisess)
+            saved_CVs.sort((a, b) => a._id.getTimestamp() - b._id.getTimestamp());
+            saved_CVs.sort((a, b) => a.insertion_order - b.insertion_order);
 
             return res.status(200).json({ error: { code: null, msg: null }, data: { cvs: saved_CVs } });
 
@@ -234,6 +237,7 @@ const CVController = {
             }))
 
             await Promise.all(promises)
+
             return res.status(200).json({ error: { code: null, msg: null }, data: data });
 
         } catch (err) {

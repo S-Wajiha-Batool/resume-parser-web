@@ -26,13 +26,38 @@ const CvsAgainstJdTable = (props) => {
     const [deleting, setDeleting] = useState(false)
     const state = useContext(GlobalState);
     const [token] = state.UserAPI.token;
-    const [cvAgainstJdTableData, setAgainstJdTableData] = state.CVAPI.cvAgainstJdTableData;
+    const [cvAgainstJdTableData, setCvAgainstJdTableData] = state.CVAPI.cvAgainstJdTableData;
     const columns = [
-        { title: "Rank", cellStyle: { fontWeight: "bold" }, render: (rowData) => rowData.tableData.id + 1 },
-        { title: "Name", field: "full_name", sorting: false, filtering: false },
-        { title: "Email", field: "emails", render: (rowData) => {return rowData.emails.length > 0 ? (<div>{rowData.emails[0]}</div>) : <div>-</div>} },
-        { title: "Score", field: "weighted_percentage" },
-        { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData.createdAt)}</div> },
+        {
+            title: "Rank", cellStyle: {
+                textAlign: 'center',
+                verticalAlign: 'middle', fontWeight: "bold"
+            }, render: (rowData) => rowData.tableData.id + 1
+        },
+        {
+            title: "Name", field: "full_name", cellStyle: {
+                textAlign: 'center',
+                verticalAlign: 'middle'
+            }, sorting: false, filtering: false
+        },
+        {
+            title: "Email", field: "emails", cellStyle: {
+                textAlign: 'center',
+                verticalAlign: 'middle'
+            }, render: (rowData) => { return rowData.emails.length > 0 ? (<div>{rowData.emails[0]}</div>) : <div>-</div> }
+        },
+        {
+            title: "Score", field: "weighted_percentage", cellStyle: {
+                textAlign: 'center',
+                verticalAlign: 'middle'
+            }, render: (rowData) => {return <div style={{fontWeight:'500'}}>{rowData.weighted_percentage} %</div>},
+        },
+        {
+            title: "Posted On", field: "createdAt", cellStyle: {
+                textAlign: 'center',
+                verticalAlign: 'middle'
+            }, render: (rowData) => <div>{getDate(rowData.createdAt)}</div>
+        },
     ]
 
     const getDate = (d) => {
@@ -76,13 +101,14 @@ const CvsAgainstJdTable = (props) => {
                         sorting: true, search: true,
                         searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
                         paging: true,
-                        pageSize: 5,
+                        pageSize: 10,
                         pageSizeOptions: [],
                         paginationType: "normal", paginationPosition: "bottom", exportButton: true,
                         exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1, selection: true,
                         showSelectAllCheckbox: true, showTextRowsSelected: true,
                         columnsButton: true,
-                        headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif' },
+                        headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif',textAlign: 'center',
+                        verticalAlign: 'middle'},
                         actionsColumnIndex: -1,
                         selection: false,
                         showFirstLastPageButtons: false,
@@ -91,10 +117,10 @@ const CvsAgainstJdTable = (props) => {
                             fontSize: "1.5em",
                             fontWeight: "bold",
                             margin: "1.33em 0",
-                            fontFamily: 'Open Sans, sans-serif' 
-                          },
+                            fontFamily: 'Open Sans, sans-serif'
+                        },
                     }}
-                title="Ranked CVs"
+                    title="Ranked CVs"
                 />
             </ThemeProvider>
         </>
