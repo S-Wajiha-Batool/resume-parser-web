@@ -94,6 +94,8 @@ function DeleteModal({showModal, handleCloseModal, data, target}){
         <Modal show={showModal} onHide={handleCloseModal} centered>
                 <Modal.Header >
                     <Modal.Title>Confirm Delete</Modal.Title>
+
+            <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseModal}></button>
                 </Modal.Header>
                 <Modal.Body>
                     {target=="jd" && `Are you sure you want to delete ${data.position}?`}
