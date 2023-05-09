@@ -93,7 +93,7 @@ function CvDetails() {
 
                     <Row>
                         <Col className='description-container'>
-                            <div className='heading'>
+                            <div className='heading1'>
                                 <h4 style={{ fontWeight: 'bold', marginBottom: 0 }}>{cv.cv_original_name}</h4>
                             </div>
                             <hr className='line' />
@@ -106,7 +106,7 @@ function CvDetails() {
                                 </div>
                                 <hr className='line2' />
                                 <div className='key'>Contact #</div>
-                                <div className="value">{cv.phone_number}</div>
+                                <div className="value">{cv.phone_number.replace(/[()-.]/g, '')}</div>
                                 <hr className='line2' />
 
                                 <div className='key'>Experience</div>

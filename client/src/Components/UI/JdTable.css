@@ -1,12 +1,13 @@
 .MuiTableBody-root {
     size: 100vh;
     width: 1000px;
-  }
+}
 
-.MuiPaper-root{
+.MuiPaper-root {
     margin-right: 15px;
 }
-.custom-table  .MuiToolbar-root {
+
+.custom-table .MuiToolbar-root {
     display: flex;
     justify-content: space-between;
 }
@@ -41,8 +42,20 @@
     font-weight: bold;
 }
 
+.css-levciy-MuiTablePagination-displayedRows {
+    display: none;
+}
 
-  .table-container {
-    height: calc(100vh - 350px); /* Replace 150px with the height of any other fixed elements on your page */
+.MuiTableCell-root>div {
+    justify-content: space-around;
+}
+
+.MuiTableCell-root>ul {
+    margin-bottom: 0px;
+}
+
+.table-container {
+    height: calc(100vh - 350px);
+    /* Replace 150px with the height of any other fixed elements on your page */
     overflow-y: auto;
-  }
+}

@@ -85,6 +85,7 @@ const CvsAgainstJdTable = (props) => {
                         headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif' },
                         actionsColumnIndex: -1,
                         selection: false,
+                        showFirstLastPageButtons: false,
                         rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : { background: "#00000" },
                         titleStyle: {
                             fontSize: "1.5em",

@@ -43,6 +43,7 @@ function JdDetails() {
     const handleCloseDeleteModal = () => setShowDeleteModal(false);
     const handleShowDeleteModal = () => setShowDeleteModal(true);
 
+    
     useEffect(() => {
         if (token) {
             const getJd = async () => {
@@ -130,7 +131,7 @@ function JdDetails() {
                         
                         <Row>
                             <Col className='desc-container'>
-                                <div className='heading'>
+                                <div className='heading1'>
                                     <h4 style={{ fontWeight: 'bold', marginBottom:0 }}>{jd.position}</h4>
                                 </div>
                                 <hr className='line' />

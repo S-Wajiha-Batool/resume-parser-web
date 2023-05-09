@@ -11,6 +11,8 @@
   border-radius: 5px;
   border: 1px solid #d3d3d3;
   padding: 10px 0px 10px 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .table-container {
@@ -24,10 +26,10 @@
   margin-bottom: 20px;
 }
 
-.heading {
+.heading1 {
   display: flex;
   align-items: center;
-  margin-bottom: 0;
+  margin: 5px 0;
   position: sticky;
   top: 0;
   background-color: white;
@@ -38,8 +40,7 @@
 }
 
 .details {
-  height: calc(100% - 70px);
-  /* adjust this value as per your needs */
+  flex-grow: 1;  
   overflow-y: scroll;
   padding-bottom: 10px;
 }
