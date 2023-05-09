@@ -235,7 +235,7 @@ function Dashboard() {
     <div className='text3'> - No Job Descriptions Uploaded - </div>
   </div> : 
     <div className='dashboard-container'>
-      <Title title={"Dashboard"} style={ {margin: 15}}
+      <Title title={"Dashboard"}
         />
       <div className='cont'>
       <div className='row-1' >
@@ -293,7 +293,7 @@ function Dashboard() {
         <div className = 'chart histogram-box'>
         <h2 className='text1'>Resumes Score Distribution</h2>
     {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
-      <VictoryChart domainPadding={{ x: 12 }} width={355}>
+      <VictoryChart domainPadding={{ x: 12 }} width={350} height={270}>
         <VictoryAxis
           style={{
             axis: { stroke: "black", strokeWidth: 2.5 },
@@ -313,9 +313,11 @@ function Dashboard() {
           dependentAxis
           style={{
             axis: { stroke: "black", strokeWidth: 2 },
+            tickLabels: {
+              fontSize: 10
+            },
             axisLabel: { 
               fontSize: 12, 
-              padding: '0 40px' 
             }
           }}
           label="Count"
