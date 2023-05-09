@@ -24,12 +24,18 @@ import parsing_constants
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 from fuzzywuzzy import fuzz
+import calendar
+
 
 #parsing algo#
 
 PHONE_REG = re.compile(parsing_constants.PHONE_REGEX)
 EMAIL_REG = re.compile(parsing_constants.EMAIL_REGEX)
 LINK_REG = re.compile(parsing_constants.LINKS_REGEX, re.VERBOSE)
+month_names = set(str(month) for month in calendar.month_name) | set(str(month) for month in calendar.month_abbr)
+month_names.discard('')
+month_names.discard(None)
+month_names |= set(month[0] for month in month_names)
 
 nlp =  spacy.load('models/entity_ruler_pattern_matcher')
 
@@ -53,7 +59,8 @@ def extract_names_modified(nlp, input_string:str):
     doc_persons = map(lambda x: x.text.strip(), doc_persons)
     doc_persons = list(doc_persons)
     if len(doc_persons) > 0:
-        return doc_persons[0]
+        words = doc_persons[0].split("\n")
+        return words[0]
     return ''
 
 def extract_names_transformer(resume_text:str):
@@ -179,7 +186,7 @@ def extract_dates_and_text(resume_text):
                     date_text = re.search(rf".*{date_str}.*", result, re.MULTILINE)
                     if date_text is not None:
                         date_text = date_text.group()
-                    words = [word.strip() for word in date_text.split() if word[0].isupper()]
+                    words = [word.strip() for word in date_text.split() if word[0].isupper()  and word.isalnum() and word not in month_names]
                     job_title = ' '.join(words)
                     dates_and_text.append((dt, job_title))
                 except ValueError:
@@ -201,7 +208,7 @@ def calculate_experience_for_each_job(dates_and_text):
             previous_date = date
         else:
             experience = (date - previous_date).days / 365
-            if title != '':
+            if title != '' and experience!=0:
                 print(f"Experience as {title}: {experience:.2f} years")
                 experience_dict[title] = experience
             total_experience += experience
@@ -220,6 +227,8 @@ def down_cast(obj):
 
 #match university, returns 1 if uni name in cv and returns 0 if uni name not in cv
 def uni_matching(text, jd_data):
+    if 'universities' not in jd_data:
+        return 0
     unis = jd_data["universities"]
     for key, value in unis.items():
         if key in text or value in text:
@@ -227,7 +236,10 @@ def uni_matching(text, jd_data):
     return 0
 
 def qualifications_matching(text, jd_data):
+    if 'qualification' not in jd_data:
+        return 0
     qualis = jd_data["qualification"]
+
     for key, value in qualis.items():
         if key in text or value in text:
             return 1
@@ -236,16 +248,18 @@ def qualifications_matching(text, jd_data):
 
 #matching years of experience
 def exp_matching(cv_data, jd_data):
-    if jd_data["experience"] == 'None':
+    if 'experience' not in jd_data:
         return 0
     
-    exp_JD = float(jd_data["experience"].split()[0])
+    if jd_data['experience'] == 'None':
+        return 0
 
-    
-    #print(exp_JD)
-    exp_CV = float(cv_data["total_experience"])
-    if exp_CV is None:
+    exp_JD = float(jd_data["experience"].split()[0])
+   
+    if 'total_experience' not in cv_data:
         return 0
+
+    exp_CV = float(cv_data["total_experience"])
     # Calculate the percentage of matching experience
     match_percentage = (exp_CV / exp_JD) 
 
@@ -256,14 +270,13 @@ def exp_matching(cv_data, jd_data):
 
 #matching skills based on keywords and producing a percentage match
 def skills_matching(cv_data, jd_data):
-    skills_CV = cv_data['skills']
-    if skills_CV is None:
+    if 'skills' not in jd_data:
         return 0
+    skills_CV = cv_data['skills']
+    
     if len(jd_data['skills']) == 0:
         return 0
-    #print(skills_CV)
     skills_JD = [skill["skill_name"] for skill in jd_data["skills"]]
-    #print(skills_JD)
     # Count the number of matching elements
     matching_count = 0
     for elem in skills_JD:
@@ -348,15 +361,15 @@ app = Flask(__name__)
   
 @app.route('/parse_cv', methods = ['POST']) 
 def parse_cv(): 
-    print('start')
     data = request.get_json() 
-    print(data)
     result = []
     for file in data:
-        text:str = extract_text_from_pdf('../server/uploaded_CVs/' + file).lower()
+        text:str = extract_text_from_pdf('../server/uploaded_CVs/' + file)
+        print(text)
         dates:list = extract_dates(text)
         #years_of_exp = calculate_experience(dates)
         experience_by_job, total_experience = calculate_experience_for_each_job(extract_dates_and_text(text))
+        print(experience_by_job, total_experience)
         name_modified = extract_names_modified(nlp, text)
         if (name_modified == ''):
             name_modified = extract_names_transformer(string.capwords(text))
@@ -366,6 +379,7 @@ def parse_cv():
         if(len(skills)==0):
             skill_extractor = SkillExtractor(nlp, SKILL_DB, PhraseMatcher)
             skills = skill_extractor.annotate(text)
+        skills = list(set([for skill in skills skill.lower()]))
         links = extract_links(text)
     
 
@@ -389,24 +403,19 @@ def parse_cv():
 
         result.append({"full_name": name_modified, "phone_number": phone_number, "emails": emails, "skills": skills, "total_experience": total_experience,"experience_by_job": experience_by_job, "links": links })
     # Return data in json format 
-    print('end')
 
     return json.dumps(result)
    
 @app.route('/match_cv', methods = ['POST']) 
 def match_cv(): 
     data = request.get_json() 
-    print(data)
     jd =  data['jd']
-    print(jd)
     result = []
     for cv in data['cvs']:
-        print(cv['cv_path'])
         text:str = extract_text_from_pdf('../server/' + cv['cv_path']).lower()
         score:float = bigboy(text, cv, jd)
         result.append(score)
     # Return data in json format 
-    #print(result)
     return json.dumps(result)
 
 if __name__ == "__main__": 

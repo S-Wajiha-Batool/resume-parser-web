@@ -7,11 +7,10 @@
 
 .description-container {
   height: 80vh;
-  max-width: 100%;
-  overflow-y: auto;
+  width: 100%;
   border-radius: 5px;
   border: 1px solid #d3d3d3;
-  padding: 10px;
+  padding: 10px 0px 10px 10px;
 }
 
 .pdf-container {
@@ -21,13 +20,45 @@
 .jd-row{
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-right: 5px;
+  font-weight: 550 !important;
 }
 
+.jd-row:hover{
+  display: flex;
+  justify-content: space-between;
+  margin-right: 5px;
+  cursor: pointer;
+  
+}
+
+.value{
+  font-size: 13px;
+}
+
+.job{
+  font-weight: 600;
+  color: #2d2d2d;
+}
+
+.total-exp{
+  padding:3px 5px;
+  background-color: #d3d3d369;
+  border-radius: 10px;
+}
 
 .heading {
   display: flex;
-    justify-content: space-between;
-    align-items: center;
+  align-items: center;
+  margin-bottom: 0;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+  margin-right: 10px;
+  min-height: 40px;
+  font-size: 20px;
 }
 
 .key {
@@ -55,4 +86,26 @@
 
 }
 
+.position{
+  white-space: nowrap;
+  min-width: fit-content; /* adjust the value as needed */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
+.middle-line {
+  background-color: hsl(34, 98%, 76%);
+  border-bottom: 0.5px solid black;
+  height: 0.5px;
+  width: 100%;
+}
+
+.middle-line-span{
+  margin: 0 10px;
+  width: 90%;
+}
+
+.perc{
+  font-weight: bold;
+  color: #4a4b53;
+}

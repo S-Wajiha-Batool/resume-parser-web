@@ -8,39 +8,139 @@
 .desc-container {
   height: 80vh;
   max-width: 350px;
-  overflow-y: auto;
   border-radius: 5px;
   border: 1px solid #d3d3d3;
-  padding: 10px;
+  padding: 10px 0px 10px 10px;
 }
 
 .table-container {
   height: 80vh;
 }
 
+.page-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
 .heading {
   display: flex;
-    justify-content: space-between;
-    align-items: center;
+  align-items: center;
+  margin-bottom: 0;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+  margin-right: 10px;
+  min-height: 40px;
+  font-size: 20px;
+}
+
+.details {
+  height: calc(100% - 70px);
+  /* adjust this value as per your needs */
+  overflow-y: scroll;
+  padding-bottom: 10px;
 }
 
 .key {
+  margin-bottom: 2px;
   font-weight: bold;
-  color: #2d2d2d
+  color: #3d3d3d
 }
 
 .line {
   color: #626262;
+  margin-right: 10px;
 }
 
 .line2 {
   color: #d3d3d3;
+  margin-right: 10px;
+
+}
+
+#tag-container {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-block;
+  background-color: hsl(34, 98%, 76%);
+  border-radius: 15px;
+  padding: 5px 10px;
+  margin: 5px;
 }
 
 .uploadCv_btn {
   display: flex;
   justify-content: flex-end;
 }
+
+/* button css used everywhere, any changes to jddetails button tobemade separately */
+
+.button{
+  border-radius: 15px;
+}
+.custom-btn {
+  background-color: #FFB347;
+  border: 1px solid #FFB347;
+  color: #2d2d2d;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+.custom-btn:hover,
+.custom-btn:active  {
+  background-color: #2d2d2d !important;
+  border: 1px solid #2d2d2d!important;
+  color: #ffffff !important;
+  font-weight: bold !important;
+}
+
+.custom-btn:disabled  {
+  background-color: #fa9d1bd4 !important;
+  border: 1px solid #fa9d1bd4 !important;
+  color: #2d2d2db6 !important;
+  font-weight: bold !important;
+}
+
+.custom-btn-sec {
+  background-color: #ffffff;
+  border: 1px solid #2d2d2d;
+  color: #2d2d2d;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+.custom-btn-sec:hover,
+.custom-btn-sec:active  {
+  background-color: #d2d0d0 !important;
+  border: 1px solid #d2d0d0 !important;
+  color: #2d2d2d !important;
+  font-weight: bold !important;
+}
+
+
+
+
+.MuiPaper-root {
+  border: 1px solid #d3d3d3;
+}
+
+.css-1mbunh-MuiPaper-root {
+  box-shadow: 0;
+}
+
+.jd-btn {
+  margin-left: 5px;
+  margin-right: 5px;
+
+}
+
+
 
 /* JdDetails.css */
 

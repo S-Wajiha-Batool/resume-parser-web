@@ -1,6 +1,28 @@
+.file_row1{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    margin-top: 5px;
+
+}
+
 .file_row{
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+}
+.file_row span {
+    margin: 0;
+    padding: 0;
+  }
+
+
+.view-link{
+    text-decoration: underline;
+    font-size: 12px
 }
 
 .remove_action{
@@ -11,4 +33,29 @@
 
 .modal-footer{
     padding: 0
+}
+
+.done-btn{
+    margin-top: 10px;
+}
+
+button.nav-link{
+    color: #FA9C1B;
+}
+
+button.nav-link:hover{
+    color: #2d2d2d;
+}
+
+.filename-box {
+    margin-bottom: 15px;
+}
+
+.file-count{
+    font-style: italic;
+    font-weight: 500;
+}
+
+.cv-dropdown {
+    margin-bottom: 15px;
 }

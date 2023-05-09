@@ -52,7 +52,7 @@ WORK_EXPERIENCE_HEADINGS = [
 
 EVERY_OTHER_HEADING_REGEX = r"(education|qualification|hobbies|interests|references|projects|certifications|skills|awards|achievements|publications|publications and presentations|presentations|extracurricular activities|extracurricular|languages|technical skills|technical|personal skills|personal|summary|objective|career objective|career summary|career|summary of qualifications|summary of qualifications|summary of quali)"
 
-DATE_REGEX = r'\b(?:\d{1,2}[\/.-])?(?:(?:0?[1-9]|1[0-2])[\/.-](?:0?[1-9]|[12]\d|3[01])|(?:0?[1-9]|[12]\d|3[01])[\/.-](?:0?[1-9]|1[0-2]))[\/.-]?\d{2,4}\b|\b(?:0?[1-9]|1[0-2])[\/.-]\d{4}\b|\b\d{4}[\/.-](?:0?[1-9]|1[0-2])[\/.-](?:0?[1-9]|[12]\d|3[01])\b|\b(?:0?[1-9]|[12]\d|3[01])[\/.-](?:0?[1-9]|1[0-2])[\/.-]\d{4}\b|\b(?:0?[1-9]|[12]\d|3[01])[\/.-](?:0?[1-9]|1[0-2])[\/.-]\d{2}(?!\d)\b|\b\d{1,2}[\/.-][A-Za-z]{3,9}[\/.-]\d{4}\b|\b[A-Za-z]{3,9}[\/.-]\d{1,2}[\/.-]\d{4}\b'
+DATE_REGEX = r'\b(?:\d{1,2}[\/.-])?(?:(?:0?[1-9]|1[0-2])[\/.-](?:0?[1-9]|[12]\d|3[01])|(?:0?[1-9]|[12]\d|3[01])[\/.-](?:0?[1-9]|1[0-2]))[\/.-]?\d{2,4}\b|\b(?:0?[1-9]|1[0-2])[\/.-]\d{4}\b|\b\d{4}[\/.-](?:0?[1-9]|1[0-2])[\/.-](?:0?[1-9]|[12]\d|3[01])\b|\b(?:0?[1-9]|[12]\d|3[01])[\/.-](?:0?[1-9]|1[0-2])[\/.-]\d{4}\b|\b(?:0?[1-9]|[12]\d|3[01])[\/.-](?:0?[1-9]|1[0-2])[\/.-]\d{2}(?!\d)\b|\b\d{1,2}[\/.-][A-Za-z]{3,9}[\/.-]\d{4}\b|\b[A-Za-z]{3,9}[\/.-]\d{1,2}[\/.-]\d{4}\b|\b[A-Za-z]{3,9}\s+\d{4}\b'
 
 DATE_FORMATS_BY_REGEX = {
         '%d/%m/%Y': ['%d-%m-%Y', '%d.%m.%Y', '%d/%m/%y', '%d %m %Y', '%d-%m-%y', '%d.%m.%y', '%d %b %Y', '%d %B %Y', '%d/%B/%Y', '%d-%B-%y', '%d.%B.%y', '%d %B %y', '%d-%b-%y', '%d.%b.%y', '%d %b %y'],

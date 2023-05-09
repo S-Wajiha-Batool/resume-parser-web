@@ -11,3 +11,8 @@
 .MTableHeader-header-83 .MuiTableCell-paddingCheckbox {
   padding: 8px;
 }
+
+h6.css-2ulfj5-MuiTypography-root {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold; 
+}

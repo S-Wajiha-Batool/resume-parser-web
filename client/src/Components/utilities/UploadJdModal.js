@@ -56,14 +56,19 @@ function UploadJdModal({ showModal, handleCloseModal }) {
 
     const handleSubmit = (e) => {
         const form = e.currentTarget;
-        if (form.checkValidity() === false) {
+        /* if (form.checkValidity() === false) {
             e.preventDefault();
             e.stopPropagation();
         }
         setValidated(true);
-        console.log('in submit')
+        console.log('in submit') */
+        
         e.preventDefault()
-        try {
+        if (jd.position === "") {
+            showErrorToast("Position cannot be empty");
+        }
+        else {
+            try {
             setIsUploadingJd(true);
             addJdAPI(jd, token)
                 .then(res => {
@@ -88,44 +93,21 @@ function UploadJdModal({ showModal, handleCloseModal }) {
             showErrorToast("Error in CV upload")
             setIsUploadingJd(false)
         }
+        }
+        
 
     }
 
-
-    function useForkRef(refA, refB) {
-        return React.useMemo(() => {
-            if (refA == null && refB == null) {
-                return null;
-            }
-            return (refValue) => {
-                if (refA) {
-                    if (typeof refA === 'function') {
-                        refA(refValue);
-                    } else {
-                        refA.current = refValue;
-                    }
-                }
-                if (refB) {
-                    if (typeof refB === 'function') {
-                        refB(refValue);
-                    } else {
-                        refB.current = refValue;
-                    }
-                }
-            };
-        }, [refA, refB]);
-    }
-
-
-    const useStyles = makeStyles({
+    const useStyles = makeStyles((theme) => ({
         listbox: {
-          '&::-webkit-scrollbar': {
-            display: 'none',
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
+            '-ms-overflow-style': 'none',
+            scrollbarWidth: 'none',
           },
-          '-ms-overflow-style': 'none',
-          scrollbarWidth: 'none',
-        },
-      });
+      }));
+  
       const classes = useStyles();
 
 
@@ -143,7 +125,7 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
         <FixedSizeList height={height} itemCount={itemCount} itemSize={itemSize}>
           {({ index, style }) => (
             <div style={{ ...style, display: 'flex', alignItems: 'center' }}key={index} aria-selected={false} role="option">
-            {children[index]}
+            <div  style={{width: "100%"}}>{children[index]}</div>
           </div>
           )}
         </FixedSizeList>
@@ -152,15 +134,12 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
   );
 });
 
-      
-
-
-
     return (
-        <Modal show={showModal} onHide={handleCloseModal}>
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <Modal.Header closeButton>
+        <Modal show={showModal} onHide={handleCloseModal} centered>
+            <Form  onSubmit={handleSubmit}>
+                <Modal.Header>
                     <Modal.Title>Add Job Description</Modal.Title>
+                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseModal}></button>
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Group >
@@ -173,7 +152,10 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                             onChange={onChangeInput} />
                     </Form.Group>
                     <br />
-                    <Form.Group>
+                    
+                    <Row>
+                        <Col>
+                        <Form.Group>
                         <Form.Label className='form-label'>
                             Department</Form.Label>
                         <Form.Select
@@ -185,19 +167,21 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                             })}
                         </Form.Select>
                     </Form.Group>
-                    <br />
-                    <Row>
-                        <Form.Group>
-                            <Form.Label className='form-label'>Experience</Form.Label>
-                            <Form.Select
-                                name='experience'
-                                value={jd.experience}
-                                onChange={onChangeInput}>
-                                {experience.map((d, key) => {
-                                    return <option className='option' key={key} value={d}>{d}</option>;
-                                })}
-                            </Form.Select>
-                        </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group>
+                                <Form.Label className='form-label'>Experience</Form.Label>
+                                <Form.Select
+                                    name='experience'
+                                    value={jd.experience}
+                                    onChange={onChangeInput}>
+                                    {experience.map((d, key) => {
+                                        return <option className='option' key={key} value={d}>{d}</option>;
+                                    })}
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                        
                     </Row>
                     {/* <Col>
                             <Form.Group>
@@ -271,7 +255,6 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                                     {option.skill_name}
                                 </li>
                             )}
-                            style={{ width: 500 }}
                             ListboxComponent={ListboxComponent}
                             renderInput={(params) => (
                                 <TextField required {...params} placeholder="Skills" />
@@ -313,7 +296,7 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                     <br />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant='primary' type='submit' disabled={isUploadingJd} onClick={!isUploadingJd ? handleSubmit : null}>
+                    <Button className="custom-btn" variant='primary' type='submit' disabled={isUploadingJd} onClick={!isUploadingJd ? handleSubmit : null}>
                         {isUploadingJd && <Spinner
                             as="span"
                             animation="border"

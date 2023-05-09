@@ -42,7 +42,7 @@ const CvTable = (props) => {
       </ul>, searchable: true, export: true
 
     },
-    { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData)}</div> },
+    { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData.createdAt)}</div> },
   ]
 
   const getDate = (d) => {

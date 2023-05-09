@@ -34,8 +34,14 @@ function Dashboard() {
   const [count, setCount] = useState(0);
   const [pie, setPie] = useState([]);
   const [hist, setHist] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const maxY = Math.max(...hist.map(dataPoint => dataPoint.y));
+
+  useEffect(() => {
+    if (!isLoadingJds, !isLoadingCvs, !isLoadingCount, !isLoadingHist, !isLoadingPie)
+      setIsLoading(false)
+  },[isLoadingJds, isLoadingCvs, isLoadingCount, isLoadingHist, isLoadingPie])
 
   useEffect(() => {
     if (token) {
@@ -220,17 +226,19 @@ function Dashboard() {
 
   const colorScale = [' #73556E', '#9FA1A6', '#F2AA6B', '#F28F6B', '#D97373', '#00BFFF'];
 
-  if (allJDs.length == 0)
-    return (
-      <div className='dashboard-container'>
-        <div className='text2'> - No Job Descriptions Uploaded - </div>
-      </div>
-    )
+ 
 
   return (
-    <div>
-      <Title title={"Dashboard"}/>
-      <Row >
+    isLoading ?
+            <LoadingSpinner /> :
+    allJDs.length == 0 ? <div className='dashboard-container'>
+    <div className='text3'> - No Job Descriptions Uploaded - </div>
+  </div> : 
+    <div className='dashboard-container'>
+      <Title title={"Dashboard"} style={ {margin: 15}}
+        />
+      <div className='cont'>
+      <div className='row-1' >
         <div className = "box box-jd">
           <h2 className='text1'>Job Descriptions</h2>
           {isLoadingJds ? (<LoadingSpinner />) : successJds ? (
@@ -280,21 +288,21 @@ function Dashboard() {
               'Unable to fetch data'
             )}
         </div>
-      </Row>
-      <Row>
-        <div className = 'histogram-box'>
+      </div>
+      <div className='row-2'>
+        <div className = 'chart histogram-box'>
         <h2 className='text1'>Resumes Score Distribution</h2>
     {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
-      <VictoryChart domainPadding={{ x: 20 }}>
+      <VictoryChart domainPadding={{ x: 12 }} width={355}>
         <VictoryAxis
           style={{
             axis: { stroke: "black", strokeWidth: 2.5 },
             tickLabels: { 
-              fontSize: 8,
+              fontSize: 6,
               //textAnchor: 'e',
             },
             axisLabel: { 
-              fontSize: 12,
+              fontSize: 7,
             }
           }}
           label="Percentage"
@@ -317,7 +325,7 @@ function Dashboard() {
           x="x"
           y="y"
           style={{ data: { fill: 'lightgray' } }}
-          barRatio={0.7}
+          barRatio={0.6}
         />
       </VictoryChart>
     )
@@ -325,17 +333,17 @@ function Dashboard() {
         'Unable to fetch data'
       )}
       </div>
-      <div className='pie-chart-box'>
-          <h2 className='text1'>Department-wise Job Descriptions</h2>
-        
+      <div className='chart pie-chart-box'>
+          <h2 className='text1'>Department-wise Job Descriptions</h2>        
             {isLoadingPie ? (<LoadingSpinner />) : successPie ? (
-              <VictoryPie  data={pie} colorScale={colorScale}/>
+              <VictoryPie  data={pie} colorScale={colorScale} width={300} />
             )
               : (
                 'Unable to fetch data'
               )}
         </div>
-      </Row>
+      </div>
+      </div>
       </div>
     
   )

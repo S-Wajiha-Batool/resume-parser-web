@@ -13,7 +13,7 @@ const CVsSchema = new mongoose.Schema({
         type: [String],
         required: true
     },
-    experience_by_jobs: {
+    experience_by_job: {
         type: Map,
         of: String,
     },
