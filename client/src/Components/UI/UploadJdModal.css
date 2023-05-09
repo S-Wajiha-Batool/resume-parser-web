@@ -75,6 +75,11 @@
   opacity: 0.5;
 }
 
+
+button.close {
+  background-image: white;
+}
+
 /* Style for the spinner next to the form submit button */
 
 /* Style for the autocomplete input */

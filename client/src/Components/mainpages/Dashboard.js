@@ -235,7 +235,8 @@ function Dashboard() {
     <div className='text3'> - No Job Descriptions Uploaded - </div>
   </div> : 
     <div className='dashboard-container'>
-      <Title title={"Dashboard"}/>
+      <Title title={"Dashboard"} style={ {margin: 15}}
+        />
       <div className='cont'>
       <div className='row-1' >
         <div className = "box box-jd">
@@ -292,16 +293,16 @@ function Dashboard() {
         <div className = 'chart histogram-box'>
         <h2 className='text1'>Resumes Score Distribution</h2>
     {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
-      <VictoryChart domainPadding={{ x: 20 }} >
+      <VictoryChart domainPadding={{ x: 12 }} width={355}>
         <VictoryAxis
           style={{
             axis: { stroke: "black", strokeWidth: 2.5 },
             tickLabels: { 
-              fontSize: 8,
+              fontSize: 6,
               //textAnchor: 'e',
             },
             axisLabel: { 
-              fontSize: 12,
+              fontSize: 7,
             }
           }}
           label="Percentage"
@@ -324,7 +325,7 @@ function Dashboard() {
           x="x"
           y="y"
           style={{ data: { fill: 'lightgray' } }}
-          barRatio={0.7}
+          barRatio={0.6}
         />
       </VictoryChart>
     )
@@ -335,7 +336,7 @@ function Dashboard() {
       <div className='chart pie-chart-box'>
           <h2 className='text1'>Department-wise Job Descriptions</h2>        
             {isLoadingPie ? (<LoadingSpinner />) : successPie ? (
-              <VictoryPie  data={pie} colorScale={colorScale}/>
+              <VictoryPie  data={pie} colorScale={colorScale} width={300} />
             )
               : (
                 'Unable to fetch data'
