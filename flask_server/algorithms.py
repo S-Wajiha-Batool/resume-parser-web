@@ -379,7 +379,7 @@ def parse_cv():
         if(len(skills)==0):
             skill_extractor = SkillExtractor(nlp, SKILL_DB, PhraseMatcher)
             skills = skill_extractor.annotate(text)
-        skills = list(set([for skill in skills skill.lower()]))
+        #skills = list(set([for skill in skills skill.lower()]))
         links = extract_links(text)
     
 

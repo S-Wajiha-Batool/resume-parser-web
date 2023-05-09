@@ -206,6 +206,7 @@ margin: 20px;
   align-items: left;
   margin-right: 20px;
   padding: 20px;
+  height: 100vh;
 }
 .title1{
   margin-left: 20px;
@@ -253,23 +254,17 @@ margin: 20px;
 .row-2 {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: initial;
-  margin-left: 10px;
+  flex-grow: 1;
+  justify-content: space-around;
 }
 
-.chart {
-  width: 700px;
-  height: 500px;
+.chart {  
   border: 1px solid #ccc;
-  align-items: initial;
+  height: 100%;
 }
 
 .histogram-box {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-
   background-color: #ffffff;
   color: #000000;
   padding: 20px;
@@ -280,10 +275,7 @@ margin: 20px;
 }
 
 .pie-chart-box {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-
   background-color: #ffffff;
   color: #000000;
   padding: 20px;
