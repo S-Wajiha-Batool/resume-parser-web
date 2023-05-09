@@ -397,6 +397,7 @@ const JDController = {
                 return res.status(200).json({ error: { code: null, msg: null }, data: 0 });
             }
             const increased_percentage = (count / JDs.length) * 100;
+            const total_jds = JDs.length;
             return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage });
 
         }
