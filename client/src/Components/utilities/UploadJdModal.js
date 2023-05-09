@@ -137,8 +137,9 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
     return (
         <Modal show={showModal} onHide={handleCloseModal} centered>
             <Form  onSubmit={handleSubmit}>
-                <Modal.Header closeButton>
+                <Modal.Header>
                     <Modal.Title>Add Job Description</Modal.Title>
+                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseModal}></button>
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Group >
