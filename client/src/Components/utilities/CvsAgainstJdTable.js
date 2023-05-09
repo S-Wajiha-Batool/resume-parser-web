@@ -71,8 +71,8 @@ const CvsAgainstJdTable = (props) => {
                     titleClassName="my-custom-title-class"
 
                     options={{
-                        minBodyHeight: "67vh",
-                        maxBodyHeight: "67vh",
+                        minBodyHeight: "65vh",
+                        maxBodyHeight: "65vh",
                         sorting: true, search: true,
                         searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
                         paging: true,
