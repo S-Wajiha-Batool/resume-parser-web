@@ -409,6 +409,7 @@ def parse_cv():
 @app.route('/match_cv', methods = ['POST']) 
 def match_cv(): 
     data = request.get_json() 
+    print(data)
     jd =  data['jd']
     result = []
     for cv in data['cvs']:
