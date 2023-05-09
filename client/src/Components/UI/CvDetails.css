@@ -11,6 +11,8 @@
   border-radius: 5px;
   border: 1px solid #d3d3d3;
   padding: 10px 0px 10px 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .pdf-container {
@@ -30,11 +32,12 @@
   justify-content: space-between;
   margin-right: 5px;
   cursor: pointer;
+  color: #202020;
   
 }
 
 .value{
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .job{
@@ -48,10 +51,10 @@
   border-radius: 10px;
 }
 
-.heading {
+.heading1 {
   display: flex;
   align-items: center;
-  margin-bottom: 0;
+  margin: 5px 0;
   position: sticky;
   top: 0;
   background-color: white;
@@ -61,9 +64,15 @@
   font-size: 20px;
 }
 
+.details {
+  flex-grow: 1;  /* adjust this value as per your needs */
+  overflow-y: scroll;
+  padding-bottom: 10px;
+}
+
 .key {
   font-weight: bold;
-  color: #2d2d2d
+  color: #202020
 }
 
 .line {

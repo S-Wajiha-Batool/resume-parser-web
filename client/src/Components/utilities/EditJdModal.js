@@ -170,8 +170,10 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
     return (
         <Modal show={showModal} onHide={handleCloseModal}>
             <Form onSubmit={handleSubmit}>
-                <Modal.Header closeButton>
+                <Modal.Header >
                     <Modal.Title>Edit Job Description</Modal.Title>
+
+            <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseModal}></button>
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Group >

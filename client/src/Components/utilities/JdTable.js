@@ -42,18 +42,23 @@ const JdTable = (props) => {
 
   const columns = [
     //{ title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
-    { title: "Position", field: "position", sorting: false, cellStyle: { fontWeight: "bold" }, headerStyle: { color: "black" }, },
-    { title: "Department", field: "department", filterPlaceholder: "filter" },
+    { title: "Position", field: "position", sorting: false, cellStyle: { fontWeight: "bold", textAlign: 'center',
+    verticalAlign: 'middle' }, headerStyle: { color: "black" }, },
+    { title: "Department", field: "department", filterPlaceholder: "filter", cellStyle: {textAlign: 'center',
+    verticalAlign: 'middle'} },
     {
-      title: "Skills", field: "skills", grouping: false,
+      title: "Skills", field: "skills", grouping: false, cellStyle: {textAlign: 'center',
+      verticalAlign: 'middle'},
       render: (rowData) => { return getSkills(rowData.skills).length > 0 ? <ul>{getSkills(rowData.skills).map((skill, index) => <li key={index}>{skill}</li>)}</ul> : <div>-</div> },
     },
     {
-      title: "Experience", field: "experience",
+      title: "Experience", field: "experience", cellStyle: {textAlign: 'center',
+      verticalAlign: 'middle'},
       searchable: true, export: true
     },
     {
-      title: "Qualification", field: "qualification", render: (rowData) => {
+      title: "Qualification", field: "qualification",cellStyle: {textAlign: 'center',
+      verticalAlign: 'middle'}, render: (rowData) => {
         return rowData.qualification && Object.entries(rowData.qualification).length > 0 ?
           <ul>{Object.entries(rowData.qualification).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
           :
@@ -62,7 +67,8 @@ const JdTable = (props) => {
       , searchable: true, export: true
     },
     {
-      title: "Universities", field: "universities", render: (rowData) => {
+      title: "Universities", field: "universities", cellStyle: {textAlign: 'center',
+      verticalAlign: 'middle'}, render: (rowData) => {
         return rowData.universities && Object.entries(rowData.universities).length > 0 ?
           <ul>{Object.entries(rowData.universities).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
           :
@@ -70,7 +76,8 @@ const JdTable = (props) => {
       },
       filterPlaceholder: "filter", searchable: true, export: true
     },
-    { title: "Posted On", field: "createdAt", render: (rowData) => <div >{getDate(rowData.createdAt)}</div> },
+    { title: "Posted On", field: "createdAt", cellStyle: {textAlign: 'center',
+    verticalAlign: 'middle'}, render: (rowData) => <div >{getDate(rowData.createdAt)}</div> },
   ]
 
   const getSkills = (skills) => {
@@ -154,6 +161,7 @@ const JdTable = (props) => {
             pageSize: 5,
             pageSizeOptions: [],
             paginationType: "normal", paginationPosition: "bottom", exportButton: true,
+            showFirstLastPageButtons: false,
             tableLayout: "auto",
             overflowY: "auto",
             headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif' },

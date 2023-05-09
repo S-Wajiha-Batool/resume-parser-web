@@ -37,7 +37,7 @@
   padding: 20px;
   font-weight: bold;
   color: #ffffff;
-  margin-left: 35px;
+  margin-left: 45px;
 }
 
 #header .pro-sidebar-layout ul {
@@ -88,20 +88,7 @@
 }
 
 /* Menu item styles */
-.menu-icon {
-  /* position: fixed;
-    width: 15px;
-    height: 15px;
-    margin-top: 2px;
-    margin-bottom: 15px; */
-  position: fixed;
-  width: 30px;
-  height: 30px;
-  margin-bottom: auto;
-  margin-top: auto;
-  color: #ffffff;
-  margin-bottom: 5px;
-}
+
 
 .pro-menu {
   width: 100%
@@ -113,14 +100,25 @@
   height:30px;
 }
 
+.menu-icon {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  margin-bottom: auto;
+  margin-top: auto;
+  color: #ffffff;
+  margin-bottom: 5px;
+  margin-left: 4px;
+}
 
 .close-icon {
   position: fixed;
   width: 30px;
   height: 30px;
   margin-bottom: auto;
-  margin-top: auto;
-  margin-left: 20px;
+  margin-top: 20px;
+  margin-left: 24px;
+  margin-right: 10px;
   color: #ffffff;
   margin-bottom: 0.833px;
 }

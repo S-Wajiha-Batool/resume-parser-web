@@ -302,8 +302,9 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
 
     return (
         <Modal show={showModal} onHide={handleCloseModal}>
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title>Upload CVs</Modal.Title>
+            <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseModal}></button>
             </Modal.Header>
             <Modal.Body>
                 <Tabs
