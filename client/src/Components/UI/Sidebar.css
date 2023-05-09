@@ -79,6 +79,12 @@
 #header .pro-sidebar-footer .pro-inner-item .pro-icon-wrapper .pro-item-content {
   color: #ffffff;
   padding: auto;
+  
+}
+
+#header .pro-sidebar-footer > .pro-inner-item {
+  margin: 0px;
+  padding-top:10px;
 }
 
 /* Menu item styles */
@@ -107,9 +113,6 @@
   height:30px;
 }
 
-.pro-inner-item {
-  margin:0;
-}
 
 .close-icon {
   position: fixed;

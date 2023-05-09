@@ -94,104 +94,106 @@ function CvDetails() {
                     <Row>
                         <Col className='description-container'>
                             <div className='heading'>
-                                <h4 style={{ fontWeight: 'bold', marginBottom:0 }}>{cv.cv_original_name}</h4>
+                                <h4 style={{ fontWeight: 'bold', marginBottom: 0 }}>{cv.cv_original_name}</h4>
                             </div>
                             <hr className='line' />
                             <div className='details'>
-                            <div className='key'>Emails</div>
-                            <div className="value">
-                                {cv.emails.length > 0 ? <ul>{cv.emails.map((email, index) =>
-                                    <li key={index}>{email}</li>)}</ul> : <div>-</div>
-                                }
-                            </div>
-                            <hr className='line2' />
-
-                            <div className='key'>Contact #</div>
-                            <div className="value">{cv.phone_number}</div>
-                            <hr className='line2' />
-
-                            <div className='key'>Experience</div>
-                            <div className="value">
-                                {Object.keys(cv.experience_by_job).length !== 0 ? (
-                                    <ul>{Object.entries(cv.experience_by_job).map(([key, value]) => (
-                                        <li key={key}>
-                                            {key}: {value}
-                                        </li>
-                                    ))}</ul>
-                                ) : (
-                                    null
-                                )}
-                                {cv.total_experience ? (
-                                    <div>Total: {cv.total_experience}</div>
-                                ) : null}
-
-                            </div>
-                            <hr className='line2' />
-
-                            <div className="key">Skills</div>
-                            <div className="value">
-                                {cv.skills.length !== 0 ? (
-                                    <div id="tag-container" style={{ maxHeight: '200px', overflowY: 'auto' }}>
-                                        {cv.skills.map((name, index) => (
-                                            <span className="tag" key={index}>{name}</span>
-                                        ))}</div>
-                                ) : (
-                                    <div>-</div>)}
-                            </div>
-                            <hr className='line2' />
-
-                            <div className="key">Links</div>
-                            <div className="value">
-                                <ul>
-                                    {cv.links.length !== 0 ? (
-                                        cv.links.map((link, index) => (
-                                            <li key={index}>
-                                                <a href={link}>{link}</a>
-                                            </li>
-                                        ))
-                                    ) : (
-                                        <div>-</div>
-                                    )}
-                                </ul>
-                            </div>
-                            <hr className='line2' />
-
-                            <div className="key">Posted By</div>
-                            <div className="value">
-                                {user.first_name} {user.last_name}
-                            </div>
-                            <hr className='line2' />
-
-                            <div className="key">Posted On</div>
-                            <div className="value">
-                                {getDate(cv.createdAt)}
-                            </div>
-                            <hr className='line2' />
-
-                            {jds.length !== 0 && (
-                                <>
-                                    <div className="key">Uploaded For:</div>
-                                    <div className="value">
-                                        {jds.map((jd) => {
-                                            return (
-                                                <div key={jd.JD_ID} className='jd-row'>
-                                                    <span onClick={() => navigate(`/jd/${jd.JD_ID}`)}>
-                                                        <i>{jd.position}</i>
-                                                    </span>
-                                                    <hr className='middle-line'/>
-                                                    <span>{jd.weighted_percentage} </span> 
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </>
-
-                            )}
+                                <div className='key'>Emails</div>
+                                <div className="value">
+                                    {cv.emails.length > 0 ? <ul>{cv.emails.map((email, index) =>
+                                        <li key={index}>{email}</li>)}</ul> : <div>-</div>
+                                    }
                                 </div>
+                                <hr className='line2' />
+                                <div className='key'>Contact #</div>
+                                <div className="value">{cv.phone_number}</div>
+                                <hr className='line2' />
+
+                                <div className='key'>Experience</div>
+                                <div className="value">
+                                    {Object.keys(cv.experience_by_job).length === 0 && !cv.total_experience && <div>-</div>}
+                                    {Object.keys(cv.experience_by_job).length !== 0 ? (
+                                        <ul>{Object.entries(cv.experience_by_job).map(([key, value]) => (
+                                            <li key={key}>
+                                                <span className='job'>{key}</span> - {Math.round((value * 12)) == 1 && <span> {Math.round((value * 12))} month</span>} {Math.round((value * 12)) != 1 && <span> {Math.round((value * 12))} months</span>}
+                                            </li>
+                                        ))}</ul>
+                                    ) : (
+                                        null
+                                    )}
+                                    {cv.total_experience ?
+                                        (Math.round(cv.total_experience * 12) === 1 ? <span className='total-exp'>Total exp: {Math.round(cv.total_experience * 12)} month</span>
+                                            : <span className='total-exp'>Total exp: {Math.round(cv.total_experience * 12)} months</span>)
+                                        : null}
+
+                                </div>
+                                <hr className='line2' />
+
+                                <div className="key">Skills</div>
+                                <div className="value">
+                                    {cv.skills.length !== 0 ? (
+                                        <div id="tag-container" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                                            {cv.skills.map((name, index) => (
+                                                <span className="tag" key={index}>{name}</span>
+                                            ))}</div>
+                                    ) : (
+                                        <div>-</div>)}
+                                </div>
+                                <hr className='line2' />
+
+                                <div className="key">Links</div>
+                                <div className="value">
+                                    <ul>
+                                        {cv.links.length !== 0 ? (
+                                            cv.links.map((link, index) => (
+                                                <li key={index}>
+                                                    <a href={link}>{link}</a>
+                                                </li>
+                                            ))
+                                        ) : (
+                                            <div>-</div>
+                                        )}
+                                    </ul>
+                                </div>
+                                <hr className='line2' />
+
+                                <div className="key">Posted By</div>
+                                <div className="value">
+                                    {user.first_name} {user.last_name}
+                                </div>
+                                <hr className='line2' />
+
+                                <div className="key">Posted On</div>
+                                <div className="value">
+                                    {getDate(cv.createdAt)}
+                                </div>
+                                <hr className='line2' />
+
+                                {jds.length !== 0 && (
+                                    <>
+                                        <div className="key">Uploaded For:</div>
+                                        <div className="value">
+                                            {jds.map((jd) => {
+                                                return (
+                                                    <div onClick={() => navigate(`/jd/${jd.JD_ID}`)} key={jd.JD_ID} className='jd-row'>
+                                                        <span className='position'>
+                                                            <i>{jd.position}</i>
+                                                        </span>
+                                                        <span className='middle-line-span'>
+                                                        <hr className='middle-line' /></span>
+                                                        <span className='perc'>{jd.weighted_percentage} </span>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </>
+
+                                )}
+                            </div>
 
                         </Col>
                         <Col className='pdf-container'>
-                            <iframe id='pdf-frame' src={require(`../../../../server/uploaded_CVs/${cv.cv_path.replace(/^.*[\\\/]/, '')}#toolbar=0`)} width="100%" overflowY="auto" height="100%"/>
+                            <iframe id='pdf-frame' src={require(`../../../../server/uploaded_CVs/${cv.cv_path.replace(/^.*[\\\/]/, '')}#toolbar=0`)} width="100%" overflowY="auto" height="100%" />
                         </Col>
                     </Row>
 

@@ -25,6 +25,8 @@
 }
 
 .heading {
+  display: flex;
+  align-items: center;
   margin-bottom: 0;
   position: sticky;
   top: 0;
@@ -32,6 +34,7 @@
   z-index: 1;
   margin-right: 10px;
   min-height: 40px;
+  font-size: 20px;
 }
 
 .details {
@@ -44,7 +47,7 @@
 .key {
   margin-bottom: 2px;
   font-weight: bold;
-  color: #2d2d2d
+  color: #3d3d3d
 }
 
 .line {
@@ -115,7 +118,7 @@
 .custom-btn-sec:hover,
 .custom-btn-sec:active  {
   background-color: #d2d0d0 !important;
-  border: 1px solid #2d2d2d !important;
+  border: 1px solid #d2d0d0 !important;
   color: #2d2d2d !important;
   font-weight: bold !important;
 }

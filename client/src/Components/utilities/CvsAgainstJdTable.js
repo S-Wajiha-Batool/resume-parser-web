@@ -28,9 +28,9 @@ const CvsAgainstJdTable = (props) => {
     const [token] = state.UserAPI.token;
     const [cvAgainstJdTableData, setAgainstJdTableData] = state.CVAPI.cvAgainstJdTableData;
     const columns = [
-        { title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
+        { title: "Rank", cellStyle: { fontWeight: "bold" }, render: (rowData) => rowData.tableData.id + 1 },
         { title: "Name", field: "full_name", sorting: false, filtering: false },
-        { title: "Email", field: "emails", render: (rowData) => <ul>{rowData.emails.map((email, index) => <li key={index}>{email}</li>)}</ul> },
+        { title: "Email", field: "emails", render: (rowData) => {return rowData.emails.length > 0 ? (<div>{rowData.emails[0]}</div>) : <div>-</div>} },
         { title: "Score", field: "weighted_percentage" },
         { title: "Posted On", field: "createdAt", render: (rowData) => <div>{getDate(rowData.createdAt)}</div> },
     ]
