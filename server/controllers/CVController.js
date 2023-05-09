@@ -451,7 +451,8 @@ const CVController = {
                 return res.status(200).json({ error: { code: null, msg: null }, data: 0 });
             }
             const increased_percentage = (count / CVs.length) * 100;
-            return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage });
+            const total_cvs = CVs.length;
+            return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage});
 
         }
         catch (err) {
