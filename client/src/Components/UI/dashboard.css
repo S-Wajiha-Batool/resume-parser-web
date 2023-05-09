@@ -289,7 +289,7 @@ margin: 20px;
   box-sizing: border-box;
   box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
   border-radius: 5px;
-  margin: 20px 10px;
+  margin: 20px 15px;
 }
 
 .loading-spinner {
@@ -343,3 +343,24 @@ margin: 20px;
   margin: 10px;
   border-radius: 5px;
 }
+
+@media only screen and (max-width: 768px) {
+  .dashboard-container {
+  flex-direction: column;
+  }
+  
+  .row-1, .row-2 {
+  flex-direction: row;
+  align-items: center;
+  }
+  
+  .box-jd, .box-cv, .box-count {
+  width: 100%;
+  margin: 10px 0;
+  }
+  
+  .chart {
+  width: 100%;
+  height: 400px;
+  }
+  }
