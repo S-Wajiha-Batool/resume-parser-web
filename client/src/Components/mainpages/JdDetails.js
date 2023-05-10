@@ -124,7 +124,7 @@ function JdDetails() {
                         <div className='page-title'>
                             <Title title={`Job Details`} />
                             <div className='icons'>
-                                        <Button className = "custom-btn jd-btn" onClick={handleShowEditModal}><span><EditOutlined className="icon-btn-class"/></span> Edit</Button>
+                                        <Button className = "custom-btn jd-btn" onClick={handleShowEditModal}><span><EditOutlined fontWeight='medium' className="icon-btn-class"/></span> Edit</Button>
                                         <Button className = "custom-btn-sec jd-btn" onClick={handleShowDeleteModal}><span><DeleteOutline className="icon-btn-class"/></span> Delete</Button>
                                     </div>
                         </div>
