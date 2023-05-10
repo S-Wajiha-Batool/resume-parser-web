@@ -13,20 +13,20 @@ import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import DeleteModal from './DeleteModal';
 import '../UI/CvTable.css'
 //import Theme from '../theme/theme'
-import { orange } from '@mui/material/colors';
 
 const customTheme = createTheme({});
 
 const CvTable = (props) => {
   var moment = require('moment')
   const defaultMaterialTheme = createTheme();
-  const { data, handleShowModal } = props;
+  const { handleShowAddModal } = props;
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState([])
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const handleCloseDeleteModal = () => setShowDeleteModal(false);
   const handleShowDeleteModal = () => setShowDeleteModal(true);
   const [isDeleting, setIsDeleting] = useState(false)
+
   const state = useContext(GlobalState);
   const [tableData, setTableData] = state.CVAPI.tableData
   const [token] = state.UserAPI.token;
@@ -53,9 +53,7 @@ const CvTable = (props) => {
       title: "Links", field: "links", cellStyle: {
         textAlign: 'center',
         verticalAlign: 'middle'
-      }, render: (rowData) => <ul>
-        {rowData.links.map((name, index) => <li key={index}><a href={name}>{name}</a></li>)}
-      </ul>, searchable: true, export: true
+      }, render: (rowData) => { return rowData.links.length > 0 ? <ul>{rowData.links.map((link, index) => <li key={index}><a href={link}>{link}</a></li>)}</ul> : <div>-</div> }, searchable: true, export: true
 
     },
     {
@@ -78,6 +76,14 @@ const CvTable = (props) => {
           style={{ fontFamily: 'Open Sans, sans-serif' }}
           actions={[
             {
+              icon: () => <AddBox />,
+              tooltip: "Add new row",
+              isFreeAction: true,
+              onClick: (e, data) =>{
+                handleShowAddModal();
+              },              
+            },
+            {
               icon: () => <DeleteOutline />,
               tooltip: "Delete",
               onClick: (e, rowData) => {
@@ -86,7 +92,6 @@ const CvTable = (props) => {
               },
               position: "row"
             }
-
           ]}
 
           onRowClick={(event, rowData) => {

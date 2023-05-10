@@ -20,12 +20,6 @@ function UploadJdModal({ showModal, handleCloseModal }) {
     const [jd, setJd] = useState({ position: "", department: "HR", skills: [], experience: "None", qualification: {}, universities: {} })
     console.log(jd)
 
-    useEffect(() => {
-        if (!showModal) {
-            setValidated(false)
-        }
-    }, [showModal])
-
     const [isUploadingJd, setIsUploadingJd] = useState(false)
 
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -52,7 +46,6 @@ function UploadJdModal({ showModal, handleCloseModal }) {
         setJd({ ...jd, 'qualification': Object.fromEntries(value) })
     }
 
-    const [validated, setValidated] = useState(false);
 
     const handleSubmit = (e) => {
         const form = e.currentTarget;
@@ -295,7 +288,7 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                     <br />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button className="custom-btn" variant='primary' type='submit' disabled={isUploadingJd} onClick={!isUploadingJd ? handleSubmit : null}>
+                    <Button className="custom-btn done-btn-footer" variant='primary' type='submit' disabled={isUploadingJd} onClick={!isUploadingJd ? handleSubmit : null}>
                         {isUploadingJd && <Spinner
                             as="span"
                             animation="border"
@@ -307,10 +300,8 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                     </Button>
                 </Modal.Footer>
             </Form>
-
         </Modal>
     )
-
 }
 
 export default UploadJdModal

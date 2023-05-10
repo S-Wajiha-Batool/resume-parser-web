@@ -4,6 +4,7 @@ import '../UI/allCvs.css';
 import { GlobalState } from '../../GlobalState';
 import { getAllCvsAPI } from '../../API/CVAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
+import ParseCvsModal from '../utilities/ParseCvsModal';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import Title from '../utilities/Title';
@@ -16,6 +17,9 @@ function AllCvs() {
     const [isLoading, setIsLoading] = useState(true);
     const [success, setSuccess] = useState(false);
     const [callbackCv, setCallbackCv] = state.CVAPI.callbackCv;
+    const [showAddModal, setShowAddModal] = useState(false);
+    const handleCloseAddModal = () => setShowAddModal(false);
+    const handleShowAddModal = () => setShowAddModal(true);
 
     useEffect(() => {
         if (token) {
@@ -47,14 +51,12 @@ function AllCvs() {
         isLoading ?
             <LoadingSpinner /> :
             success ?
-                <> <div className='cv-container'>
+                 <div className='cv-container'>
                     <div className='page-title'><Title title={"Resumes"} /></div>
-                    <CvTable
-                        className='table'
-                    />
+                    <CvTable className='table' handleShowAddModal={handleShowAddModal}/>
+                    <ParseCvsModal showAddModal={showAddModal} handleCloseAddModal={handleCloseAddModal} />
                 </div>
-                </>
-                : "No Jds found"
+                : "No Cvs found"
     )
 }
 

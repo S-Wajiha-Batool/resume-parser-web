@@ -59,48 +59,13 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
 
     }, [token, callbackCv]);
 
-    // useEffect(() => {
-    //     console.log('inuseeffect')
-    //     try {
-    //         setIsMatching(true)
-    //         console.log(parsedCvsFromAPI)
-    //         matchCvsAPI(jd, parsedCvsFromAPI, token)
-    //             .then(res => {
-    //                 console.log(res.data)
-    //                 setIsMatching(false);
-    //                 setScoresPC(res.data.data);
-    //                 setCallbackJdDetails(!callbackJdDetails)
-    //             })
-    //             .catch(err => {
-    //                 console.log(err.response.data.error.msg)
-    //                 if (err.response.data.error.code == 500) {
-    //                     showErrorToast("CV Matching failed")
-    //                 }
-    //             })
-    //             .finally(() => {
-    //                 setMatchingDonePC(true)
-    //                 this.tableRef.current.onQueryChange();
-    //             })
-    //     } catch (err) {
-    //         showErrorToast(err)
-    //     };
-    // },[parsedCvsFromAPI])
-
     const getPdf = (file_path) => {
         const mimetype = file_path.split(".")[1];
-        // if(mimetype === 'pdf'){
-        //     return require(`../../../../server/uploaded_CVs/${file_path.replace(/^.*[\\\/]/, '')}`)
-        // }
-        // else{
-
-        // }
-
         const sourceFilePath = path.resolve('./word_file.docx');
         const outputFilePath = path.resolve('./myDoc.pdf');
         unoconv
             .convert(sourceFilePath, outputFilePath)
             .then(result => {
-                console.log(result); // return outputFilePath
                 return outputFilePath
             })
             .catch(err => {
@@ -119,8 +84,6 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
             setIsParsing(true)
             await parseCvsAPI(formdata, token)
                 .then(res => {
-                    //console.log(res.data.data.cvs)
-                    //setParsedCvsFromAPI(res.data.data.cvs)
                     let cvss = res.data.data.cvs
                     setIsParsing(false);
                     setIsMatching(true)
@@ -197,32 +160,6 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
 
     const handleDisplayFileDetails = (e) => {
         setMatchingDonePC(false)
-        // const files = Array.prototype.slice.call(e.target.files)
-        // const uploaded = [...cvsPC.files]
-        // console.log(uploaded);
-        // var MAX_COUNT = 5
-        // let limitExceeded = false;
-        // files.some((file) => {
-        //     if (uploaded.findIndex((f) => f.name === file.name) === -1) {
-        //         uploaded.push(file);
-        //         if (uploaded.length === MAX_COUNT) setFileLimit(true);
-        //         if (uploaded.length > MAX_COUNT) {
-        //             showErrorToast(`You can only add a maximum of ${MAX_COUNT} files`);
-        //             setFileLimit(false);
-        //             limitExceeded = true;
-        //             return true;
-        //         }
-        //     }
-        // })
-        // if (!limitExceeded){
-        //     setCvsPC({ ...cvsPC, files: uploaded });
-        // }
-
-        // const input = document.getElementById('files')
-        // input.value = cvsPC.files;
-        // inputRef.current?.files &&
-        //     setCvsPC({ ...cvsPC, files: e.target.files });
-
         setCvsPC({ ...cvsPC, files: e.target.files });
 
     };
@@ -252,7 +189,9 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
     const getFileNamesFromPC = () => {
         let rows = [];
         for (let i = 0; i < cvsPC.files.length; i++) {
-            rows.push(<div className='file_row1'>
+            rows.push(<div>
+                <hr className='hori-line'/>
+                <div className='file_row1'>
                 <span>
                     {cvsPC.files[i].name}
                 </span>
@@ -262,6 +201,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                 {!matchingDonePC && <span className='remove_action' onClick={() => handleRemoveFilesFromPC(i)}>
                     Remove
                 </span>}
+                </div>
             </div>)
         }
         return <div className='filename-box'>{rows}</div>
@@ -306,7 +246,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                 <Modal.Title>Upload CVs</Modal.Title>
             <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseModal}></button>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className='body-modalcv'>
                 <Tabs
                     defaultActiveKey="pc"
                     id="cv_tab"
@@ -350,7 +290,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                             </Form.Group>
                         </Form>
                         <Modal.Footer>
-                            <Button className='custom-btn done-btn' variant='primary' type='submit' disabled={isParsing || isMatching || matchingDonePC || cvsPC.files.length == 0} onClick={!isParsing && !isMatching ? handleUploadPC : null}>
+                            <Button className='custom-btn done-btn-cv' variant='primary' type='submit' disabled={isParsing || isMatching || matchingDonePC || cvsPC.files.length == 0} onClick={!isParsing && !isMatching ? handleUploadPC : null}>
                                 {isParsing && <Spinner
                                     as="span"
                                     animation="border"
@@ -417,7 +357,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                             getFileNamesFromServer()
                         }
                         <Modal.Footer>
-                            <Button className='custom-btn done-btn' variant='primary' type='submit' disabled={isMatching || matchingDoneServer || cvsServer.length==0} onClick={!isMatching ? handleUploadServer : null}>
+                            <Button className='custom-btn done-btn-cv' variant='primary' type='submit' disabled={isMatching || matchingDoneServer || cvsServer.length==0} onClick={!isMatching ? handleUploadServer : null}>
                                 {isMatching && <Spinner
                                     as="span"
                                     animation="border"
