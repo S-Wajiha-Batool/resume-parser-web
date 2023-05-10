@@ -29,6 +29,9 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
     const state = useContext(GlobalState);
     const [token] = state.UserAPI.token;
     const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
+    const [callbackJdDetails, setCallbackJdDetails] = state.JDAPI.callbackJdDetails;
+    const [cvAgainstJdTableData, setCvAgainstJdTableData] = state.CVAPI.cvAgainstJdTableData;
+
    // const [old, setOld] = useState({})
 
     console.log('old', old)
@@ -90,6 +93,7 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                         console.log(res.data)
                         showSuccessToast(res.data.data.msg);
                         setCallbackJd(!callbackJd)
+                        setCallbackJdDetails(!callbackJdDetails)
                         setEnableEdit(false)
                         setOld({ ...old, position: jd.position, department: jd.department, skills: jd.skills, experience: jd.experience, qualification: jd.qualification, universities: jd.universities });
 })
@@ -111,6 +115,7 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                         console.log(res.data)
                         showSuccessToast(res.data.data.msg);
                         setCallbackJd(!callbackJd)
+                        setCallbackJdDetails(!callbackJdDetails)
                         setOld({ ...old, position: jd.position, department: jd.department, skills: jd.skills, experience: jd.experience, qualification: jd.qualification, universities: jd.universities });
                     })
                     .catch(err => {

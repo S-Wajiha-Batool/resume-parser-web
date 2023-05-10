@@ -46,8 +46,8 @@
 
 #header .pro-sidebar-layout ul .pro-inner-item {
   color: #ffffff;
-  margin: 10px 0;
-  margin-bottom: auto;
+  margin: 10px auto;
+  margin-bottom: 10px;
   font-weight: bold;
 }
 
@@ -64,6 +64,7 @@
   position: absolute;
   bottom: 0;
   width: 100%;
+
 }
 
 #header .pro-sidebar-footer .pro-inner-item {
@@ -84,7 +85,6 @@
 
 #header .pro-sidebar-footer > .pro-inner-item {
   margin: 0px;
-  padding-top:10px;
 }
 
 /* Menu item styles */
@@ -152,8 +152,6 @@
   position: absolute;
   width: 38px;
   height: 38px;
-  margin-top: auto;
-  margin-bottom: auto;
 }
 
 .text {
@@ -221,7 +219,8 @@
 }
 
 #header .pro-sidebar.collapsed .logout-icon {
-  bottom: 8px;
+  top: 8px;
+  bottom: 10px;
 }
 
 .sidebar {

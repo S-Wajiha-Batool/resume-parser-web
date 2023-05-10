@@ -235,7 +235,6 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                         {/* <StyledEngineProvider injectFirst> */}
                         <Autocomplete
                             classes={classes}
-
                             isOptionEqualToValue={(option, value) => option.skill_name === value.skill_name}
                             multiple
                             id="checkboxes-tags-demo"

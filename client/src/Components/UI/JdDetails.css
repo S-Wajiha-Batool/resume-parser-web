@@ -3,6 +3,7 @@
   padding: 20px;
   background-color: #ffffff;
   table-layout: fixed;
+  
 }
 
 .desc-container {
@@ -24,6 +25,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  height: 45px;
 }
 
 .heading1 {

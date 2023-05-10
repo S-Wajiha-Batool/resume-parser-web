@@ -48,6 +48,9 @@ const CVsSchema = new mongoose.Schema({
         required: true,
         default: true
     },
+    insertion_order: {
+        type: Number,
+    }
 },
     {
         timestamps: true
