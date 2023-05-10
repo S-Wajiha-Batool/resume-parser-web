@@ -436,27 +436,84 @@ const CVController = {
     },
 
     increased_CV: async (req, res) => {
+        const currentDate = new Date();
+        
+        var lastWeekStart = new Date();
+        var lastWeekEnd = new Date();
+        var currentWeekStart = new Date();
+        var currentWeekEnd = new Date();
+
+        
+        console.log("current", currentDate);
+        console.log("Day", currentDate.getDay());
+        if (currentDate.getDay() === 0) {
+            lastWeekStart = new Date(currentDate.getTime() - 6 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 1 * 24 * 3600 * 1000);
+            
+            currentWeekStart = new Date(currentDate.getTime() + 1 * 24 * 3600 * 1000);
+            currentWeekEnd = new Date(currentDate.getTime() + 6 * 24 * 3600 * 1000);
+        }
+        else if (currentDate.getDay() === 1) {
+            lastWeekStart = new Date(currentDate.getTime() - 7 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 2 * 24 * 3600 * 1000);
+            currentWeekStart = new Date(currentDate.getTime());
+            currentWeekEnd = new Date(currentDate.getTime() + 5 * 24 * 3600 * 1000);
+        }
+        else if (currentDate.getDay() === 2) {
+            lastWeekStart = new Date(currentDate.getTime() - 8 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 3 * 24 * 3600 * 1000);
+            currentWeekStart = new Date(currentDate.getTime() - 1 * 24 * 3600 * 1000);
+            currentWeekEnd = new Date(currentDate.getTime() + 4 * 24 * 3600 * 1000);
+        }
+        else if (currentDate.getDay() === 3) {
+            lastWeekStart = new Date(currentDate.getTime() - 9 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 4 * 24 * 3600 * 1000);
+            currentWeekStart = new Date(currentDate.getTime() - 2 * 24 * 3600 * 1000);
+            currentWeekEnd = new Date(currentDate.getTime() + 3 * 24 * 3600 * 1000);
+            console.log("start", lastWeekStart);
+            console.log("start", lastWeekEnd);
+
+        }
+        else if (currentDate.getDay() === 4) {
+            lastWeekStart = new Date(currentDate.getTime() - 10 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 5 * 24 * 3600 * 1000);
+            currentWeekStart = new Date(currentDate.getTime() - 3 * 24 * 3600 * 1000);
+            currentWeekEnd = new Date(currentDate.getTime() + 2 * 24 * 3600 * 1000);
+        }
+        else if (currentDate.getDay() === 5) {
+            lastWeekStart = new Date(currentDate.getTime() - 11 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 6 * 24 * 3600 * 1000);
+            currentWeekStart = new Date(currentDate.getTime() - 4 * 24 * 3600 * 1000);
+            currentWeekEnd = new Date(currentDate.getTime() + 1 * 24 * 3600 * 1000);
+        }
+        else if (currentDate.getDay() === 6) {
+            lastWeekStart = new Date(currentDate.getTime() - 12 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 7 * 24 * 3600 * 1000);
+            currentWeekStart = new Date(currentDate.getTime() -7 * 24 * 3600 * 1000);
+            currentWeekEnd = new Date(currentDate.getTime());
+        }
+
         try {
             const CVs = await CV.find();
-            var date_ob = new Date();
-            var count = 0;
+            var l_count = 0;
+            var c_count = 0;
             CVs.forEach(CV => {
-                const diff = Math.abs(date_ob - CV.createdAt)
-                console.log(date_ob)
-                console.log(CV.createdAt)
-                const d = diff / (1000 * 3600 * 24)
-                console.log(d)
-                if (d > 7){
-                    count ++;
+                if (CV.createdAt >=lastWeekStart && CV.createdAt <= lastWeekEnd) {
+                    l_count++;
+                }
+                if(CV.createdAt >= currentWeekStart && CV.createdAt <= currentWeekEnd) {
+                    c_count++;
                 }
             });
-
-            if (CVs.length == 0){
+            console.log("c_count", c_count);
+            console.log("l_count", l_count);
+            if (CVs.length == 0) {
                 return res.status(200).json({ error: { code: null, msg: null }, data: 0 });
             }
-            const increased_percentage = (count / CVs.length) * 100;
-            const total_cvs = CVs.length;
-            return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage});
+            const increased_percentage = (c_count / (c_count + l_count)) * 100;
+        
+            console.log("percentage", increased_percentage);
+            return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage });
 
         }
         catch (err) {
@@ -568,11 +625,9 @@ const CVController = {
             console.log(err)
             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
         }
-    }
+    },
 
-}
-
-const removeFiles = () => {
+ removeFiles : () => {
     fs.unlink('fileToBeRemoved', function (err) {
         if (err && err.code == 'ENOENT') {
             // file doens't exist
@@ -584,6 +639,7 @@ const removeFiles = () => {
             console.info(`removed`);
         }
     });
+}
 }
 
 module.exports = CVController;

@@ -35,7 +35,7 @@ const JDController = {
         try {
 
             const user = await Users.findById(req.user.id)
-            console.log(user._id)
+            //console.log(user._id)
             if (!user) return res.status(404).json({ error: { code: res.statusCode, msg: 'No user found' }, data: null })
 
             const { position, department, experience, qualification, skills, universities } = req.body
@@ -81,7 +81,7 @@ const JDController = {
 
     getJD: async (req, res) => {
         try {
-            console.log(req.params.id)
+            // console.log(req.params.id)
             //const uploaded_by = await Users.find(req.params.id)
             //console.log(ObjectId(uploaded_by))
 
@@ -173,7 +173,7 @@ const JDController = {
                     { new: true }
                 );
 
-                return res.status(200).json({ error: { code: null, msg: null }, data: {msg: "JD updated successfully"} });
+                return res.status(200).json({ error: { code: null, msg: null }, data: { msg: "JD updated successfully" } });
             } catch (err) {
                 return res.status(500).json({ error: { code: res.statusCode, msg: err }, data: null });
             }
@@ -182,7 +182,7 @@ const JDController = {
 
     delete_JD: async (req, res) => {
         try {
-            console.log(req.body)
+            // console.log(req.body)
             const updatedJD = await JD.findByIdAndUpdate(
                 ObjectId(req.params.id),
                 {
@@ -211,13 +211,13 @@ const JDController = {
             jds.forEach(jd => {
 
                 //formated_response.push( { x: jd.department, y: dict[jd.department] + 1 } )
-                
+
                 dict[jd.department] = dict[jd.department] + 1;
             })
 
             for (const [key, value] of Object.entries(dict)) {
-                formated_response.push({ x: key, y: value})
-              }
+                formated_response.push({ x: key, y: value })
+            }
             return res.status(200).json({ error: { code: null, msg: null }, data: formated_response });
 
 
@@ -379,35 +379,96 @@ const JDController = {
         }
     },
     increased_JD: async (req, res) => {
+        const currentDate = new Date();
+        
+        var lastWeekStart = new Date();
+        var lastWeekEnd = new Date();
+        var currentWeekStart = new Date();
+        var currentWeekEnd = new Date();
+        const currentHour = currentDate.getHours();
+
+        console.log("current", currentDate);
+        console.log("Day", currentDate.getDay());
+        if (currentDate.getDay() === 0) {
+            lastWeekStart = new Date(currentDate.getTime() - 6 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 1 * 24 * 3600 * 1000);
+            
+            currentWeekStart = new Date(currentDate.getTime() + 1 * 24 * 3600 * 1000);
+            currentWeekEnd = new Date(currentDate.getTime() + 6 * 24 * 3600 * 1000);
+        }
+        else if (currentDate.getDay() === 1) {
+            lastWeekStart = new Date(currentDate.getTime() - 7 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 2 * 24 * 3600 * 1000);
+            currentWeekStart = new Date(currentDate.getTime());
+            currentWeekEnd = new Date(currentDate.getTime() + 5 * 24 * 3600 * 1000);
+        }
+        else if (currentDate.getDay() === 2) {
+            lastWeekStart = new Date(currentDate.getTime() - 8 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 3 * 24 * 3600 * 1000);
+            currentWeekStart = new Date(currentDate.getTime() - 1 * 24 * 3600 * 1000);
+            currentWeekEnd = new Date(currentDate.getTime() + 4 * 24 * 3600 * 1000);
+        }
+        else if (currentDate.getDay() === 3) {
+            lastWeekStart = new Date(currentDate.getTime() - 9 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 4 * 24 * 3600 * 1000);
+            currentWeekStart = new Date(currentDate.getTime() - 2 * 24 * 3600 * 1000);
+            currentWeekEnd = new Date(currentDate.getTime() + 3 * 24 * 3600 * 1000);
+            console.log("l start", lastWeekStart);
+            console.log("l end", lastWeekEnd);
+            console.log("c start", currentWeekStart);
+            console.log("c end", currentWeekEnd);
+
+        }
+        else if (currentDate.getDay() === 4) {
+            lastWeekStart = new Date(currentDate.getTime() - 10 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 5 * 24 * 3600 * 1000);
+            currentWeekStart = new Date(currentDate.getTime() - 3 * 24 * 3600 * 1000);
+            currentWeekEnd = new Date(currentDate.getTime() + 2 * 24 * 3600 * 1000);
+        }
+        else if (currentDate.getDay() === 5) {
+            lastWeekStart = new Date(currentDate.getTime() - 11 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 6 * 24 * 3600 * 1000);
+            currentWeekStart = new Date(currentDate.getTime() - 4 * 24 * 3600 * 1000);
+            currentWeekEnd = new Date(currentDate.getTime() + 1 * 24 * 3600 * 1000);
+        }
+        else if (currentDate.getDay() === 6) {
+            lastWeekStart = new Date(currentDate.getTime() - 12 * 24 * 3600 * 1000);
+            lastWeekEnd = new Date(currentDate.getTime() - 7 * 24 * 3600 * 1000);
+            currentWeekStart = new Date(currentDate.getTime() -7 * 24 * 3600 * 1000);
+            currentWeekEnd = new Date(currentDate.getTime());
+        }
         try {
             const JDs = await JD.find();
-            var date_ob = new Date();
-            var count = 0;
+
+            var l_count = 0;
+            var c_count = 0;
             JDs.forEach(JD => {
-                const diff = Math.abs(date_ob - JD.createdAt)
-                console.log(date_ob)
-                console.log(JD.createdAt)
-                const d = diff / (1000 * 3600 * 24)
-                console.log(d)
-                if (d > 7) {
-                    count++;
+                if (JD.createdAt >=lastWeekStart && JD.createdAt <= lastWeekEnd) {
+                    l_count++;
                 }
-            });
-            if(JDs.length == 0) {
+                if(JD.createdAt >= currentWeekStart && JD.createdAt <= currentWeekEnd) {
+                    c_count++;
+                }
+                 }
+            );
+            console.log("c_count", c_count);
+            console.log("l_count", l_count);
+            if (JDs.length == 0) {
                 return res.status(200).json({ error: { code: null, msg: null }, data: 0 });
             }
-            const increased_percentage = (count / JDs.length) * 100;
+            const increased_percentage = (c_count / (c_count + l_count)) * 100;
             const total_jds = JDs.length;
+            console.log("percentage", increased_percentage);
             return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage });
 
         }
         catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
         }
-    },
+    }
+
+
+
 }
-
-
-
 module.exports = JDController;
 
