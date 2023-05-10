@@ -23,7 +23,7 @@ const cvs_route = require("./controllers/CVController")
 
 database.getInstance();
 
-// ---//
+// --- //
 
 app.use(cors());
 app.use(express.json());
