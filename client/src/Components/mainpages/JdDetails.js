@@ -132,7 +132,7 @@ function JdDetails() {
                         <Row className='jd-details'>
                             <Col className='desc-container'>
                                 <div className='heading1'>
-                                    <h4 style={{ fontWeight: 'bold', marginBottom:0 }}>{jd.position}</h4>
+                                    <h4 style={{ fontWeight: 'bold', marginBottom:0}}>{jd.position}</h4>
                                 </div>
                                 <hr className='line' />
                                 <div className='details'>
