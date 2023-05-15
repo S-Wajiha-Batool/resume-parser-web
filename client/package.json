@@ -24,6 +24,7 @@
     "bootstrap": "^5.2.3",
     "buffer": "^6.0.3",
     "chart.js": "^4.2.1",
+    "d3-scale-chromatic": "^3.0.0",
     "dependency": "^0.0.1",
     "docx-pdf": "^0.0.1",
     "fontawesome": "^5.6.3",

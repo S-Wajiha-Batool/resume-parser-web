@@ -344,7 +344,7 @@ margin: 20px;
 
 @media screen and (max-width: 768px) {
   .chart {
-     height: 350px;
+     height: 200px;
   }
 }
 
