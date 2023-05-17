@@ -5,7 +5,6 @@
   align-items: center;
   height: 100vh;
   background-color: white;
-  font-family: Arial, sans-serif;
 }
 
 /* Login Image Container */
@@ -81,14 +80,15 @@ form {
 .input[type="text"],
 .input[type="password"] {
   width: 100%;
-  font-size: 16px;
+  font-size: 14px;
   color: #333;
 }
 
 
 .login-btn{
-  width: 100%
-  
+  width: 100%;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .forgot-text{
@@ -102,7 +102,7 @@ cursor: pointer;
 
 /* Text */
 .text1 {
-  font-size: 16px;
+  font-size: 14px;
   color: #333;
   margin-bottom: 10px;
 }

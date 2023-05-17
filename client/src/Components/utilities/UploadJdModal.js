@@ -84,12 +84,6 @@ function UploadJdModal({ showModal, handleCloseModal }) {
 
     const handleSubmit = (e) => {
         const form = e.currentTarget;
-        /* if (form.checkValidity() === false) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        setValidated(true);
-        console.log('in submit') */
 
         e.preventDefault()
         if (jd.position === "") {
@@ -231,7 +225,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                         <Autocomplete
                             isOptionEqualToValue={(option, value) => option[0] === value[0]}
                             multiple
-                            // freeSolo
+                            popupIcon={""}
                             id="checkboxes-tags-demo"
                             size="small"
                             options={Object.entries(quals)}
@@ -311,7 +305,6 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                             )}
                             value={jd.skills}
                             ListboxComponent={ListboxComponent}
-
                         />
                         {/* </StyledEngineProvider> */}
                     </Row>
@@ -320,20 +313,17 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                         <Form.Label className='form-label'>Universities</Form.Label>
                         {/* <StyledEngineProvider injectFirst> */}
                         <Autocomplete
+                        popupIcon={""}
                             isOptionEqualToValue={(option, value) => option[0] === value[0]}
                             multiple
-                            freeSolo
                             id="checkboxes-tags-demo"
                             size="small"
                             options={Object.entries(unis)}
                             disableCloseOnSelect
-                            getOptionLabel={(option) => {
-                                if (option[0] === option[1]) {
-                                    return option[1] + " (" + option[0] + ")";
-                                } else {
-                                    return option[1];
-                                }
-                            }}
+                            getOptionLabel={(option) => 
+                                 option[1] + " (" + option[0] + ")"
+                                
+                            }
                             onChange={onChangeUniversities}
                             renderOption={(props, option, { selected }) => (
                                 <li {...props} key={option[0]}>
@@ -348,7 +338,8 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                             )}
                             style={{ width: 500 }}
                             renderInput={(params) => (
-                                <TextField required {...params} placeholder="Universities" />
+                                <TextField required {...params} placeholder="Universities"
+                                 />
                             )}
                         />
                         {/* </StyledEngineProvider> */}

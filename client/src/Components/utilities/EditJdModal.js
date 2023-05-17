@@ -275,6 +275,7 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                             defaultValue={Object.entries(oldJd.qualification || {})}
                             isOptionEqualToValue={(option, value) => option[0] === value[0]}
                             multiple
+                            popupIcon={""}
                             id="checkboxes-tags-demo"
                             size="small"
                             options={Object.entries(quals)}
@@ -351,6 +352,7 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                             defaultValue={Object.entries(oldJd.universities || {})}
                             isOptionEqualToValue={(option, value) => option[0] === value[0]}
                             multiple
+                            popupIcon={""}
                             id="checkboxes-tags-demo"
                             size="small"
                             options={Object.entries(unis)}

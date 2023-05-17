@@ -58,11 +58,11 @@ const JdTable = (props) => {
   
   const columns = [
     { title: "Position", field: "position", sorting: false, cellStyle: { fontWeight: "bold", textAlign: 'center',
-    verticalAlign: 'middle' }, headerStyle: { color: "black" }, },
+    verticalAlign: 'middle', }, headerStyle: { color: "black" }, },
     { title: "Department", field: "department", filterPlaceholder: "filter", cellStyle: {textAlign: 'center',
     verticalAlign: 'middle'} },
     {
-      title: "Skills", field: "skills", grouping: false, cellStyle: {textAlign: 'center',
+      title: "Skills", field: "skills", grouping: false, cellStyle: {textAlign: 'left',
       verticalAlign: 'middle'},
       render: (rowData) => { return getSkills(rowData.skills).length > 0 ? <ul>{getSkills(rowData.skills).map((skill, index) => <li key={index}>{skill}</li>)}</ul> : <div>-</div> },
     },
@@ -72,7 +72,7 @@ const JdTable = (props) => {
       searchable: true, export: true
     },
     {
-      title: "Qualification", field: "qualification",cellStyle: {textAlign: 'center',
+      title: "Qualification", field: "qualification",cellStyle: {textAlign: 'left',
       verticalAlign: 'middle'}, render: (rowData) => {
         return rowData.qualification && Object.entries(rowData.qualification).length > 0 ?
           <ul>{Object.entries(rowData.qualification).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
