@@ -338,7 +338,7 @@ function Dashboard() {
                       data={hist}
                       x="x"
                       y="y"
-                      style={{ data: { fill: 'lightgray' } }}
+                      style={{ data: { fill: 'darkplum'} }}
                       barRatio={0.6}
                     />
                   </VictoryChart>

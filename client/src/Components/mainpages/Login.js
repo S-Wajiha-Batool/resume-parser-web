@@ -45,61 +45,63 @@ function Login() {
 
 
     return (
-        <div className='login-page'>
-            <div className = "login-image-container">
-            <figure>
-                <img src= {picture} alt = "login picture"/>
-            </figure>
-            </div>
-            <div className='login-form-container'>
-            <div className='login-card'>
-                <div className="login-header">
-                    <h2 className='text1'>Login</h2>
+        <div className='login-page' style={{background: 'linear-gradient(to bottom right, #e6f7ff, #dfecf8, #e5f9cd, #f5eef8, #f9ece3)'}}>
+          <div className='login-form-container'>
+            <div className='login-card' style={{ width: '500px', height: '580px' }}>
+              <div className="login-header" style={{ marginTop: '75px' }}>
+                <h2 className='text1'>Login</h2>
+              </div>
+              <form>
+                <div>
+                  <text className='label'>
+                    <p className='text1'>Email</p>
+                  </text>
+                  <input
+                    type='text'
+                    name='email'
+                    value={user.email}
+                    required
+                    onChange={onChangeInput}
+                    className='input'
+                  />
                 </div>
-
-                <div className='login-card'>
-                    <form>
-                        <div>
-                            <text className='label' >
-                               <p className='text1'>Email</p> 
-                            </text>
-                            <input type='text'
-                                name='email'
-                                value={user.email}
-                                required
-                                onChange={onChangeInput}
-                                className='input' />
-                            </div>
-                        <div>
-
-                            <text className='label'>
-                            <p className='text1'>Password</p> 
-                            </text>
-                            <input type='password'
-                                name='password'
-                                value={user.password}
-                                required
-                                onChange={onChangeInput}
-                                className='input' />
-                            </div>
-                        <div>
-                        <button type='submit'
-                        onClick={loginSubmit}
-                            className='input'
-                            value='Submit'
-                            position='center'>Submit
-                        </button>
-                        </div>
-                        <div className='label'>
-                            <text className='span.psw' position = 'center' onClick={() => navigate('/reset-password')}><p className='text1'>Forgot Password?</p> </text>
-                        </div>
-                    </form>
-                    <ToastContainer/>
+                <div>
+                  <text className='label'>
+                    <p className='text1'>Password</p>
+                  </text>
+                  <input
+                    type='password'
+                    name='password'
+                    value={user.password}
+                    required
+                    onChange={onChangeInput}
+                    className='input'
+                  />
                 </div>
+                <div style={{textAlign: 'center'}}>
+                  <button
+                    type='submit'
+                    onClick={loginSubmit}
+                    className='input'
+                    value='Submit'
+                  >
+                    Submit
+                  </button>
+                </div>
+                <div className='label' style={{textAlign: 'center'}}>
+                  <text
+                    className='span.psw'
+                    onClick={() => navigate('/reset-password')}
+                  >
+                    <p className='text1'>Forgot Password?</p>
+                  </text>
+                </div>
+              </form>
+              <ToastContainer />
             </div>
-            </div>
+          </div>
         </div>
-    )
+      );
 }
 
 export default Login

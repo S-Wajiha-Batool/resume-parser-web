@@ -75,7 +75,7 @@ const CVController = {
                     },
                 ],
                     async function (err, result) {
-                  
+
 
                         if (err) {
                             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
@@ -86,7 +86,7 @@ const CVController = {
                             return res.status(200).json({ error: { code: null, msg: null }, data: { cv: selected_cv, jds: result } });
                         }
                     });
-            
+
             }
         }
         catch (err) {
@@ -147,7 +147,7 @@ const CVController = {
                     links: cv.links,
                     cv_path: req.files[index].path,
                     cv_original_name: req.files[index].originalname,
-                    insertion_order: index 
+                    insertion_order: index
                     //cv_name: req.files[index].name
                 });
 
@@ -193,7 +193,7 @@ const CVController = {
             //console.log(ids[0].name)
 
             //const savedcCV = await new_CV.save()
-           // return res.status(200).json({ error: { code: null, msg: null }, data: { data: data } });
+            // return res.status(200).json({ error: { code: null, msg: null }, data: { data: data } });
         } catch (err) {
             return res.status(500).json({ error: { code: null, msg: err.message }, data: null });
         }
@@ -306,7 +306,7 @@ const CVController = {
                             body: { jd, cvs },
                             json: true
                         };
-            
+
                         //api call to flask to get scores
                         await new Promise(async (resolve, reject) => {
                             await request(options)
@@ -319,27 +319,27 @@ const CVController = {
                                     return res.status(500).json({ error: { code: res.statusCode, msg: "Error in CV matching" }, data: null })
                                 });
                         })
-            
+
                         const promises = cvs.map(async (cv, index) => {
                             console.log('cv', cv.cv_original_name);
                             console.log('score', data[index]);
                             const updatedJD = await CV_JD.findByIdAndUpdate(
                                 ObjectId(cv._id),
                                 {
-                                    $set: {"weighted_percentage" : data[index]},
+                                    $set: { "weighted_percentage": data[index] },
                                 },
                                 { new: true }
                             );
                             return updatedJD;
                         });
-                                    
+
                         await Promise.all(promises);
-                        
-                        return res.status(200).json({ error: { code: null, msg: null }, data: {msg: "Resumes rescored successfully"}});
-            
+
+                        return res.status(200).json({ error: { code: null, msg: null }, data: { msg: "Resumes rescored successfully" } });
+
                     } catch (err) {
                         return res.status(500).json({ error: { code: null, msg: err.message }, data: null });
-                    }                            
+                    }
                     //return res.status(200).json({ error: { code: null, msg: null }, data: { jd: selected_jd, cvs: result } });
                 }
             });
@@ -370,16 +370,16 @@ const CVController = {
     deleteCvAgainstJd: async (req, res) => {
         try {
             console.log(req.body)
-                const updatedCV = await CV_JD.findByIdAndUpdate(
-                    ObjectId(req.params.id),
-                    {
-                        $set:  req.body, 
-                    },
-                    { new: true }
-                );
-                res.status(200).json({ error: { code: null, msg: null }, data: updatedCV });
+            const updatedCV = await CV_JD.findByIdAndUpdate(
+                ObjectId(req.params.id),
+                {
+                    $set: req.body,
+                },
+                { new: true }
+            );
+            res.status(200).json({ error: { code: null, msg: null }, data: updatedCV });
 
-            
+
         } catch (err) {
             res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
         }
@@ -388,14 +388,14 @@ const CVController = {
 
     delete_CV: async (req, res) => {
         try {
-                const updatedCV = await CV.findByIdAndUpdate(
-                    ObjectId(req.params.id),
-                    {
-                        $set:  req.body, 
-                    },
-                    { new: true }
-                );
-                res.status(200).json({ error: { code: null, msg: null }, data: updatedCV });            
+            const updatedCV = await CV.findByIdAndUpdate(
+                ObjectId(req.params.id),
+                {
+                    $set: req.body,
+                },
+                { new: true }
+            );
+            res.status(200).json({ error: { code: null, msg: null }, data: updatedCV });
         } catch (err) {
             res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
         }
@@ -427,7 +427,7 @@ const CVController = {
                     count++;
                 }
             })
-           // var highest_percentage = (count / total_cvs.length) * 100;
+            // var highest_percentage = (count / total_cvs.length) * 100;
 
             return res.status(200).json({ error: { code: null, msg: null }, data: count });
 
@@ -437,21 +437,55 @@ const CVController = {
         }
     },
 
+    median: async (req, res) => {
+        try {
+            const cv_jd = await CV_JD.find();
+            var percentages = [];
+            var median;
+            var count = 0;
+            cv_jd.forEach(element => {
+                percentages.push(element.weighted_percentage)
+            })
+            const sortedArray = percentages.sort((a, b) => a - b);
+            console.log("sorted", sortedArray)
+
+            const middleIndex = Math.floor(sortedArray.length / 2);
+
+            if (sortedArray.length % 2 === 0) {
+                median = (sortedArray[middleIndex] + sortedArray[middleIndex + 1]) / 2;
+            }
+            else {
+                median = sortedArray[middleIndex];
+            }
+            for(var i = 0 ; i < percentages.length; i++){
+                if(percentages[i] >= median){
+                    count++;
+                }
+            }
+            return res.status(200).json({ error: { code: null, msg: null }, data: median, count});
+
+        }
+        catch (err) {
+            return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
+        }
+
+    },
+
     increased_CV: async (req, res) => {
         const currentDate = new Date();
-        
+
         var lastWeekStart = new Date();
         var lastWeekEnd = new Date();
         var currentWeekStart = new Date();
         var currentWeekEnd = new Date();
 
-        
+
         console.log("current", currentDate);
         console.log("Day", currentDate.getDay());
         if (currentDate.getDay() === 0) {
             lastWeekStart = new Date(currentDate.getTime() - 6 * 24 * 3600 * 1000);
             lastWeekEnd = new Date(currentDate.getTime() - 1 * 24 * 3600 * 1000);
-            
+
             currentWeekStart = new Date(currentDate.getTime() + 1 * 24 * 3600 * 1000);
             currentWeekEnd = new Date(currentDate.getTime() + 6 * 24 * 3600 * 1000);
         }
@@ -491,7 +525,7 @@ const CVController = {
         else if (currentDate.getDay() === 6) {
             lastWeekStart = new Date(currentDate.getTime() - 12 * 24 * 3600 * 1000);
             lastWeekEnd = new Date(currentDate.getTime() - 7 * 24 * 3600 * 1000);
-            currentWeekStart = new Date(currentDate.getTime() -7 * 24 * 3600 * 1000);
+            currentWeekStart = new Date(currentDate.getTime() - 7 * 24 * 3600 * 1000);
             currentWeekEnd = new Date(currentDate.getTime());
         }
 
@@ -500,10 +534,10 @@ const CVController = {
             var l_count = 0;
             var c_count = 0;
             CVs.forEach(CV => {
-                if (CV.createdAt >=lastWeekStart && CV.createdAt <= lastWeekEnd) {
+                if (CV.createdAt >= lastWeekStart && CV.createdAt <= lastWeekEnd) {
                     l_count++;
                 }
-                if(CV.createdAt >= currentWeekStart && CV.createdAt <= currentWeekEnd) {
+                if (CV.createdAt >= currentWeekStart && CV.createdAt <= currentWeekEnd) {
                     c_count++;
                 }
             });
@@ -512,8 +546,8 @@ const CVController = {
             if (CVs.length == 0) {
                 return res.status(200).json({ error: { code: null, msg: null }, data: 0 });
             }
-            const increased_percentage = (c_count / (c_count + l_count)) * 100;
-        
+            const increased_percentage = ((c_count - l_count) / (l_count)) * 100;
+
             console.log("percentage", increased_percentage);
             return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage });
 
@@ -523,70 +557,70 @@ const CVController = {
         }
     },
 
-    CV_distribution: async(req, res) => {
-        try{
+    CV_distribution: async (req, res) => {
+        try {
             var dict = {
-                "0% - 10%" : 0,
-                "10% - 20%" : 0,
-                "20% - 30%" : 0,
-                "30% - 40%" : 0,
-                "40% - 50%" : 0,
-                "50% - 60%" : 0,
-                "60% - 70%" : 0,
-                "70% - 80%" : 0,
-                "80% - 90%" : 0,
-                "90% - 100%" : 0,
+                "0% - 10%": 0,
+                "10% - 20%": 0,
+                "20% - 30%": 0,
+                "30% - 40%": 0,
+                "40% - 50%": 0,
+                "50% - 60%": 0,
+                "60% - 70%": 0,
+                "70% - 80%": 0,
+                "80% - 90%": 0,
+                "90% - 100%": 0,
             }
             const all_cv_jd = await CV_JD.find();
             all_cv_jd.forEach(each_cv_jd => {
-                if(Math.round(each_cv_jd.weighted_percentage) >=0 && Math.round(each_cv_jd.weighted_percentage) <10){
-                    dict["0% - 10%"] = dict["0% - 10%"] + 1; 
+                if (Math.round(each_cv_jd.weighted_percentage) >= 0 && Math.round(each_cv_jd.weighted_percentage) < 10) {
+                    dict["0% - 10%"] = dict["0% - 10%"] + 1;
                 }
-                else if(Math.round(each_cv_jd.weighted_percentage) >=10 && Math.round(each_cv_jd.weighted_percentage) <20){
-                    dict["10% - 20%"] = dict["10% - 20%"] + 1; 
+                else if (Math.round(each_cv_jd.weighted_percentage) >= 10 && Math.round(each_cv_jd.weighted_percentage) < 20) {
+                    dict["10% - 20%"] = dict["10% - 20%"] + 1;
                 }
-                else if(Math.round(each_cv_jd.weighted_percentage) >=20 && Math.round(each_cv_jd.weighted_percentage) <30){
-                    dict["20% - 30%"] = dict["20% - 30%"] + 1; 
+                else if (Math.round(each_cv_jd.weighted_percentage) >= 20 && Math.round(each_cv_jd.weighted_percentage) < 30) {
+                    dict["20% - 30%"] = dict["20% - 30%"] + 1;
                 }
-                else if(Math.round(each_cv_jd.weighted_percentage) >=30 && Math.round(each_cv_jd.weighted_percentage) <40){
-                    dict["30% - 40%"] = dict["30% - 40%"] + 1; 
+                else if (Math.round(each_cv_jd.weighted_percentage) >= 30 && Math.round(each_cv_jd.weighted_percentage) < 40) {
+                    dict["30% - 40%"] = dict["30% - 40%"] + 1;
                 }
-                else if(Math.round(each_cv_jd.weighted_percentage) >=40 && Math.round(each_cv_jd.weighted_percentage) <50){
-                    dict["40% - 50%"] = dict["40% - 50%"] + 1; 
+                else if (Math.round(each_cv_jd.weighted_percentage) >= 40 && Math.round(each_cv_jd.weighted_percentage) < 50) {
+                    dict["40% - 50%"] = dict["40% - 50%"] + 1;
                 }
-                else if(Math.round(each_cv_jd.weighted_percentage) >=50 && Math.round(each_cv_jd.weighted_percentage) <60){
-                    dict["50% - 60%"] = dict["50% - 60%"] + 1; 
+                else if (Math.round(each_cv_jd.weighted_percentage) >= 50 && Math.round(each_cv_jd.weighted_percentage) < 60) {
+                    dict["50% - 60%"] = dict["50% - 60%"] + 1;
                 }
-                else if(Math.round(each_cv_jd.weighted_percentage) >=60 && Math.round(each_cv_jd.weighted_percentage) <70){
-                    dict["60% - 70%"] = dict["60% - 70%"] + 1; 
+                else if (Math.round(each_cv_jd.weighted_percentage) >= 60 && Math.round(each_cv_jd.weighted_percentage) < 70) {
+                    dict["60% - 70%"] = dict["60% - 70%"] + 1;
                 }
-                else if(Math.round(each_cv_jd.weighted_percentage) >=70 && Math.round(each_cv_jd.weighted_percentage) <80){
-                    dict["70% - 80%"] = dict["70% - 80%"] + 1; 
+                else if (Math.round(each_cv_jd.weighted_percentage) >= 70 && Math.round(each_cv_jd.weighted_percentage) < 80) {
+                    dict["70% - 80%"] = dict["70% - 80%"] + 1;
                 }
-                else if(Math.round(each_cv_jd.weighted_percentage) >=80 && Math.round(each_cv_jd.weighted_percentage) <90){
-                    dict["80% - 90%"] = dict["80% - 90%"] + 1; 
+                else if (Math.round(each_cv_jd.weighted_percentage) >= 80 && Math.round(each_cv_jd.weighted_percentage) < 90) {
+                    dict["80% - 90%"] = dict["80% - 90%"] + 1;
                 }
-                else if(Math.round(each_cv_jd.weighted_percentage) >=90 && Math.round(each_cv_jd.weighted_percentage) <100){
-                    dict["90% - 100%"] = dict["90% - 100%"] + 1; 
+                else if (Math.round(each_cv_jd.weighted_percentage) >= 90 && Math.round(each_cv_jd.weighted_percentage) < 100) {
+                    dict["90% - 100%"] = dict["90% - 100%"] + 1;
                 }
-                
+
             });
 
             const distribution = [
-                { x: "0% - 10%", y: dict["0% - 10%"]},
-                { x: "10% - 20%", y: dict["10% - 20%"]},
-                { x: "20% - 30%", y: dict["20% - 30%"]},
-                { x: "30% - 40%", y: dict["30% - 40%"]},
-                { x: "40% - 50%", y: dict["40% - 50%"]},
-                { x: "50% - 60%", y: dict["50% - 60%"]},
-                { x: "60% - 70%", y: dict["60% - 70%"]},
-                { x: "70% - 80%", y: dict["70% - 80%"]},
-                { x: "80% - 90%", y: dict["80% - 90%"]},
-                { x: "90% - 100%", y: dict["90% - 100%"]},
+                { x: "0% - 10%", y: dict["0% - 10%"] },
+                { x: "10% - 20%", y: dict["10% - 20%"] },
+                { x: "20% - 30%", y: dict["20% - 30%"] },
+                { x: "30% - 40%", y: dict["30% - 40%"] },
+                { x: "40% - 50%", y: dict["40% - 50%"] },
+                { x: "50% - 60%", y: dict["50% - 60%"] },
+                { x: "60% - 70%", y: dict["60% - 70%"] },
+                { x: "70% - 80%", y: dict["70% - 80%"] },
+                { x: "80% - 90%", y: dict["80% - 90%"] },
+                { x: "90% - 100%", y: dict["90% - 100%"] },
             ]
             return res.status(200).json({ error: { code: null, msg: null }, data: distribution });
         }
-        catch(err){
+        catch (err) {
             return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null })
         }
 
@@ -596,26 +630,26 @@ const CVController = {
         try {
             let arr = req.files[0].filename.split('.')
             const sourceFilePath = path.resolve(`./uploaded_CVs/${req.files[0].filename}`);
-        const outputFilePath = path.resolve(`./uploaded_CVs/${arr[0]}.pdf`);
-        unoconv
-            .convert(`./uploaded_CVs/${req.files[0].filename}`, `./uploaded_CVs/${arr[0]}.pdf`)
-            .then(result => {
-                console.log(result); // return outputFilePath
-                return res.status(200).json({ error: { code: null, msg: null }, data: result });
+            const outputFilePath = path.resolve(`./uploaded_CVs/${arr[0]}.pdf`);
+            unoconv
+                .convert(`./uploaded_CVs/${req.files[0].filename}`, `./uploaded_CVs/${arr[0]}.pdf`)
+                .then(result => {
+                    console.log(result); // return outputFilePath
+                    return res.status(200).json({ error: { code: null, msg: null }, data: result });
 
-            })
-            .catch(err => {
-                console.log(err);
-                return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
+                })
+                .catch(err => {
+                    console.log(err);
+                    return res.status(500).json({ error: { code: res.statusCode, msg: err.message }, data: null });
 
-            });
-// unoconv.convert(`./uploaded_CVs/${req.files[0].filename}`, 'pdf', function (err, result) {
-// 	// result is returned as a Buffer
-// 	fs.writeFile(`./uploaded_CVs/${arr[0]}.pdf`, result);
-// });
+                });
+            // unoconv.convert(`./uploaded_CVs/${req.files[0].filename}`, 'pdf', function (err, result) {
+            // 	// result is returned as a Buffer
+            // 	fs.writeFile(`./uploaded_CVs/${arr[0]}.pdf`, result);
+            // });
             // console.log(req.files)
             // let arr = req.files[0].filename.split('.')
-            
+
             // const enterPath = `./uploaded_CVs/${req.files[0].filename}`
 
             // const outputPath = `./uploaded_CVs/${arr[0]}.pdf`;
@@ -629,19 +663,19 @@ const CVController = {
         }
     },
 
- removeFiles : () => {
-    fs.unlink('fileToBeRemoved', function (err) {
-        if (err && err.code == 'ENOENT') {
-            // file doens't exist
-            console.info("File doesn't exist, won't remove it.");
-        } else if (err) {
-            // other errors, e.g. maybe we don't have enough permission
-            console.error("Error occurred while trying to remove file");
-        } else {
-            console.info(`removed`);
-        }
-    });
-}
+    removeFiles: () => {
+        fs.unlink('fileToBeRemoved', function (err) {
+            if (err && err.code == 'ENOENT') {
+                // file doens't exist
+                console.info("File doesn't exist, won't remove it.");
+            } else if (err) {
+                // other errors, e.g. maybe we don't have enough permission
+                console.error("Error occurred while trying to remove file");
+            } else {
+                console.info(`removed`);
+            }
+        });
+    }
 }
 
 module.exports = CVController;
