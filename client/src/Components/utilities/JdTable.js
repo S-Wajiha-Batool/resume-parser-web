@@ -83,7 +83,7 @@ const JdTable = (props) => {
     console.log(skills)
     var a = [];
     skills.map(s => {
-      a.push(s.skill_name)
+      a.push(s.skill_name  || s)
     })
     return a;
   }

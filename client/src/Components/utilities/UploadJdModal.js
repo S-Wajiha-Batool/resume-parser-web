@@ -24,25 +24,60 @@ function UploadJdModal({ showModal, handleCloseModal }) {
 
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
     const checkedIcon = <CheckBoxIcon fontSize="small" />;
+    const [inputValue, setInputValue] = useState('');
 
     const state = useContext(GlobalState);
     const [token] = state.UserAPI.token;
     const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
-
+    const inputRef = useRef(null);
     const onChangeInput = e => {
         const { name, value } = e.target;
         setJd({ ...jd, [name]: value })
     }
 
-    const onChangeSkills = (e, value) => {
-        setJd({ ...jd, 'skills': value })
+    const onChangeSkills = (e, values) => {
+        console.log(values);
+        // Handle the selected options
+        //setJd({ ...jd, skills: value });
+        let newSkills = values.map((value) => {
+            if (typeof value === 'string') {
+                // Value is a user-typed string, convert it to an object
+                return { skill_name: value };
+            }
+            return value;
+        });
+
+        setJd({ ...jd, skills: newSkills });
+
+        console.log('jd', jd)
     }
 
-    const onChangeUniversities = (e, value) => {
-        setJd({ ...jd, 'universities': Object.fromEntries(value) })
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const value = event.target.value.trim();
+            if (value !== '') {
+                onChangeSkills(null, [...jd.skills, value]);
+                setInputValue('');
+            }
+        }
+    };
+
+    const onChangeUniversities = (e, values) => {
+        // let newU = values.map((value) => {
+        //     if (typeof value === 'string') {
+        //       // Value is a user-typed string, convert it to an object
+        //       return { value : value };
+        //     }
+        //     return value;
+        //   });
+        setJd({ ...jd, 'universities': values })
     }
 
     const onChangeQualification = (e, value) => {
+        console.log(value)
         setJd({ ...jd, 'qualification': Object.fromEntries(value) })
     }
 
@@ -55,81 +90,81 @@ function UploadJdModal({ showModal, handleCloseModal }) {
         }
         setValidated(true);
         console.log('in submit') */
-        
+
         e.preventDefault()
         if (jd.position === "") {
             showErrorToast("Position cannot be empty");
         }
         else {
             try {
-            setIsUploadingJd(true);
-            addJdAPI(jd, token)
-                .then(res => {
-                    console.log(res.data)
-                    showSuccessToast(res.data.data.msg);
-                    setCallbackJd(!callbackJd)
-                    handleCloseModal()
-                    setJd({ position: "", department: "HR", skills: [], experience: "None", qualification: {}, universities: {} })
-                })
-                .catch(err => {
-                    console.log(err.response.data.error.msg)
-                    if (err.response.data.error.code == 500) {
-                        showErrorToast("JD Upload failed")
-                    }
-                })
-                .finally(() => {
-                    setIsUploadingJd(false)
-                })
+                setIsUploadingJd(true);
+                addJdAPI(jd, token)
+                    .then(res => {
+                        console.log(res.data)
+                        showSuccessToast(res.data.data.msg);
+                        setCallbackJd(!callbackJd)
+                        handleCloseModal()
+                        setJd({ position: "", department: "HR", skills: [], experience: "None", qualification: {}, universities: {} })
+                    })
+                    .catch(err => {
+                        console.log(err.response.data.error.msg)
+                        if (err.response.data.error.code == 500) {
+                            showErrorToast("JD Upload failed")
+                        }
+                    })
+                    .finally(() => {
+                        setIsUploadingJd(false)
+                    })
+            }
+            catch (err) {
+                console.log(err)
+                showErrorToast("Error in CV upload")
+                setIsUploadingJd(false)
+            }
         }
-        catch (err) {
-            console.log(err)
-            showErrorToast("Error in CV upload")
-            setIsUploadingJd(false)
-        }
-        }
-        
+
 
     }
 
     const useStyles = makeStyles((theme) => ({
         listbox: {
             '&::-webkit-scrollbar': {
-              display: 'none',
+                display: 'none',
             },
             '-ms-overflow-style': 'none',
             scrollbarWidth: 'none',
-          },
-      }));
-  
-      const classes = useStyles();
+        },
+    }));
+
+    const classes = useStyles();
 
 
-const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) {
-  const { children, ...other } = props;
-  const itemCount = Array.isArray(children) ? children.length : 0;
-  const itemSize = 48;
-  const height = Math.min(8, itemCount) * itemSize;
+    const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) {
+        const { children, ...other } = props;
+        const itemCount = Array.isArray(children) ? children.length : 0;
+        const itemSize = 48;
+        const height = Math.min(8, itemCount) * itemSize;
 
-  const getItem = (index) => children[index] || null;
+        const getItem = (index) => children[index] || null;
 
-  return (
-    <div ref={ref}  >
-      <div {...other}>
-        <FixedSizeList height={height} itemCount={itemCount} itemSize={itemSize}>
-          {({ index, style }) => (
-            <div style={{ ...style, display: 'flex', alignItems: 'center' }}key={index} aria-selected={false} role="option">
-            <div  style={{width: "100%"}}>{children[index]}</div>
-          </div>
-          )}
-        </FixedSizeList>
-      </div>
-    </div>
-  );
-});
+        return (
+            <div ref={ref}  >
+                <div {...other}>
+                    <FixedSizeList height={height} itemCount={itemCount} itemSize={itemSize}>
+                        {({ index, style }) => (
+                            <div style={{ ...style, display: 'flex', alignItems: 'center' }} key={index} aria-selected={false} role="option">
+                                <div style={{ width: "100%" }}>{getItem(index)}</div>
+                            </div>
+                        )}
+                    </FixedSizeList>
+                </div>
+            </div>
+        );
+    });
 
     return (
         <Modal show={showModal} onHide={handleCloseModal} centered>
-            <Form  onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit}>
                 <Modal.Header>
                     <Modal.Title>Add Job Description</Modal.Title>
                     <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseModal}></button>
@@ -145,21 +180,21 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                             onChange={onChangeInput} />
                     </Form.Group>
                     <br />
-                    
+
                     <Row>
                         <Col>
-                        <Form.Group>
-                        <Form.Label className='form-label'>
-                            Department</Form.Label>
-                        <Form.Select
-                            name='department'
-                            value={jd.department}
-                            onChange={onChangeInput}>
-                            {departments.map((d, key) => {
-                                return <option className='option' key={key} value={d}>{d}</option>;
-                            })}
-                        </Form.Select>
-                    </Form.Group>
+                            <Form.Group>
+                                <Form.Label className='form-label'>
+                                    Department</Form.Label>
+                                <Form.Select
+                                    name='department'
+                                    value={jd.department}
+                                    onChange={onChangeInput}>
+                                    {departments.map((d, key) => {
+                                        return <option className='option' key={key} value={d}>{d}</option>;
+                                    })}
+                                </Form.Select>
+                            </Form.Group>
                         </Col>
                         <Col>
                             <Form.Group>
@@ -174,7 +209,7 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                                 </Form.Select>
                             </Form.Group>
                         </Col>
-                        
+
                     </Row>
                     {/* <Col>
                             <Form.Group>
@@ -196,11 +231,14 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                         <Autocomplete
                             isOptionEqualToValue={(option, value) => option[0] === value[0]}
                             multiple
+                            // freeSolo
                             id="checkboxes-tags-demo"
                             size="small"
                             options={Object.entries(quals)}
                             disableCloseOnSelect
-                            getOptionLabel={(option) => option[1] + " (" + option[0] + ")"}
+                            getOptionLabel={(option) =>
+                                option[1] + " (" + option[0] + ")"
+                            }
                             onChange={onChangeQualification}
                             renderOption={(props, option, { selected }) => (
                                 <li {...props} key={option[0]}>
@@ -230,12 +268,27 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                             classes={classes}
                             isOptionEqualToValue={(option, value) => option.skill_name === value.skill_name}
                             multiple
+                            freeSolo
                             id="checkboxes-tags-demo"
                             size="small"
-                            options={Object.values(Object.values(skills[0]))}
+                            options={Object.values(skills[0])}
                             disableCloseOnSelect
-                            getOptionLabel={(option) => option.skill_name}
+                            inputValue={inputValue}
+                            onInputChange={(event, newInputValue) => {
+                                setInputValue(newInputValue);
+                            }}
+                            getOptionLabel={(option) => option.skill_name || option}
                             onChange={onChangeSkills}
+                            // onInputChange={(event, value) => {
+                            //     if (event.key === 'Enter') {
+                            //         // Handle the selected options
+                            //         let newSkills = [];
+                            //         if (typeof value === 'string') {
+                            //           newSkills = jd.skills.concat({ skill_name: value });
+                            //         }
+                            //         setJd({ ...jd, skills: newSkills });
+                            //       }
+                            //   }}
                             renderOption={(props, option, { selected }) => (
                                 <li {...props} key={option.skill_name}>
                                     <Checkbox
@@ -247,10 +300,18 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                                     {option.skill_name}
                                 </li>
                             )}
-                            ListboxComponent={ListboxComponent}
+
                             renderInput={(params) => (
-                                <TextField required {...params} placeholder="Skills" />
+                                <TextField
+                                    {...params}
+                                    placeholder="Skills"
+                                    onKeyDown={handleKeyDown}
+
+                                />
                             )}
+                            value={jd.skills}
+                            ListboxComponent={ListboxComponent}
+
                         />
                         {/* </StyledEngineProvider> */}
                     </Row>
@@ -261,11 +322,18 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
                         <Autocomplete
                             isOptionEqualToValue={(option, value) => option[0] === value[0]}
                             multiple
+                            freeSolo
                             id="checkboxes-tags-demo"
                             size="small"
                             options={Object.entries(unis)}
                             disableCloseOnSelect
-                            getOptionLabel={(option) => option[1] + " (" + option[0] + ")"}
+                            getOptionLabel={(option) => {
+                                if (option[0] === option[1]) {
+                                    return option[1] + " (" + option[0] + ")";
+                                } else {
+                                    return option[1];
+                                }
+                            }}
                             onChange={onChangeUniversities}
                             renderOption={(props, option, { selected }) => (
                                 <li {...props} key={option[0]}>

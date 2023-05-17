@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect, useLayoutEffect,useRef } from 'react';
+import React, { useState, useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { GlobalState } from '../../GlobalState';
-import { Row, Modal, Button, Form, Spinner } from 'react-bootstrap';
+import { Row, Modal, Button, Form, Spinner,Col } from 'react-bootstrap';
 import { Checkbox, TextField, Autocomplete } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
@@ -15,7 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 function EditJdModal({ showModal, handleCloseModal, oldJd }) {
     const [jd, setJd] = useState({ position: oldJd.position, department: oldJd.department, skills: oldJd.skills, experience: oldJd.experience, qualification: oldJd.qualification, universities: oldJd.universities })
-    const [old, setOld] =  useState({ position: oldJd.position, department: oldJd.department, skills: oldJd.skills, experience: oldJd.experience, qualification: oldJd.qualification, universities: oldJd.universities })
+    const [old, setOld] = useState({ position: oldJd.position, department: oldJd.department, skills: oldJd.skills, experience: oldJd.experience, qualification: oldJd.qualification, universities: oldJd.universities })
 
     //const [jd, setJd] = useState({})
     const [jdChanged, setJdChanged] = useState(false);
@@ -31,8 +31,9 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
     const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
     const [callbackJdDetails, setCallbackJdDetails] = state.JDAPI.callbackJdDetails;
     const [cvAgainstJdTableData, setCvAgainstJdTableData] = state.CVAPI.cvAgainstJdTableData;
+    const [inputValue, setInputValue] = useState('');
 
-   // const [old, setOld] = useState({})
+    // const [old, setOld] = useState({})
 
     console.log('old', old)
     console.log('jd', jd)
@@ -63,11 +64,45 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
         setJd({ ...jd, [name]: value })
         setJdChanged(!jdChanged)
     }
+    const filterOptions = (options, { inputValue }) => {
+        const filteredOptions = options.filter((option) => {
+            const optionLabel = option.skill_name || option;
+            return optionLabel.toLowerCase().includes(inputValue.toLowerCase());
+        });
 
-    const onChangeSkills = (e, value) => {
-        setJd({ ...jd, 'skills': value })
+        // If the inputValue is not present in the options, add it as a new option
+        if (inputValue.trim() !== '' && !filteredOptions.some((option) => option.skill_name === inputValue)) {
+            filteredOptions.push({ skill_name: inputValue });
+        }
+
+        return filteredOptions;
+    };
+
+    const onChangeSkills = (e, values) => {
+        let newSkills = values.map((value) => {
+            if (typeof value === 'string') {
+                // Value is a user-typed string, convert it to an object
+                return { skill_name: value };
+            }
+            return value;
+        });
+
+        setJd({ ...jd, skills: newSkills });
         setJdChanged(!jdChanged)
     }
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const value = event.target.value.trim();
+            if (value !== '') {
+                onChangeSkills(null, [...jd.skills, value]);
+                setInputValue('');
+            }
+        }
+    };
 
     const onChangeUniversities = (e, value) => {
         setJd({ ...jd, 'universities': Object.fromEntries(value) })
@@ -86,7 +121,7 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
             if (jd.position === "") {
                 showErrorToast("Position cannot be empty");
             }
-            else if(jd.position !== ""){
+            else if (jd.position !== "") {
                 setIsUpdatingJd(true);
                 updateJdAPI(oldJd._id, jd, token)
                     .then(res => {
@@ -96,7 +131,7 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                         setCallbackJdDetails(!callbackJdDetails)
                         setEnableEdit(false)
                         setOld({ ...old, position: jd.position, department: jd.department, skills: jd.skills, experience: jd.experience, qualification: jd.qualification, universities: jd.universities });
-})
+                    })
                     .catch(err => {
                         console.log(err.response.data.error.msg)
                         if (err.response.data.error.code == 500) {
@@ -108,7 +143,7 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                     })
             }
 
-            if (old.position !== jd.position || old.experience !== jd.experience || !_.isEqual(_.sortBy(old.skills, "skill_name"), _.sortBy(jd.skills, "skill_name")) || !(JSON.stringify(Object.entries(old.qualification || {})) === JSON.stringify(Object.entries(jd.qualification || {}))) || JSON.stringify(Object.entries(old.universities || {})) !== JSON.stringify(Object.entries(jd.universities || {}))){
+            if (old.position !== jd.position || old.experience !== jd.experience || !_.isEqual(_.sortBy(old.skills, "skill_name"), _.sortBy(jd.skills, "skill_name")) || !(JSON.stringify(Object.entries(old.qualification || {})) === JSON.stringify(Object.entries(jd.qualification || {}))) || JSON.stringify(Object.entries(old.universities || {})) !== JSON.stringify(Object.entries(jd.universities || {}))) {
                 setIsRescoringCvs(true);
                 rescoreCvsAPI(oldJd._id, token)
                     .then(res => {
@@ -140,45 +175,45 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
 
     const useStyles = makeStyles({
         listbox: {
-          '&::-webkit-scrollbar': {
-            display: 'none',
-          },
-          '-ms-overflow-style': 'none',
-          scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': {
+                display: 'none',
+            },
+            '-ms-overflow-style': 'none',
+            scrollbarWidth: 'none',
         },
-      });
-      const classes = useStyles();
+    });
+    const classes = useStyles();
 
     const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) {
         const { children, ...other } = props;
         const itemCount = Array.isArray(children) ? children.length : 0;
         const itemSize = 48;
         const height = Math.min(8, itemCount) * itemSize;
-      
+
         const getItem = (index) => children[index] || null;
-      
+
         return (
-          <div ref={ref}  >
-            <div {...other}>
-              <FixedSizeList height={height} itemCount={itemCount} itemSize={itemSize}>
-                {({ index, style }) => (
-                  <div style={{ ...style, display: 'flex', alignItems: 'center' }}key={index} aria-selected={false} role="option">
-                  <div style={{width: "100%"}}>{children[index]}</div>
+            <div ref={ref}  >
+                <div {...other}>
+                    <FixedSizeList height={height} itemCount={itemCount} itemSize={itemSize}>
+                        {({ index, style }) => (
+                            <div style={{ ...style, display: 'flex', alignItems: 'center' }} key={index} aria-selected={false} role="option">
+                                <div style={{ width: "100%" }}>{children[index]}</div>
+                            </div>
+                        )}
+                    </FixedSizeList>
                 </div>
-                )}
-              </FixedSizeList>
             </div>
-          </div>
         );
-      });
+    });
 
     return (
-        <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal show={showModal} onHide={handleCloseModal} centered>
             <Form onSubmit={handleSubmit}>
                 <Modal.Header >
                     <Modal.Title>Edit Job Description</Modal.Title>
 
-            <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseModal}></button>
+                    <button type="button" className="btn-close btn-close-white" aria-label="Close" onClick={handleCloseModal}></button>
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Group >
@@ -191,7 +226,8 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                             onChange={onChangeInput} />
                     </Form.Group>
                     <br />
-                    <Form.Group>
+                    <Row>
+                        <Col><Form.Group>
                         <Form.Label>
                             Department</Form.Label>
                         <Form.Select
@@ -203,8 +239,8 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                             })}
                         </Form.Select>
                     </Form.Group>
-                    <br />
-                    <Row>
+                    </Col>
+                    <Col>
                         <Form.Group>
                             <Form.Label>Experience</Form.Label>
                             <Form.Select
@@ -216,6 +252,7 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                                 })}
                             </Form.Select>
                         </Form.Group>
+                        </Col>
                     </Row>
                     {/* <Col>
                             <Form.Group>
@@ -268,15 +305,21 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                         <Form.Label>Skills</Form.Label>
                         {/* <StyledEngineProvider injectFirst> */}
                         <Autocomplete
-                        classes={classes}
-                            defaultValue={oldJd.skills}
+                            freeSolo
+                            //filterOptions={filterOptions}
+                            classes={classes}
+                            //value={oldJd.skills}
                             isOptionEqualToValue={(option, value) => option.skill_name === value.skill_name}
                             multiple
                             id="checkboxes-tags-demo"
                             size="small"
                             options={Object.values(Object.values(skills[0]))}
                             disableCloseOnSelect
-                            getOptionLabel={(option) => option.skill_name}
+                            inputValue={inputValue}
+                            onInputChange={(event, newInputValue) => {
+                                setInputValue(newInputValue);
+                            }}
+                            getOptionLabel={(option) => option.skill_name || option}
                             onChange={onChangeSkills}
                             renderOption={(props, option, { selected }) => (
                                 <li {...props} key={option.skill_name}>
@@ -292,8 +335,11 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                             style={{ width: 500 }}
                             ListboxComponent={ListboxComponent}
                             renderInput={(params) => (
-                                <TextField required {...params} placeholder="Skills" />
+                                <TextField required {...params} placeholder="Skills"
+                                    onKeyDown={handleKeyDown}
+                                />
                             )}
+                            value={jd.skills}
                         />
                         {/* </StyledEngineProvider> */}
                     </Row>
