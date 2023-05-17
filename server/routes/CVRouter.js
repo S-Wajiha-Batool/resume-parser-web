@@ -28,4 +28,6 @@ router.get('/highest_rank', verifyToken, CVController.highest_rank)
 
 router.get('/cv_distribution', CVController.CV_distribution)
 
+router.get('/median', CVController.median)
+
 module.exports = router;
