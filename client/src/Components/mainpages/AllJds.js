@@ -81,7 +81,7 @@ function AllJds() {
               <JdTable className="jd-list-table" handleShowModal={handleShowModal} />
               <UploadJdModal className="jd-list-upload-modal" showModal={showModal} handleCloseModal={handleCloseModal} />
             </div>
-            : "No Jds found"
+            : <div className='error'>Job descriptions not found. Please try again.</div>
       )
     }
 

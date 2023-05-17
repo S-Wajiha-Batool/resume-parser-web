@@ -39,7 +39,23 @@ const JdTable = (props) => {
   const getDate = (d) => {
     return moment(d).format("Do MMMM YYYY")
   }
-
+  const customCellRenderer = (rowData, columnDef) => {
+    return (
+      <div
+        style={{
+          height: '50px', // Adjust the height as needed
+          display: 'flex',
+          alignItems: 'center',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {rowData[columnDef.field]}
+      </div>
+    );
+  };
+  
   const columns = [
     { title: "Position", field: "position", sorting: false, cellStyle: { fontWeight: "bold", textAlign: 'center',
     verticalAlign: 'middle' }, headerStyle: { color: "black" }, },
@@ -166,7 +182,8 @@ const JdTable = (props) => {
             headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif',textAlign: 'center',
             verticalAlign: 'middle' },
             selection: false,
-            rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : { background: "#00000" }
+            rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : { background: "#00000" },
+            
           }}
           title=""
         />

@@ -79,3 +79,8 @@ export const getCvDistributionAPI = async (token) => {
     })
 }
 
+export const getMedianAPI = async (token) => {
+    return await axios.get(`/api/cv/median`, {
+        headers: {token: `Bearer ${token}`}
+    })
+}

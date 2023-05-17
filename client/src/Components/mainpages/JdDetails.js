@@ -179,7 +179,7 @@ function JdDetails() {
                         </Row>
                     </div>
                 </div >
-                : <div>Jd not found</div>
+                : <div className='error'>Unable to fetch data. Please try again.</div>
     )
 }
 

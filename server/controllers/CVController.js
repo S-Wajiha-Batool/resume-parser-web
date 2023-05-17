@@ -462,7 +462,7 @@ const CVController = {
                     count++;
                 }
             }
-            return res.status(200).json({ error: { code: null, msg: null }, data: median, count});
+            return res.status(200).json({ error: { code: null, msg: null }, data: {median, count}});
 
         }
         catch (err) {

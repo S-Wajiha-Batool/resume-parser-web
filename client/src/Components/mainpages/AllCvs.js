@@ -56,7 +56,7 @@ function AllCvs() {
                     <CvTable className='table' handleShowAddModal={handleShowAddModal}/>
                     <ParseCvsModal showAddModal={showAddModal} handleCloseAddModal={handleCloseAddModal} />
                 </div>
-                : "No Cvs found"
+                : <div className='error'>CVs not found. Please try again.</div>
     )
 }
 

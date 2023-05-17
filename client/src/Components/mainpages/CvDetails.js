@@ -198,7 +198,7 @@ function CvDetails() {
                     </Row>
 
                 </div>
-                : <div>Cv not found</div>
+                : <div className='error'>Unable to fetch data. Please try again.</div>
     )
 
 }
