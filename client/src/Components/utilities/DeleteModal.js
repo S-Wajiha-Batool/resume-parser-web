@@ -102,8 +102,8 @@ function DeleteModal({showModal, handleCloseModal, data, target}){
                     {target!="jd" && `Are you sure you want to delete ${data.cv_original_name}?`}
                 </Modal.Body>
                 <Modal.Footer>
-                    {!isDeleting && <Button className="custom-btn-sec" variant="secondary" onClick={handleCloseModal}>No</Button>}
-                    <Button style={{borderRadius:"15px"}}variant="danger" disabled={isDeleting} onClick={() => target=="jd" ? onConfirmDeleteJd() : target=="cv" ? onConfirmDeleteCv() : onConfirmDeleteCvAgainstJd()}>
+                    {!isDeleting && <Button className="custom-btn-sec done-btn-footer" style={{marginRight:0}} variant="secondary" onClick={handleCloseModal}>No</Button>}
+                    <Button style={{borderRadius:"15px",marginRight:"16px"}} variant="danger" disabled={isDeleting} onClick={() => target=="jd" ? onConfirmDeleteJd() : target=="cv" ? onConfirmDeleteCv() : onConfirmDeleteCvAgainstJd()}>
                         {isDeleting && <Spinner
                             as="span"
                             animation="border"

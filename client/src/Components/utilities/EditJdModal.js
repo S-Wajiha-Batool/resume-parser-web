@@ -108,7 +108,7 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                     })
             }
 
-            if (old.experience !== jd.experience || !_.isEqual(_.sortBy(old.skills, "skill_name"), _.sortBy(jd.skills, "skill_name")) || !(JSON.stringify(Object.entries(old.qualification || {})) === JSON.stringify(Object.entries(jd.qualification || {}))) || JSON.stringify(Object.entries(old.universities || {})) !== JSON.stringify(Object.entries(jd.universities || {}))){
+            if (old.position !== jd.position || old.experience !== jd.experience || !_.isEqual(_.sortBy(old.skills, "skill_name"), _.sortBy(jd.skills, "skill_name")) || !(JSON.stringify(Object.entries(old.qualification || {})) === JSON.stringify(Object.entries(jd.qualification || {}))) || JSON.stringify(Object.entries(old.universities || {})) !== JSON.stringify(Object.entries(jd.universities || {}))){
                 setIsRescoringCvs(true);
                 rescoreCvsAPI(oldJd._id, token)
                     .then(res => {
@@ -332,7 +332,7 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                     <br />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button className="custom-btn" variant='primary' type='submit' disabled={!enableEdit || isUpdatingJd || isRescoringCvs} onClick={(!isUpdatingJd || !isRescoringCvs) ? handleSubmit : null}>
+                    <Button className="custom-btn done-btn-footer" variant='primary' type='submit' disabled={!enableEdit || isUpdatingJd || isRescoringCvs} onClick={(!isUpdatingJd || !isRescoringCvs) ? handleSubmit : null}>
                         {(isUpdatingJd || isRescoringCvs) && <Spinner
                             as="span"
                             animation="border"

@@ -77,10 +77,8 @@ function AllJds() {
                 <h1 className="jd-list-title">Job Descriptions</h1>
                 <Button background-color= 'blue' className="jd-list-upload-btn"  onClick={handleShowModal}>Add JD</Button>
               </div> */}
-              <div className="page-title">
-            <Title title={"Job Descriptions"}/>
-            </div>
-              <JdTable className="jd-list-table" data={allJDs} handleShowModal={handleShowModal} />
+              <div className="page-title"><Title title={"Job Descriptions"}/></div>
+              <JdTable className="jd-list-table" handleShowModal={handleShowModal} />
               <UploadJdModal className="jd-list-upload-modal" showModal={showModal} handleCloseModal={handleCloseModal} />
             </div>
             : "No Jds found"

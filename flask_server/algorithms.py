@@ -52,7 +52,7 @@ def extract_links(resume_text:str):
     return LINK_REG.findall(resume_text)
 
 def extract_names_modified(nlp, input_string:str):
-    doc = nlp(input_string)
+    doc = nlp(input_string[:20])
     doc_entities = doc.ents
     doc_persons = filter(lambda x: x.label_ == 'PERSON', doc_entities)
     doc_persons = filter(lambda x: len(x.text.strip().split()) >= 2, doc_persons)
@@ -69,7 +69,7 @@ def extract_names_transformer(resume_text:str):
     bert_model = AutoModelForTokenClassification.from_pretrained('dslim/bert-large-NER')
 
     nlp_name = pipeline('ner', model=bert_model, tokenizer=bert_tokenizer)
-    names_string = resume_text
+    names_string = resume_text[:20]
     ner_list = nlp_name(names_string)
 
     this_name = []
@@ -369,7 +369,6 @@ def parse_cv():
         dates:list = extract_dates(text)
         #years_of_exp = calculate_experience(dates)
         experience_by_job, total_experience = calculate_experience_for_each_job(extract_dates_and_text(text))
-        print(experience_by_job, total_experience)
         name_modified = extract_names_modified(nlp, text)
         if (name_modified == ''):
             name_modified = extract_names_transformer(string.capwords(text))
@@ -409,7 +408,6 @@ def parse_cv():
 @app.route('/match_cv', methods = ['POST']) 
 def match_cv(): 
     data = request.get_json() 
-    print(data)
     jd_data =  data['jd']
     cv_data_array = data['cvs']
 
@@ -505,7 +503,7 @@ def match_cv():
         scores["total_score"] = round(total_score)
         final_scores.append(round(total_score))
 
-
+    print(final_scores)
     # Return data in json format 
     return json.dumps(final_scores)
 

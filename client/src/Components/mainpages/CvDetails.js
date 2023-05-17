@@ -94,7 +94,7 @@ function CvDetails() {
                     <Row>
                         <Col className='description-container'>
                             <div className='heading1'>
-                                <h4 style={{ fontWeight: 'bold', marginBottom: 0 }}>{cv.cv_original_name}</h4>
+                                <h4 style={{ fontWeight: 'bold', marginBottom: 0}}>{cv.cv_original_name}</h4>
                             </div>
                             <hr className='line' />
                             <div className='details'>

@@ -1,3 +1,9 @@
+.done-btn-footer{
+  margin-right: 16px;
+  margin-top: 12px ;
+  margin-bottom: 12px ;
+}
+
 .css-wb47ya-MuiFormControl-root-MuiTextField-root:focus {
     border-color: #86b7fe;
     outline: 0;

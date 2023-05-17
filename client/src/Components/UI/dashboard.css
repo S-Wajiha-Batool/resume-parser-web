@@ -222,19 +222,21 @@ margin: 20px;
 .text2 {
   color: black;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 36px;
 }
 
 .text3 {
-  color:rgb(68, 67, 67);
+  color:rgb(101, 101, 101);
   font-size: 14px;
   font-weight: 300px;
-  background-color: #ececec70;
   border-radius: 5px;
   padding: 3px;
-  font-style: italic;
 }
 
+.inc-dec{
+  display: flex;
+  align-items: center;
+}
  .box {
   border: 1px solid #ccc;
   margin-right: 20px; 
@@ -294,16 +296,20 @@ margin: 20px;
   height: 100%;
 }
 
-.arrow-up {
-  color: green;
+.title-row{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
 }
 
-.arrow-down {
-  color: red;
+.card-icon {
+  height: 2em;
+  margin-bottom: 5px;
+  margin-left: 4px;
 }
 
 .box-jd {
-  background-color: #f7e1d3;
+  background-color: #f9ece3;
   color: black;
   text-align: left;
   padding: 20px;
@@ -338,7 +344,7 @@ margin: 20px;
 
 @media screen and (max-width: 768px) {
   .chart {
-     height: 350px;
+     height: 200px;
   }
 }
 

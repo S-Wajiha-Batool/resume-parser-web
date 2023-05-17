@@ -11,7 +11,7 @@ import LoadingSpinner from '../utilities/LoadingSpinner';
 import UploadCvsModal from '../utilities/UploadCvsModal';
 import CvTable from '../utilities/CvsAgainstJdTable';
 import Title from '../utilities/Title';
-import Edit from '@material-ui/icons/Edit';
+import EditOutlined from '@material-ui/icons/EditOutlined';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import EditJdModal from '../utilities/EditJdModal';
 import DeleteModal from '../utilities/DeleteModal';
@@ -124,7 +124,7 @@ function JdDetails() {
                         <div className='page-title'>
                             <Title title={`Job Details`} />
                             <div className='icons'>
-                                        <Button className = "custom-btn jd-btn" onClick={handleShowEditModal}><span><Edit className="icon-btn-class"/></span> Edit</Button>
+                                        <Button className = "custom-btn jd-btn" onClick={handleShowEditModal}><span><EditOutlined fontWeight='medium' className="icon-btn-class"/></span> Edit</Button>
                                         <Button className = "custom-btn-sec jd-btn" onClick={handleShowDeleteModal}><span><DeleteOutline className="icon-btn-class"/></span> Delete</Button>
                                     </div>
                         </div>
@@ -132,7 +132,7 @@ function JdDetails() {
                         <Row className='jd-details'>
                             <Col className='desc-container'>
                                 <div className='heading1'>
-                                    <h4 style={{ fontWeight: 'bold', marginBottom:0 }}>{jd.position}</h4>
+                                    <h4 style={{ fontWeight: 'bold', marginBottom:0}}>{jd.position}</h4>
                                 </div>
                                 <hr className='line' />
                                 <div className='details'>

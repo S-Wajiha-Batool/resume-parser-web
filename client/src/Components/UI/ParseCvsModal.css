@@ -1,4 +1,4 @@
-.body-modalcv{
+.body-modal{
     padding-bottom: 0;
 }
 
@@ -6,12 +6,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
-}
+    margin-bottom: 5px;
+    margin-top: 5px;
 
-.hori-line{
-    color: #d3d3d3;
-    margin: 5px 0;
 }
 
 .file_row{
@@ -19,7 +16,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 10px;
+
 }
 .file_row span {
     margin: 0;
@@ -42,10 +39,10 @@
     padding: 0
 }
 
-.done-btn-cv{
-    margin-right: 0;
+.done-btn{
     margin-top: 12px ;
     margin-bottom: 12px ;
+    margin-right: 16px ;
 }
 
 button.nav-link{
@@ -62,7 +59,6 @@ button.nav-link:hover{
 
 .file-count{
     font-style: italic;
-    font-size: 16px;
 }
 
 .cv-dropdown {

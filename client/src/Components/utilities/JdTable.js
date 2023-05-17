@@ -4,7 +4,7 @@ import MaterialTable from 'material-table'
 import { ThemeProvider, createTheme } from '@mui/material';
 import { tableIcons } from './TableUtil';
 import AddBox from '@material-ui/icons/AddBox';
-import Edit from '@material-ui/icons/Edit';
+import EditOutlined from '@material-ui/icons/EditOutlined';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import { Modal, Button } from 'react-bootstrap'
 import { deleteJdAPI } from '../../API/JDAPI';
@@ -21,7 +21,7 @@ import Title from './Title';
 const JdTable = (props) => {
   var moment = require('moment')
   const defaultMaterialTheme = createTheme();
-  const { data, handleShowModal } = props;
+  const { handleShowModal } = props;
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState([])
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -41,7 +41,6 @@ const JdTable = (props) => {
   }
 
   const columns = [
-    //{ title: "Rank", render: (rowData) => rowData.tableData.id + 1 },
     { title: "Position", field: "position", sorting: false, cellStyle: { fontWeight: "bold", textAlign: 'center',
     verticalAlign: 'middle' }, headerStyle: { color: "black" }, },
     { title: "Department", field: "department", filterPlaceholder: "filter", cellStyle: {textAlign: 'center',
@@ -93,7 +92,7 @@ const JdTable = (props) => {
 
 
   return (
-    <div height='80%'>
+    <div>
       {/* edit modal */}
       {showEditModal && (
         <EditJdModal
@@ -123,7 +122,7 @@ const JdTable = (props) => {
               // isFreeAction:true
             },
             {
-              icon: () => <Edit />,
+              icon: () => <EditOutlined />,
               tooltip: "Edit",
               onClick: (e, rowData) => {
                 handleShowEditModal();

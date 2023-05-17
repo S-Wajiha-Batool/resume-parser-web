@@ -321,6 +321,8 @@ const CVController = {
                         })
 
                         const promises = cvs.map(async (cv, index) => {
+                            console.log('cv', cv.cv_original_name);
+                            console.log('score', data[index]);
                             const updatedJD = await CV_JD.findByIdAndUpdate(
                                 ObjectId(cv._id),
                                 {
