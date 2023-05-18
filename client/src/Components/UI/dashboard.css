@@ -289,6 +289,10 @@ margin: 20px;
   height: 450px;
 }
 
+tspan{
+  font-family: 'Open Sans', sans-serif !important;
+}
+
 .loading-spinner {
   display: flex;
   justify-content: center;

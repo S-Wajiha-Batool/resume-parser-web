@@ -7,13 +7,15 @@
 
 .description-container {
   height: 80vh;
-  width: 100%;
+  width: 450px;
   border-radius: 5px;
   border: 1px solid #d3d3d3;
   padding: 10px 0px 10px 10px;
   display: flex;
   flex-direction: column;
   margin-right: 10px;
+  background-color: #fcfafa;
+
 }
 
 .pdf-container {

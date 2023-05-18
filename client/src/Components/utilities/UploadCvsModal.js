@@ -108,8 +108,8 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                         })
                 })
                 .catch(err => {
-                    console.log(err)
-                    showErrorToast(err.response.data.error.msg)
+                    console.log(err.response.data.error.msg)
+                    showErrorToast("CV upload failed")
                     setIsParsing(false);
                     setIsMatching(false);
                 })
@@ -119,7 +119,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                 })
         } catch (err) {
             console.log(err)
-            showErrorToast("Error in CV upload")
+            showErrorToast("CV upload failed")
             setIsParsing(false);
             setIsMatching(false);
         }
@@ -136,10 +136,11 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                     setScoresServer(res.data.data)
                     setCallbackJdDetails(!callbackJdDetails)
                     setMatchingDoneServer(true)
+                    showSuccessToast("CVs scored successfully")
                 })
                 .catch(err => {
-                    console.log(err)
-                    showErrorToast(err.response.data.error.msg)
+                    console.log(err.response.data.error.msg)
+                    showErrorToast("Error in CV Scoring")
                     setIsMatching(false);
                 })
                 .finally(() => {
