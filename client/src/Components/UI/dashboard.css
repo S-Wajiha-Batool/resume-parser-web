@@ -203,13 +203,8 @@ margin: 20px;
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  align-items: left;
-  margin-right: 20px;
-  padding: 20px;
+  align-items: inherit;
   height: 100vh;
-}
-.title1{
-  margin-left: 20px;
 }
 
 .text1 {
@@ -228,7 +223,7 @@ margin: 20px;
 .text3 {
   color:rgb(101, 101, 101);
   font-size: 14px;
-  font-weight: 300px;
+  font-weight: 300;
   border-radius: 5px;
   padding: 3px;
 }
@@ -237,20 +232,19 @@ margin: 20px;
   display: flex;
   align-items: center;
 }
- .box {
+
+.box {
   border: 1px solid #ccc;
   margin-right: 20px; 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 32%;
+  width: 100%;
 }
 
 .row-1 {
   display: flex;
   flex-direction: row;
-  margin-bottom: 30px; 
-  margin: 0px 10px 10px 10px;
   align-items: center;
 }
 
@@ -264,7 +258,8 @@ margin: 20px;
 .chart {  
   border: 1px solid #ccc;
   height: 100%;
-  width: 45%;
+  width: 100%;
+  margin-right: 20px;
 }
 
 .histogram-box {
@@ -275,7 +270,6 @@ margin: 20px;
   box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
   border-radius: 5px;
   margin: 20px 20px;
-  height: 450px;
 }
 
 .pie-chart-box {
@@ -286,7 +280,6 @@ margin: 20px;
   box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
   border-radius: 5px;
   margin: 20px 15px;
-  height: 450px;
 }
 
 tspan{
@@ -344,19 +337,25 @@ tspan{
   margin: 0px 10px 10px 10px;
   border-radius: 5px;
 }
-
+/* 
 @media screen and (max-width: 768px) {
   .chart {
-     height: 200px;
+     height: 450px;
   }
-}
+  .box{
+    height:160px;
+  }
+} */
 
 @media screen and (min-width: 768px) {
   .chart {
-     height: 500px;
+     height: 350px;
+  }
+  .box{
+    height: 160px;
   }
 }
-/* 
+
 @media only screen and (max-width: 768px) {
   .dashboard-container {
   flex-direction: column;
@@ -376,4 +375,4 @@ tspan{
   width: 100%;
   height: 300px;
   }
-  } */
+  } 

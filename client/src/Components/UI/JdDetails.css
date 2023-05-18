@@ -7,7 +7,7 @@
 }
 
 .desc-container {
-  height: 80vh;
+  height: 75vh;
   max-width: 350px;
   border-radius: 5px;
   border: 1px solid #d3d3d3;
@@ -19,7 +19,7 @@
 }
 
 .table-container {
-  height: 80vh;
+  height: 75vh;
 }
 
 .page-title {
