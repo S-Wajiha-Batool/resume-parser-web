@@ -64,27 +64,26 @@ function JdDetails() {
                                         setSuccess(true);
                                     })
                                     .catch(err => {
-                                        console.log(err.response.data)
-                                        showErrorToast(err.response.data.error.msg)
+                                        console.log(err.response.data.err.msg)
+                                        showErrorToast("Failed to fetch user. Please try again")
                                     })
                                     .finally(() => {
                                         setIsLoading(false);
                                     })
                             } catch (err) {
-                                showErrorToast(err)
+                                console.log(err)
+                                showErrorToast("Failed to fetch user. Please try again")
                             }
                         })
                         .catch(err => {
-                            console.log(err.response.data)
-                            showErrorToast(err.response.data.error.msg)
+                            console.log(err.response.data.err.msg)
+                            showErrorToast("Failed to fetch Jd. Please try again")
                         })
                 } catch (err) {
                     showErrorToast(err)
                 }
             }
             getJd()
-
-
 
         }
     }, [token, callbackJdDetails, showEditModal])

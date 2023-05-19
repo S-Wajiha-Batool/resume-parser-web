@@ -39,8 +39,8 @@ function ParseCvsModal({ showAddModal, handleCloseAddModal }) {
                         setAllCvs(res.data.data.all_cvs)
                     })
                     .catch(err => {
-                        console.log(err)
-                        showErrorToast(err.response.data.error.msg)
+                        console.log(err.response.data.err.msg)
+                        showErrorToast("Failed to fetch CVs. Please try again")
                     })
                     .finally(() => {
                         setIsLoading(false);
