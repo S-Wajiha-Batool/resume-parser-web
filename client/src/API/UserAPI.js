@@ -32,7 +32,7 @@ export default function UserAPI() {
                         setToken(false)
                         setUser(false)
                         localStorage.removeItem('firstLogin')
-                        showErrorToast("Failed to fetch user")
+                        showErrorToast("Please login to continue")
                         console.log(err.response.data.error.msg)
                         clearTimeout(timer);
                     })
@@ -56,11 +56,11 @@ export default function UserAPI() {
                             console.log(err.response.data)
                             setIsLogged(false)
                             setToken(false)
-                            showErrorToast("Failed to fetch user")
+                            showErrorToast("Please login to continue")
                             console.log(err.response.data.error.msg)
                         })
                 } catch (err) {
-                    showErrorToast("Failed to fetch user")
+                    showErrorToast("Please login to continue")
                     console.log(err.response.data.error.msg)
                     setIsLogged(false)
                     setToken(false)

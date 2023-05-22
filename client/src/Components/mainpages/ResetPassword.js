@@ -15,19 +15,15 @@ function ResetPassword() {
     const state = useContext(GlobalState)
     const [isLoading, setIsLoading] = useState(false);
     const [otpForm, setOtpForm] = useState(true)
-
     const [email, setEmail] = useState('')
     const [user, setUser] = useState({
         user_email: '', user_otp: '', user_password: '', user_cpassword: ''
     })
-
     const onChangeEmail = e => {
         console.log(email)
         setEmail(e.target.value);
         setUser(prevUser => ({ ...prevUser, user_email: e.target.value }))
     }
-
-
 
     const onChangeInput = e => {
         const { name, value } = e.target;
@@ -80,8 +76,8 @@ function ResetPassword() {
                     }
                 })
         }
-
     }
+    
     return (
         <div className='ResetPassword-page' style={{ background: 'linear-gradient(to bottom right, #e6f7ff, #dfecf8, #e5f9cd, #f5eef8, #f9ece3)' }}>
           <div className='ResetPassword-form-container'>

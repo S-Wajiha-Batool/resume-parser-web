@@ -1,21 +1,17 @@
 import React, { useState, useContext, useEffect, } from 'react';
-import { VictoryChart, VictoryAxis, VictoryBar, VictoryPie, VictoryLabel } from 'victory';
+import { VictoryChart, VictoryAxis, VictoryBar, VictoryPie} from 'victory';
 import '../UI/dashboard.css'
 import { GlobalState } from '../../GlobalState';
-import { Row, Col } from 'react-bootstrap';
 import { getAllJdsAPI, getIncreasedJdsAPI, getJdCountForEachDeptAPI } from '../../API/JDAPI';
 import { getAllCvsAPI, getIncreasedCvsAPI, getMedianAPI, getCvDistributionAPI } from '../../API/CVAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
-import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
-import ArrowIndicator from './arrowindicator';
+import { showErrorToast } from '../utilities/Toasts';
 import '../UI/arrowindicator.css'
 import Title from '../utilities/Title';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NorthEastRoundedIcon from '@mui/icons-material/NorthEastRounded';
 import SouthEastRoundedIcon from '@mui/icons-material/SouthEastRounded';
 import JD_icon from '../images/job-description.png'
 import CV_icon from '../images/cv.png'
-
 
 function Dashboard() {
 

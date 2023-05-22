@@ -22,7 +22,6 @@ const Sidebar = () => {
     const location = window.location.pathname;
     const [menuCollapse, setMenuCollapse] = useState(true);
     const menuIconClick = () => {
-        //condition checking to change state from true to false and vice versa
         menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
     };
     const closeSidebar = () => {
@@ -56,7 +55,6 @@ const Sidebar = () => {
 
     return (
             <div id="header">
-                {/* collapsed props to change menu size using menucollapse state */}
                 <ProSidebar collapsed={menuCollapse}>
                     <SidebarHeader>
                         
@@ -109,7 +107,6 @@ const Sidebar = () => {
                         </Menu>
                     </SidebarFooter>
                 </ProSidebar>
-                {/* Translucent shade to cover the rest of the screen */}
     {!menuCollapse && (
       <div className="translucent-shade" onClick={menuIconClick}></div>
     )}

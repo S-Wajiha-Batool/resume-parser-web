@@ -3,13 +3,12 @@ import { useParams } from 'react-router-dom'
 import { GlobalState } from '../../GlobalState';
 import { getCvAPI } from '../../API/CVAPI'
 import { getUserAPI } from '../../API/UserAPI';
-import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
-import { Container, Row, Col, Button, Spinner, Card } from 'react-bootstrap';
+import { showErrorToast } from '../utilities/Toasts';
+import { Row, Col, Button} from 'react-bootstrap';
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
 import Title from '../utilities/Title';
 import '../UI/CvDetails.css'
-import Edit from '@material-ui/icons/Edit';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import DeleteModal from '../utilities/DeleteModal';
 
