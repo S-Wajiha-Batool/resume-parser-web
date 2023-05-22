@@ -47,8 +47,8 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                         setAllCvs(res.data.data.all_cvs)
                     })
                     .catch(err => {
-                        console.log(err)
-                        showErrorToast(err.response.data.error.msg)
+                        console.log(err.response.data.err.msg)
+                        showErrorToast("Failed to fetch CVs. Please try again")
                     })
                     .finally(() => {
                         setIsLoading(false);
@@ -108,8 +108,8 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                         })
                 })
                 .catch(err => {
-                    console.log(err)
-                    showErrorToast(err.response.data.error.msg)
+                    console.log(err.response.data.error.msg)
+                    showErrorToast("CV upload failed")
                     setIsParsing(false);
                     setIsMatching(false);
                 })
@@ -119,7 +119,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                 })
         } catch (err) {
             console.log(err)
-            showErrorToast("Error in CV upload")
+            showErrorToast("CV upload failed")
             setIsParsing(false);
             setIsMatching(false);
         }
@@ -136,10 +136,11 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                     setScoresServer(res.data.data)
                     setCallbackJdDetails(!callbackJdDetails)
                     setMatchingDoneServer(true)
+                    showSuccessToast("CVs scored successfully")
                 })
                 .catch(err => {
-                    console.log(err)
-                    showErrorToast(err.response.data.error.msg)
+                    console.log(err.response.data.error.msg)
+                    showErrorToast("Error in CV Scoring")
                     setIsMatching(false);
                 })
                 .finally(() => {
@@ -190,17 +191,17 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
         let rows = [];
         for (let i = 0; i < cvsPC.files.length; i++) {
             rows.push(<div>
-                <hr className='hori-line'/>
+                <hr className='hori-line' />
                 <div className='file_row1'>
-                <span>
-                    {cvsPC.files[i].name}
-                </span>
-                {matchingDonePC && <span>
-                    {scoresPC[i]}
-                </span>}
-                {!matchingDonePC && <span className='remove_action' onClick={() => handleRemoveFilesFromPC(i)}>
-                    Remove
-                </span>}
+                    <span>
+                        {cvsPC.files[i].name}
+                    </span>
+                    {matchingDonePC && <span>
+                        {scoresPC[i]}
+                    </span>}
+                    {!matchingDonePC && <span className='remove_action' onClick={() => handleRemoveFilesFromPC(i)}>
+                        Remove
+                    </span>}
                 </div>
             </div>)
         }
@@ -210,7 +211,10 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
     const getFileNamesFromServer = () => {
         let rows = [];
         for (let i = 0; i < cvsServer.length; i++) {
-            rows.push(<div className='file_row1'>
+            rows.push(<div>
+                <hr className='hori-line' />
+            <div className='file_row1'>
+
                 <span>
                     {cvsServer[i].cv_original_name}
                 </span>
@@ -220,9 +224,10 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                 {!matchingDoneServer && <span className='remove_action' onClick={() => handleRemoveFilesFromServer(cvsServer[i])}>
                     Remove
                 </span>}
+            </div>
             </div>)
         }
-        return <div>{rows}</div>
+        return <div className='filename-box'>{rows}</div>
     }
 
     const resetCvsPCOnClickingView = (option) => {
@@ -244,7 +249,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
         <Modal show={showModal} onHide={handleCloseModal}>
             <Modal.Header>
                 <Modal.Title>Upload CVs</Modal.Title>
-            <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseModal}></button>
+                <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseModal}></button>
             </Modal.Header>
             <Modal.Body className='body-modalcv'>
                 <Tabs
@@ -339,12 +344,12 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                                             checked={selected}
                                         />
                                         <div className='file_row'>
-                                           <span>{option.cv_original_name}</span>
-                                        <span><a className="view-link" onClick={() => resetCvsPCOnClickingView(option)} href={require(`../../../../server/uploaded_CVs/${option.cv_path.replace(/^.*[\\\/]/, '')}`)} target="_blank"
-                                            rel="noreferrer">View
-                                        </a> </span>
+                                            <span>{option.cv_original_name}</span>
+                                            <span><a className="view-link" onClick={() => resetCvsPCOnClickingView(option)} href={require(`../../../../server/uploaded_CVs/${option.cv_path.replace(/^.*[\\\/]/, '')}`)} target="_blank"
+                                                rel="noreferrer">View
+                                            </a> </span>
                                         </div>
-                                        
+
                                     </li>
                                 )}
                                 style={{ width: 500 }}
@@ -357,7 +362,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                             getFileNamesFromServer()
                         }
                         <Modal.Footer>
-                            <Button className='custom-btn done-btn-cv' variant='primary' type='submit' disabled={isMatching || matchingDoneServer || cvsServer.length==0} onClick={!isMatching ? handleUploadServer : null}>
+                            <Button className='custom-btn done-btn-cv' variant='primary' type='submit' disabled={isMatching || matchingDoneServer || cvsServer.length == 0} onClick={!isMatching ? handleUploadServer : null}>
                                 {isMatching && <Spinner
                                     as="span"
                                     animation="border"

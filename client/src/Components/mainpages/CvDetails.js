@@ -46,8 +46,8 @@ function CvDetails() {
                                         setSuccess(true);
                                     })
                                     .catch(err => {
-                                        console.log(err.response.data)
-                                        showErrorToast(err.response.data.error.msg)
+                                        console.log(err.response.data.err.msg)
+                                        showErrorToast("Failed to fetch user. Please try again")
                                     })
                                     .finally(() => {
                                         setIsLoading(false);
@@ -58,8 +58,8 @@ function CvDetails() {
                             //setSuccess(true);
                         })
                         .catch(err => {
-                            console.log(err.response.data)
-                            showErrorToast(err.response.data.error.msg)
+                            console.log(err.response.data.err.msg)
+                            showErrorToast("Failed to fetch CV. Please try again")
                         })
                 } catch (err) {
                     showErrorToast(err)
@@ -98,6 +98,9 @@ function CvDetails() {
                             </div>
                             <hr className='line' />
                             <div className='details'>
+                            <div className='key'>Name</div>
+                                <div className="value">{cv.full_name}</div>
+                                <hr className='line2' />
                                 <div className='key'>Emails</div>
                                 <div className="value">
                                     {cv.emails.length > 0 ? <ul>{cv.emails.map((email, index) =>
@@ -179,8 +182,7 @@ function CvDetails() {
                                                         <span className='position'>
                                                             <i>{jd.position}</i>
                                                         </span>
-                                                        <span className='middle-line-span'>
-                                                        <hr className='middle-line' /></span>
+                                                        <hr className='middle-line' />
                                                         <span className='perc'>{jd.weighted_percentage} %</span>
                                                     </div>
                                                 );

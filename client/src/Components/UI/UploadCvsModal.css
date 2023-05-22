@@ -38,6 +38,10 @@
     font-size: 12px
 }
 
+.remove_action{
+    cursor: pointer;
+}
+
 .modal-footer{
     padding: 0
 }

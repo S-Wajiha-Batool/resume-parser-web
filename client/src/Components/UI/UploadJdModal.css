@@ -15,6 +15,9 @@
     border-bottom: 0 !important;
 }
 
+.css-1kp1dnc-MuiButtonBase-root-MuiChip-root{
+  background-color: rgb(255 179 71 / 68%) !important;
+}
 .modal-dialog {
   max-height: 80vh;
 }

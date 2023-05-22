@@ -322,7 +322,7 @@ function Dashboard() {
                           //textAnchor: 'e',
                         },
                         axisLabel: {
-                          fontSize: 7,
+                          fontSize: 10,
                         }
                       }}
                       label="Percentage"
@@ -334,10 +334,10 @@ function Dashboard() {
                       style={{
                         axis: { stroke: "black", strokeWidth: 2 },
                         tickLabels: {
-                          fontSize: 10
+                          fontSize: 6
                         },
                         axisLabel: {
-                          fontSize: 12,
+                          fontSize: 10,
                         }
                       }}
                       label="Count"

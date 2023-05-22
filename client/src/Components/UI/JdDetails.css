@@ -74,7 +74,7 @@
 
 .tag {
   display: inline-block;
-  background-color: hsl(34, 98%, 76%);
+  background-color: rgb(255 179 71 / 68%);
   border-radius: 15px;
   padding: 5px 10px;
   margin: 5px;

@@ -37,7 +37,8 @@ function Login() {
         navigate('/');
       })
       .catch(err => {
-        showErrorToast(err.response.data.error.msg)
+        console.log(err.response.data.err.msg)
+        showErrorToast("Failed to login. Please try again")
       })
   }
 
