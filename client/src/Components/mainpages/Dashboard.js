@@ -13,8 +13,9 @@ import Title from '../utilities/Title';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NorthEastRoundedIcon from '@mui/icons-material/NorthEastRounded';
 import SouthEastRoundedIcon from '@mui/icons-material/SouthEastRounded';
-import JD_icon from '../images/job-description.png'
-import CV_icon from '../images/cv.png'
+import JD_icon from '../images/job-description-2.png'
+import CV_icon from '../images/cv-2.png'
+import count_icon from '../images/curriculum-vitae-2.png'
 
 
 function Dashboard() {
@@ -295,7 +296,7 @@ function Dashboard() {
               <div className="box box-count">
                 <div className='title-row'>
                   <h2 className='text1'>Score Median Overview</h2>
-                  <span><img className='card-icon' src={CV_icon} /></span>
+                  <span><img className='card-icon' src={count_icon} /></span>
                 </div>
                 {isLoadingCount ? (<LoadingSpinner />) : successMedian ? (
                   <>
