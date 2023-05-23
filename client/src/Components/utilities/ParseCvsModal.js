@@ -39,8 +39,8 @@ function ParseCvsModal({ showAddModal, handleCloseAddModal }) {
                         setAllCvs(res.data.data.all_cvs)
                     })
                     .catch(err => {
-                        console.log(err)
-                        showErrorToast(err.response.data.error.msg)
+                        console.log(err.response.data.err.msg)
+                        showErrorToast("Failed to fetch CVs. Please try again")
                     })
                     .finally(() => {
                         setIsLoading(false);
@@ -137,7 +137,6 @@ function ParseCvsModal({ showAddModal, handleCloseAddModal }) {
                         <input
                             id='files'
                             type="file"
-                            // ref={inputRef}
                             multiple
                             name="file"
                             style={{ display: "none" }}
@@ -155,7 +154,6 @@ function ParseCvsModal({ showAddModal, handleCloseAddModal }) {
                                 <span>
                                     <label htmlFor='files'>
                                         <a className={`upload-cv-btn custom-btn-sec btn btn-primary`}>Upload Files</a>
-                                        {/* <Button type="button">Upload File</Button> */}
                                     </label>
                                 </span>
                             </div>

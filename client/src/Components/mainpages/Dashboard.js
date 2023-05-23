@@ -1,21 +1,18 @@
 import React, { useState, useContext, useEffect, } from 'react';
-import { VictoryChart, VictoryAxis, VictoryBar, VictoryPie, VictoryLabel } from 'victory';
+import { VictoryChart, VictoryAxis, VictoryBar, VictoryPie} from 'victory';
 import '../UI/dashboard.css'
 import { GlobalState } from '../../GlobalState';
-import { Row, Col } from 'react-bootstrap';
 import { getAllJdsAPI, getIncreasedJdsAPI, getJdCountForEachDeptAPI } from '../../API/JDAPI';
-import { getAllCvsAPI, getIncreasedCvsAPI, getHigestScoringCvsCountAPI, getCvDistributionAPI } from '../../API/CVAPI'
+import { getAllCvsAPI, getIncreasedCvsAPI, getMedianAPI, getCvDistributionAPI } from '../../API/CVAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
-import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
-import ArrowIndicator from './arrowindicator';
+import { showErrorToast } from '../utilities/Toasts';
 import '../UI/arrowindicator.css'
 import Title from '../utilities/Title';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NorthEastRoundedIcon from '@mui/icons-material/NorthEastRounded';
 import SouthEastRoundedIcon from '@mui/icons-material/SouthEastRounded';
-import JD_icon from '../images/job-description.png'
-import CV_icon from '../images/cv.png'
-
+import JD_icon from '../images/job-description-2.png'
+import CV_icon from '../images/cv-2.png'
+import count_icon from '../images/curriculum-vitae-2.png'
 
 function Dashboard() {
 
@@ -30,7 +27,7 @@ function Dashboard() {
   const [isLoadingPie, setIsLoadingPie] = useState(true);
   const [successJds, setSuccessJds] = useState(false);
   const [successCvs, setSuccessCvs] = useState(false);
-  const [successCount, setSuccessCount] = useState(false);
+  const [successMedian, setSuccessMedian] = useState(false);
   const [successHist, setSuccessHist] = useState(false);
   const [successPie, setSuccessPie] = useState(false);
   const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
@@ -38,6 +35,7 @@ function Dashboard() {
   const [increasedJds, setIncreasedJds] = useState(0);
   const [increasedCvs, setIncreasedCvs] = useState(0);
   const [count, setCount] = useState(0);
+  const [median, setMedian] = useState(0);
   const [pie, setPie] = useState([]);
   const [hist, setHist] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -203,18 +201,19 @@ function Dashboard() {
       }
       getCvDistribution()
 
-      const getHigestScoringCvsCount = async () => {
+      const getMedian = async () => {
         try {
-          getHigestScoringCvsCountAPI(token)
+          getMedianAPI(token)
             .then(res => {
-              setCount(res.data.data)
-              setSuccessCount(true);
+              setCount(res.data.data.count)
+              setMedian(res.data.data.median)
+              setSuccessMedian(true);
             })
             .catch(err => {
-              setSuccessCount(false)
+              setSuccessMedian(false)
               console.log(err.response.data.error.msg)
               if (err.response.data.error.code == 500) {
-                showErrorToast("Highest scoring CV count fetching failed")
+                showErrorToast("Median fetching failed")
               }
             })
             .finally(() => {
@@ -223,10 +222,10 @@ function Dashboard() {
         }
         catch (err) {
           console.log(err)
-          showErrorToast("Highest scoring CV count fetching failed")
+          showErrorToast("Median fetching failed")
         }
       }
-      getHigestScoringCvsCount()
+      getMedian()
     }
   }, [token, callbackCv])
 
@@ -241,14 +240,13 @@ function Dashboard() {
         <div className='text3'> - No Job Descriptions Uploaded - </div>
       </div> :
         <div className='dashboard-container'>
-          <Title title={"Dashboard"}
-          />
+          <div className='page-title'><Title title={"Dashboard"}/></div>          
           <div className='cont'>
             <div className='row-1' >
-              <div className="box box-jd">
+              <div className="box-jd">
                 <div className='title-row'>
                   <h2 className='text1'>Job Descriptions</h2>
-                  <span><img className='card-icon' src={JD_icon}/></span>
+                  <span><img className='card-icon' src={JD_icon} /></span>
                 </div>
                 {isLoadingJds ? (<LoadingSpinner />) : successJds ? (
                   <>
@@ -260,7 +258,7 @@ function Dashboard() {
                         </div>
                         ) : (
                           <div className='inc-dec'>
-                            <span className='text3'><span style={{ color: "#c72800" }}>({Math.abs(increasedJds).toFixed(1)}) % <SouthEastRoundedIcon fontSize="small" /> </span>decrease since last week</span>
+                            <span className='text3'><span style={{ color: "#c72800" }}>{Math.abs(increasedJds).toFixed(1)} % <SouthEastRoundedIcon fontSize="small" /> </span>decrease since last week</span>
                           </div>)}
                     </p>
                   </>)
@@ -269,10 +267,10 @@ function Dashboard() {
                   )}
               </div>
 
-              <div className="box box-cv">
-              <div className='title-row'>
+              <div className="box-cv">
+                <div className='title-row'>
                   <h2 className='text1'>CVs</h2>
-                  <span><img className='card-icon' src={CV_icon}/></span>
+                  <span><img className='card-icon' src={CV_icon} /></span>
                 </div>
                 {isLoadingCvs ? (<LoadingSpinner />) : successCvs ? (
                   <>
@@ -284,17 +282,23 @@ function Dashboard() {
                       </div>
                     ) : (
                       <div className='inc-dec'>
-                        <span className='text3'><span style={{ color: "#c72800" }}>({Math.abs(increasedCvs).toFixed(1)}) % <SouthEastRoundedIcon fontSize="small" /> </span>decrease since last week</span>
+                        <span className='text3'><span style={{ color: "#c72800" }}>{Math.abs(increasedCvs).toFixed(1)} % <SouthEastRoundedIcon fontSize="small" /> </span>decrease since last week</span>
                       </div>)}
                     </p>
                   </>)
                   : ('Unable to fetch data'
                   )}
               </div>
-              <div className="box box-count">
-                <h2 className='text1'>Resumes Scoring greater than 80 %</h2>
-                {isLoadingCount ? (<LoadingSpinner />) : successCount ? (
-                  <p className='text2'>{count}</p>
+              <div className="box-count">
+                <div className='title-row'>
+                  <h2 className='text1'>Score Median Overview</h2>
+                  <span><img className='card-icon' src={count_icon} /></span>
+                </div>
+                {isLoadingCount ? (<LoadingSpinner />) : successMedian ? (
+                  <>
+                    <p className='text2'>{median}</p>
+                    <div className='text3'>{count} CVs scoring more than median</div>
+                  </>
                 )
                   : (
                     'Unable to fetch data'
@@ -302,10 +306,10 @@ function Dashboard() {
               </div>
             </div>
             <div className='row-2'>
-              <div className='chart histogram-box'>
+              <div className='histogram-box'>
                 <h2 className='text1'>Resumes Score Distribution</h2>
                 {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
-                  <VictoryChart domainPadding={{ x: 12 }} width={350} height={270}>
+                  <VictoryChart domainPadding={{ x: 12 }} width={550} height={370}>
                     <VictoryAxis
                       style={{
                         axis: { stroke: "black", strokeWidth: 2.5 },
@@ -314,7 +318,7 @@ function Dashboard() {
                           //textAnchor: 'e',
                         },
                         axisLabel: {
-                          fontSize: 7,
+                          fontSize: 10,
                         }
                       }}
                       label="Percentage"
@@ -326,10 +330,10 @@ function Dashboard() {
                       style={{
                         axis: { stroke: "black", strokeWidth: 2 },
                         tickLabels: {
-                          fontSize: 10
+                          fontSize: 6
                         },
                         axisLabel: {
-                          fontSize: 12,
+                          fontSize: 10,
                         }
                       }}
                       label="Count"
@@ -338,7 +342,7 @@ function Dashboard() {
                       data={hist}
                       x="x"
                       y="y"
-                      style={{ data: { fill: 'darkplum'} }}
+                      style={{ data: { fill: 'darkplum' } }}
                       barRatio={0.6}
                     />
                   </VictoryChart>
@@ -347,13 +351,13 @@ function Dashboard() {
                     'Unable to fetch data'
                   )}
               </div>
-              <div className='chart pie-chart-box'>
+              <div className='pie-chart-box'>
                 <h2 className='text1'>Department-wise Job Descriptions</h2>
                 {isLoadingPie ? (<LoadingSpinner />) : successPie ? (
-                  <VictoryPie data={pie} colorScale={colorScale} width={300} />
+                  <VictoryPie data={pie} colorScale={colorScale} width={600}/>
                 )
                   : (
-                    'Unable to fetch data'
+                    <div className='error'>Unable to fetch data. Please try again.</div>
                   )}
               </div>
             </div>

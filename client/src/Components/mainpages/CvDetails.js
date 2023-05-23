@@ -3,13 +3,12 @@ import { useParams } from 'react-router-dom'
 import { GlobalState } from '../../GlobalState';
 import { getCvAPI } from '../../API/CVAPI'
 import { getUserAPI } from '../../API/UserAPI';
-import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
-import { Container, Row, Col, Button, Spinner, Card } from 'react-bootstrap';
+import { showErrorToast } from '../utilities/Toasts';
+import { Row, Col, Button} from 'react-bootstrap';
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
 import Title from '../utilities/Title';
 import '../UI/CvDetails.css'
-import Edit from '@material-ui/icons/Edit';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import DeleteModal from '../utilities/DeleteModal';
 
@@ -46,8 +45,8 @@ function CvDetails() {
                                         setSuccess(true);
                                     })
                                     .catch(err => {
-                                        console.log(err.response.data)
-                                        showErrorToast(err.response.data.error.msg)
+                                        console.log(err.response.data.err.msg)
+                                        showErrorToast("Failed to fetch user. Please try again")
                                     })
                                     .finally(() => {
                                         setIsLoading(false);
@@ -58,8 +57,8 @@ function CvDetails() {
                             //setSuccess(true);
                         })
                         .catch(err => {
-                            console.log(err.response.data)
-                            showErrorToast(err.response.data.error.msg)
+                            console.log(err.response.data.err.msg)
+                            showErrorToast("Failed to fetch CV. Please try again")
                         })
                 } catch (err) {
                     showErrorToast(err)
@@ -98,6 +97,9 @@ function CvDetails() {
                             </div>
                             <hr className='line' />
                             <div className='details'>
+                            <div className='key'>Name</div>
+                                <div className="value">{cv.full_name}</div>
+                                <hr className='line2' />
                                 <div className='key'>Emails</div>
                                 <div className="value">
                                     {cv.emails.length > 0 ? <ul>{cv.emails.map((email, index) =>
@@ -179,8 +181,7 @@ function CvDetails() {
                                                         <span className='position'>
                                                             <i>{jd.position}</i>
                                                         </span>
-                                                        <span className='middle-line-span'>
-                                                        <hr className='middle-line' /></span>
+                                                        <hr className='middle-line' />
                                                         <span className='perc'>{jd.weighted_percentage} %</span>
                                                     </div>
                                                 );
@@ -198,7 +199,7 @@ function CvDetails() {
                     </Row>
 
                 </div>
-                : <div>Cv not found</div>
+                : <div className='error'>Unable to fetch data. Please try again.</div>
     )
 
 }

@@ -39,14 +39,14 @@ const JdTable = (props) => {
   const getDate = (d) => {
     return moment(d).format("Do MMMM YYYY")
   }
-
+  
   const columns = [
     { title: "Position", field: "position", sorting: false, cellStyle: { fontWeight: "bold", textAlign: 'center',
-    verticalAlign: 'middle' }, headerStyle: { color: "black" }, },
+    verticalAlign: 'middle', }, headerStyle: { color: "black" }, },
     { title: "Department", field: "department", filterPlaceholder: "filter", cellStyle: {textAlign: 'center',
     verticalAlign: 'middle'} },
     {
-      title: "Skills", field: "skills", grouping: false, cellStyle: {textAlign: 'center',
+      title: "Skills", field: "skills", grouping: false, cellStyle: {textAlign: 'left',
       verticalAlign: 'middle'},
       render: (rowData) => { return getSkills(rowData.skills).length > 0 ? <ul>{getSkills(rowData.skills).map((skill, index) => <li key={index}>{skill}</li>)}</ul> : <div>-</div> },
     },
@@ -56,7 +56,7 @@ const JdTable = (props) => {
       searchable: true, export: true
     },
     {
-      title: "Qualification", field: "qualification",cellStyle: {textAlign: 'center',
+      title: "Qualification", field: "qualification",cellStyle: {textAlign: 'left',
       verticalAlign: 'middle'}, render: (rowData) => {
         return rowData.qualification && Object.entries(rowData.qualification).length > 0 ?
           <ul>{Object.entries(rowData.qualification).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
@@ -83,7 +83,7 @@ const JdTable = (props) => {
     console.log(skills)
     var a = [];
     skills.map(s => {
-      a.push(s.skill_name)
+      a.push(s.skill_name  || s)
     })
     return a;
   }
@@ -166,50 +166,14 @@ const JdTable = (props) => {
             headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif',textAlign: 'center',
             verticalAlign: 'middle' },
             selection: false,
-            rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : { background: "#00000" }
+            rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : { background: "#00000" },
+            
           }}
           title=""
         />
       </ThemeProvider>
     </div>
   );
-  //     return (
-  //         <Table>
-  //             <TableHead>
-  //                 <TableRow>
-  //                     {headers.map((header, index) => (
-  //                         <TableCell key={index}>
-  // <TableSortLabel
-  //                                 active={sortType.column === header}
-  //                                 direction={sortType.order}
-  //                                 onClick={() => handleSort(header)}
-  //                             >
-  //                                 {labels[index]}
-  //                             </TableSortLabel>
-  //                         </TableCell>
-  //                     ))}
-  //                 </TableRow>
-  //             </TableHead>
-  //             <TableBody>
-  //                 {sortedData.map((item, index) => (
-  //                     <TableRow key={index}
-  //                     onClick={() => {
-  //                         navigate(`/jd/${item._id}`)
-  //                     }}>
-  //                             <TableCell >{item['position']}</TableCell>
-  //                             <TableCell >{item['department']}</TableCell>
-  //                             <TableCell >{getSkills(item['skills']).join(',\r\n')}</TableCell>
-  //                             <TableCell >{item['experience']}</TableCell>
-  //                             <TableCell >{item['qualification']}</TableCell>
-  //                             <TableCell >{item['universities'].join(',\r\n')}</TableCell>
-  //                             <TableCell >{item['uploaded_by']}</TableCell>
-  //                             <TableCell >{item['createdAt']}</TableCell>
-
-  //                     </TableRow>
-  //                 ))}
-  //             </TableBody>
-  //         </Table>
-  //     );
 };
 
 export default JdTable;

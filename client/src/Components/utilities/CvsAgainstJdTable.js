@@ -75,7 +75,6 @@ const CvsAgainstJdTable = (props) => {
                             tooltip: "Add new row",
                             isFreeAction: true,
                             onClick: (e, data) => handleShowModal(),
-                            // isFreeAction:true
                         },
                         {
                             icon: () => <DeleteOutline />,
@@ -96,8 +95,8 @@ const CvsAgainstJdTable = (props) => {
                     titleClassName="my-custom-title-class"
 
                     options={{
-                        minBodyHeight: "65vh",
-                        maxBodyHeight: "65vh",
+                        minBodyHeight: "60vh",
+                        maxBodyHeight: "60vh",
                         sorting: true, search: true,
                         searchFieldAlignment: "right", searchAutoFocus: true, searchFieldVariant: "standard",
                         paging: true,
