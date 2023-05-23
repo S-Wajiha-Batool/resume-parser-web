@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect,  } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { showErrorToast } from '../Components/utilities/Toasts'
 import axios from 'axios'
 let timer = null
@@ -35,6 +36,7 @@ export default function UserAPI() {
                         showErrorToast("Please login to continue")
                         console.log(err.response.data.error.msg)
                         clearTimeout(timer);
+                        window.location.href("/login")
                     })
             }
             refreshToken()
@@ -58,12 +60,14 @@ export default function UserAPI() {
                             setToken(false)
                             showErrorToast("Please login to continue")
                             console.log(err.response.data.error.msg)
+                            window.location.href("/login")
                         })
                 } catch (err) {
                     showErrorToast("Please login to continue")
                     console.log(err.response.data.error.msg)
                     setIsLogged(false)
                     setToken(false)
+                    window.location.href("/login")
                 }
             }
             getUser()

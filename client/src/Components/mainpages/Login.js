@@ -50,8 +50,8 @@ function Login() {
   return (
     <div className='login-page' style={{ background: 'linear-gradient(to bottom right, #e6f7ff, #dfecf8, #e5f9cd, #f5eef8, #f9ece3)' }}>
       <div className='login-form-container'>
-        <div className='login-card' style={{ width: '500px', height: '520px' }}>
-          <div className="login-header" style={{ marginTop: '50px' }}>
+        <div className='login-card' >
+          <div className="login-header">
             <h2 className='text1'>Login</h2>
           </div>
           <form>

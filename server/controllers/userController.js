@@ -116,7 +116,6 @@ console.log(user)
             if (diff < 0) return res.status(404).json({ error: { code: 404, msg: "OTP expired" }, data: null })
 
             let user = await User.findOne({email: user_email})
-            console.log(user)
             user.password = CryptoJS.AES.encrypt(user_password, process.env.SECRET_KEY)
             let saved_user = await user.save();
 

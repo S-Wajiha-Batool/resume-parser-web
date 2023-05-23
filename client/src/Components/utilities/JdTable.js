@@ -42,9 +42,9 @@ const JdTable = (props) => {
   
   const columns = [
     { title: "Position", field: "position", sorting: false, cellStyle: { fontWeight: "bold", textAlign: 'center',
-    verticalAlign: 'middle', },searchable: true, export: true, headerStyle: { color: "black" }, render: (rowData) => <div className='render-data'><div className='innver-render-data'>{rowData.position}</div></div> },
+    verticalAlign: 'middle', },searchable: true, export: true, headerStyle: { color: "black" }, render: (rowData) => <div className='render-data'><div className='inner-render-data'>{rowData.position}</div></div> },
     { title: "Department", field: "department", filterPlaceholder: "filter", cellStyle: {textAlign: 'center',
-    verticalAlign: 'middle'}, searchable: true, export: true, render: (rowData) => <div className='render-data'><div className='innver-render-data'>{rowData.department}</div></div> },
+    verticalAlign: 'middle'}, searchable: true, export: true, render: (rowData) => <div className='render-data'><div className='inner-render-data'>{rowData.department}</div></div> },
     {
       title: "Skills", field: "skills", grouping: false, cellStyle: {textAlign: 'left',
       verticalAlign: 'middle'},

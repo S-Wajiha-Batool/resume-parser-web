@@ -44,22 +44,6 @@
   background-color: #fcfafa;
 }
 
-.render-data{
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  align-items: center;
-  line-height: 1.5;
-  justify-content: center;
-  height: calc(1.5 * 14px * 3);
-}
-
-.inner-render-data{
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-}
 
 .css-1pz7awu-MuiButtonBase-root-MuiIconButton-root{
   color: rgba(0, 0, 0, 0.54) !important;
@@ -119,8 +103,8 @@ ul{
   border-radius: 15px;
 }
 .custom-btn {
-  background-color: #FFB347;
-  border: 1px solid #FFB347;
+  background-color: #f5ab35;
+  border: 1px solid #f5ab35;
   color: #2d2d2d;
   border-radius: 15px;
   font-weight: bold;

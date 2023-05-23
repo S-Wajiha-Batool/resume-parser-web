@@ -32,31 +32,32 @@ const CvsAgainstJdTable = (props) => {
             title: "Rank", cellStyle: {
                 textAlign: 'center',
                 verticalAlign: 'middle', fontWeight: "bold"
-            }, render: (rowData) => rowData.tableData.id + 1
+            }, render: (rowData) => <div className='render-data-cvjd'><div className='inner-render-data-cvjd'>{rowData.tableData.id + 1}</div></div>
         },
         {
             title: "Name", field: "full_name", cellStyle: {
                 textAlign: 'center',
                 verticalAlign: 'middle'
-            }, sorting: false, filtering: false
+            }, sorting: false, filtering: false,
+            render: (rowData) => <div className='render-data-cvjd'><div className='inner-render-data-cvjd'>{rowData.full_name}</div></div>
         },
         {
             title: "Email", field: "emails", cellStyle: {
                 textAlign: 'center',
                 verticalAlign: 'middle'
-            }, render: (rowData) => { return rowData.emails.length > 0 ? (<div>{rowData.emails[0]}</div>) : <div>-</div> }
+            }, render: (rowData) => { return rowData.emails.length > 0 ? ( <div className='render-data-cvjd'><div className='inner-render-data-cvjd'>{rowData.emails[0]}</div></div>) :  <div className='render-data-cvjd'><div className='inner-render-data-cvjd'>-</div></div> }
         },
         {
             title: "Score", field: "weighted_percentage", cellStyle: {
                 textAlign: 'center',
                 verticalAlign: 'middle'
-            }, render: (rowData) => {return <div style={{fontWeight:'500'}}>{rowData.weighted_percentage} %</div>},
+            }, render: (rowData) => {return <div className='render-data-cvjd'><div className='inner-render-data-cvjd'>{rowData.weighted_percentage} %</div></div>},
         },
         {
             title: "Posted On", field: "createdAt", cellStyle: {
                 textAlign: 'center',
                 verticalAlign: 'middle'
-            }, render: (rowData) => <div>{getDate(rowData.createdAt)}</div>
+            }, render: (rowData) =>  <div className='render-data-cvjd'><div className='inner-render-data-cvjd'>{getDate(rowData.createdAt)}</div></div>
         },
     ]
 

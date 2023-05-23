@@ -4,10 +4,6 @@ const OTPSchema = new mongoose.Schema({
 	  type: String,
 	  required: true,
     },
-	password:{
-	  type: String,
-	  minlength: 8
-    },
 	expires_in:{
 	  type: Number,
 	  required: true,	  

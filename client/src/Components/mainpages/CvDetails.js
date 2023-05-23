@@ -145,17 +145,17 @@ function CvDetails() {
 
                                 <div className="key">Links</div>
                                 <div className="value">
-                                    <ul>
+                                    
                                         {cv.links.length !== 0 ? (
-                                            cv.links.map((link, index) => (
+                                            <ul>{cv.links.map((link, index) => (
                                                 <li key={index}>
                                                     <a href={link}>{link}</a>
                                                 </li>
-                                            ))
-                                        ) : (
+                                            ))}
+                                        </ul>) : (
                                             <div>-</div>
                                         )}
-                                    </ul>
+                                    
                                 </div>
                                 <hr className='line2' />
 

@@ -158,8 +158,8 @@ function Dashboard() {
                 console.log(err)
                 //showErrorToast("CV increase fetching failed")
               }
-              setSuccessJds(true);
-              setIsLoadingJds(false)
+              setSuccessCvs(true);
+              setIsLoadingCvs(false)
             })
             .catch(err => {
               setSuccessCvs(false)

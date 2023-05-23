@@ -30,32 +30,32 @@ const CvTable = (props) => {
       title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: {
         fontWeight: "bold", textAlign: 'center',
         verticalAlign: 'middle'
-      }, headerStyle: { color: "black" }
+      }, headerStyle: { color: "black" }, render: (rowData) => <div className='render-data-cv'><div className='inner-render-data-cv'>{rowData.full_name}</div></div>
     },
     {
       title: "Email", field: "emails", cellStyle: {
           textAlign: 'center',
           verticalAlign: 'middle'
-      }, render: (rowData) => { return rowData.emails.length > 0 ? (<div>{rowData.emails[0]}</div>) : <div>-</div> }
+      }, render: (rowData) => { return rowData.emails.length > 0 ? (<div className="render-data-cv"><div className='inner-render-data-cv'>{rowData.emails[0]}</div></div>) : <div className='render-data-cv'><div className='inner-render-data-cv'>-</div></div> }
   },
   {
     title: "Contact#", field: "phone_number", cellStyle: {
         textAlign: 'center',
         verticalAlign: 'middle'
-    }, render: (rowData) => { return rowData.phone_number ? (<div>{rowData.phone_number}</div>) : <div>-</div> }
+    }, render: (rowData) => { return rowData.phone_number ? (<div className='render-data-cv'><div className='inner-render-data-cv'>{rowData.phone_number}</div></div>) : <div className="render-data-cv"><div className='inner-render-data-cv'>-</div></div> }
 },
     {
       title: "Links", field: "links", cellStyle: {
         textAlign: 'center',
         verticalAlign: 'middle'
-      }, render: (rowData) => { return rowData.links.length > 0 ? <ul>{rowData.links.map((link, index) => <li key={index}><a href={link}>{link}</a></li>)}</ul> : <div>-</div> }, searchable: true, export: true
+      }, render: (rowData) => { return rowData.links.length > 0 ? <div className="render-data-cv"><div className='inner-render-data-cv'><ul>{rowData.links.map((link, index) => <li key={index}><a href={link}>{link}</a></li>)}</ul></div></div> : <div className="render-data-cv"><div className='inner-render-data-cv'>-</div></div> }, searchable: true, export: true
 
     },
     {
       title: "Posted On", field: "createdAt", cellStyle: {
         textAlign: 'center',
         verticalAlign: 'middle'
-      }, render: (rowData) => <div>{getDate(rowData.createdAt)}</div>
+      }, render: (rowData) => <div className="render-data-cv"><div className='inner-render-data-cv'>{getDate(rowData.createdAt)}</div></div>
     },
   ]
 

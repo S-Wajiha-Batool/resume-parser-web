@@ -33,25 +33,25 @@
 
 /* Login Card */
 .login-card {
-    width: 100%;
     margin: 0 auto;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0px 2px 5px rgba(0,0,0,0);
-    padding: 20px;
+    padding: 50px 20px;
+    width: 60%;
     height: 100%;
 }
 
 /* Login Header */
 .login-header {
-  text-align: center;
-  margin-bottom: 20px;
+  
 }
 
 .login-header h2 {
+  text-align: center;
+  margin-bottom: 20px;
   font-size: 28px;
   font-weight: bold;
-  margin-bottom: 10px;
   color: #333;
 }
 
@@ -65,7 +65,6 @@ form {
 .label {
   margin-bottom: 5px;
   font-weight: bold;
-  color: #2e90e6;
 }
 
 /* Form Input */
@@ -89,6 +88,7 @@ form {
   width: 100%;
   padding-top: 5px;
   padding-bottom: 5px;
+  margin: 0;
 }
 
 .forgot-text{

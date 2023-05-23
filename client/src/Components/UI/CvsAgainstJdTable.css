@@ -1,4 +1,19 @@
+.render-data-cvjd{
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  line-height: 1.5;
+  justify-content: center;
+  height: calc(1.5 * 14px * 2);
+}
 
+.inner-render-data-cvjd{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
 
 .MTableHeader-header-83 .MuiTableCell-paddingCheckbox {
   padding: 8px;
