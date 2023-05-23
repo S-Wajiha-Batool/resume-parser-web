@@ -42,41 +42,40 @@ const JdTable = (props) => {
   
   const columns = [
     { title: "Position", field: "position", sorting: false, cellStyle: { fontWeight: "bold", textAlign: 'center',
-    verticalAlign: 'middle', }, headerStyle: { color: "black" }, },
+    verticalAlign: 'middle', },searchable: true, export: true, headerStyle: { color: "black" }, render: (rowData) => <div className='render-data'><div className='innver-render-data'>{rowData.position}</div></div> },
     { title: "Department", field: "department", filterPlaceholder: "filter", cellStyle: {textAlign: 'center',
-    verticalAlign: 'middle'} },
+    verticalAlign: 'middle'}, searchable: true, export: true, render: (rowData) => <div className='render-data'><div className='innver-render-data'>{rowData.department}</div></div> },
     {
       title: "Skills", field: "skills", grouping: false, cellStyle: {textAlign: 'left',
       verticalAlign: 'middle'},
-      render: (rowData) => { return getSkills(rowData.skills).length > 0 ? <ul>{getSkills(rowData.skills).map((skill, index) => <li key={index}>{skill}</li>)}</ul> : <div>-</div> },
+      render: (rowData) => { return getSkills(rowData.skills).length > 0 ? <div className='render-data'><div className='inner-render-data'><ul className='list-div'>{getSkills(rowData.skills).map((skill, index) => <li key={index}>{skill}</li>)}</ul></div></div> : <div className='render-data'>-</div> },
     },
     {
       title: "Experience", field: "experience", cellStyle: {textAlign: 'center',
       verticalAlign: 'middle'},
-      searchable: true, export: true
+      searchable: true, export: true, render: (rowData) => <div className='render-data'><div className='inner-render-data'>{rowData.experience}</div></div>
     },
     {
       title: "Qualification", field: "qualification",cellStyle: {textAlign: 'left',
       verticalAlign: 'middle'}, render: (rowData) => {
         return rowData.qualification && Object.entries(rowData.qualification).length > 0 ?
-          <ul>{Object.entries(rowData.qualification).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
-          :
-          <div>-</div>
+          <div className='render-data'><div className='inner-render-data'><ul>{Object.entries(rowData.qualification).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
+          </div></div>:
+          <div className='render-data' style={{textAlign: "center"}}><div className='inner-render-data'>-</div></div>
       }
       , searchable: true, export: true
     },
     {
-      title: "Universities", field: "universities", cellStyle: {textAlign: 'center',
+      title: "Universities", field: "universities", cellStyle: {textAlign: 'left',
       verticalAlign: 'middle'}, render: (rowData) => {
         return rowData.universities && Object.entries(rowData.universities).length > 0 ?
-          <ul>{Object.entries(rowData.universities).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
-          :
-          <div>-</div>
-      },
-      filterPlaceholder: "filter", searchable: true, export: true
+          <div className='render-data'><div className='inner-render-data'><ul>{Object.entries(rowData.universities).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
+          </div></div>:
+          <div className='render-data'><div className='inner-render-data'>-</div></div>
+      }, searchable: true, export: true
     },
     { title: "Posted On", field: "createdAt", cellStyle: {textAlign: 'center',
-    verticalAlign: 'middle'}, render: (rowData) => <div >{getDate(rowData.createdAt)}</div> },
+    verticalAlign: 'middle'}, render: (rowData) => <div className='render-data'><div className='inner-render-data'>{getDate(rowData.createdAt)}</div></div> },
   ]
 
   const getSkills = (skills) => {
@@ -163,7 +162,7 @@ const JdTable = (props) => {
             showFirstLastPageButtons: false,
             tableLayout: "auto",
             overflowY: "auto",
-            headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif',textAlign: 'center',
+            headerStyle: { background: "#ffb347ad", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif',textAlign: 'center',
             verticalAlign: 'middle' },
             selection: false,
             rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : { background: "#00000" },

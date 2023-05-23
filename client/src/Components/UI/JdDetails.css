@@ -44,6 +44,34 @@
   background-color: #fcfafa;
 }
 
+.render-data{
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  line-height: 1.5;
+  justify-content: center;
+  height: calc(1.5 * 14px * 3);
+}
+
+.inner-render-data{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.css-1pz7awu-MuiButtonBase-root-MuiIconButton-root{
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+.css-zylse7-MuiButtonBase-root-MuiIconButton-root{
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+ul{
+  margin-bottom: 0;
+}
 .details {
   flex-grow: 1;  
   overflow-y: scroll;
@@ -74,7 +102,7 @@
 
 .tag {
   display: inline-block;
-  background-color: rgb(255 179 71 / 68%);
+  background-color: rgba(255, 179, 71, 0.68);
   border-radius: 15px;
   padding: 5px 10px;
   margin: 5px;

@@ -70,7 +70,7 @@ const Sidebar = () => {
                         <>
                         <div className='heading' onClick={menuIconClick}> 
                         <img className='close-icon' src={close_icon} alt='MENU'/></div>
-                            <div className='logotext'>Parser</div>
+                            <div className='logotext'>OptiMatch HR</div>
                         </>)}
                     </SidebarHeader>
                     <SidebarContent>
