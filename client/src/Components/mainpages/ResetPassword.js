@@ -85,7 +85,7 @@ function ResetPassword() {
     return (
         <div className='ResetPassword-page' style={{ background: 'linear-gradient(to bottom right, #e6f7ff, #dfecf8, #e5f9cd, #f5eef8, #f9ece3)' }}>
           <div className='ResetPassword-form-container'>
-            <div className='ResetPassword-card' style={{ width: '400px', height: '320px' }}>
+            <div className='ResetPassword-card' style={{ width: '400px', height: '320px' , position: 'fixed', alignSelf: 'center'}} >
               <div className="ResetPassword-header">
                 <h2 className='text1'>Reset Password</h2>
               </div>
