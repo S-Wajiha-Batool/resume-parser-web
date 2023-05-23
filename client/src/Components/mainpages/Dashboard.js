@@ -246,7 +246,7 @@ function Dashboard() {
           <div className='page-title'><Title title={"Dashboard"}/></div>          
           <div className='cont'>
             <div className='row-1' >
-              <div className="box box-jd">
+              <div className="box-jd">
                 <div className='title-row'>
                   <h2 className='text1'>Job Descriptions</h2>
                   <span><img className='card-icon' src={JD_icon} /></span>
@@ -270,7 +270,7 @@ function Dashboard() {
                   )}
               </div>
 
-              <div className="box box-cv">
+              <div className="box-cv">
                 <div className='title-row'>
                   <h2 className='text1'>CVs</h2>
                   <span><img className='card-icon' src={CV_icon} /></span>
@@ -292,7 +292,7 @@ function Dashboard() {
                   : ('Unable to fetch data'
                   )}
               </div>
-              <div className="box box-count">
+              <div className="box-count">
                 <div className='title-row'>
                   <h2 className='text1'>Score Median Overview</h2>
                   <span><img className='card-icon' src={count_icon} /></span>
@@ -309,10 +309,10 @@ function Dashboard() {
               </div>
             </div>
             <div className='row-2'>
-              <div className='chart histogram-box'>
+              <div className='histogram-box'>
                 <h2 className='text1'>Resumes Score Distribution</h2>
                 {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
-                  <VictoryChart domainPadding={{ x: 12 }} width={350} height={270}>
+                  <VictoryChart domainPadding={{ x: 12 }} width={550} height={370}>
                     <VictoryAxis
                       style={{
                         axis: { stroke: "black", strokeWidth: 2.5 },
@@ -354,10 +354,10 @@ function Dashboard() {
                     'Unable to fetch data'
                   )}
               </div>
-              <div className='chart pie-chart-box'>
+              <div className='pie-chart-box'>
                 <h2 className='text1'>Department-wise Job Descriptions</h2>
                 {isLoadingPie ? (<LoadingSpinner />) : successPie ? (
-                  <VictoryPie data={pie} colorScale={colorScale} width={300} />
+                  <VictoryPie data={pie} colorScale={colorScale} width={600}/>
                 )
                   : (
                     'Unable to fetch data'
