@@ -9,23 +9,18 @@ import { updateJdAPI } from '../../API/JDAPI'
 import { rescoreCvsAPI } from '../../API/CVAPI'
 import { skills, departments, experience, qualification, universities, unis, quals } from '../../constants'
 import _ from 'lodash';
-import { List } from "react-virtualized";
 import { FixedSizeList } from 'react-window';
 import { makeStyles } from '@material-ui/core/styles';
 
 function EditJdModal({ showModal, handleCloseModal, oldJd }) {
     const [jd, setJd] = useState({ position: oldJd.position, department: oldJd.department, skills: oldJd.skills, experience: oldJd.experience, qualification: oldJd.qualification, universities: oldJd.universities })
     const [old, setOld] = useState({ position: oldJd.position, department: oldJd.department, skills: oldJd.skills, experience: oldJd.experience, qualification: oldJd.qualification, universities: oldJd.universities })
-
-    //const [jd, setJd] = useState({})
     const [jdChanged, setJdChanged] = useState(false);
     const [enableEdit, setEnableEdit] = useState(false);
     const [isUpdatingJd, setIsUpdatingJd] = useState(false)
     const [isRescoringCvs, setIsRescoringCvs] = useState(false);
-
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
     const checkedIcon = <CheckBoxIcon fontSize="small" />;
-
     const state = useContext(GlobalState);
     const [token] = state.UserAPI.token;
     const [callbackJd, setCallbackJd] = state.JDAPI.callbackJd;
@@ -33,23 +28,7 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
     const [cvAgainstJdTableData, setCvAgainstJdTableData] = state.CVAPI.cvAgainstJdTableData;
     const [inputValue, setInputValue] = useState('');
 
-    // const [old, setOld] = useState({})
-
-    console.log('old', old)
-    console.log('jd', jd)
-
-    // useEffect(() => {        
-    //     setOld({ ...old, position: oldJd.position, department: oldJd.department, skills: oldJd.skills, experience: oldJd.experience, qualification: oldJd.qualification, universities: oldJd.universities });
-    //     setJd({ ...jd, position: old.position, department: old.department, skills: old.skills, experience: old.experience, qualification: old.qualification, universities: old.universities });
-    //     setEnableEdit(false)
-    // },[])
-
-    // useLayoutEffect(() => {
-    //     setJd({ ...jd, position: old.position, department: old.department, skills: old.skills, experience: old.experience, qualification: old.qualification, universities: old.universities });
-    // }, [old])
-
     useEffect(() => {
-        //setJd({ ...jd, position: old.position, department: old.department, skills: old.skills, experience: old.experience, qualification: old.qualification, universities: old.universities });
         if (old.position !== jd.position || old.department !== jd.department || old.experience !== jd.experience || !_.isEqual(_.sortBy(old.skills, "skill_name"), _.sortBy(jd.skills, "skill_name")) || !(JSON.stringify(Object.entries(old.qualification || {})) === JSON.stringify(Object.entries(jd.qualification || {}))) || !(JSON.stringify(Object.entries(old.universities || {})) === JSON.stringify(Object.entries(jd.universities || {})))) {
             console.log('in')
             setEnableEdit(true)
@@ -64,24 +43,10 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
         setJd({ ...jd, [name]: value })
         setJdChanged(!jdChanged)
     }
-    const filterOptions = (options, { inputValue }) => {
-        const filteredOptions = options.filter((option) => {
-            const optionLabel = option.skill_name || option;
-            return optionLabel.toLowerCase().includes(inputValue.toLowerCase());
-        });
-
-        // If the inputValue is not present in the options, add it as a new option
-        if (inputValue.trim() !== '' && !filteredOptions.some((option) => option.skill_name === inputValue)) {
-            filteredOptions.push({ skill_name: inputValue });
-        }
-
-        return filteredOptions;
-    };
 
     const onChangeSkills = (e, values) => {
         let newSkills = values.map((value) => {
             if (typeof value === 'string') {
-                // Value is a user-typed string, convert it to an object
                 return { skill_name: value };
             }
             return value;
@@ -115,7 +80,6 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
     }
 
     const handleSubmit = (e) => {
-        console.log('in submit')
         e.preventDefault()
         try {
             if (jd.position === "") {
@@ -254,62 +218,12 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                         </Form.Group>
                         </Col>
                     </Row>
-                    {/* <Col>
-                            <Form.Group>
-                                <Form.Label>Qualification</Form.Label>
-                                <Form.Select
-                                    name='qualification'
-                                    value={jd.qualification}
-                                    onChange={onChangeInput}>
-                                    {qualification.map((d, key) => {
-                                        return <option className='option' key={key} value={d}>{d}</option>;
-                                    })}
-                                </Form.Select>
-                            </Form.Group>
-                        </Col> */}
                     <br />
-                    <Row>
-                        <Form.Label>Qualification</Form.Label>
-                        {/* <StyledEngineProvider injectFirst> */}
-                        <Autocomplete
-                            defaultValue={Object.entries(oldJd.qualification || {})}
-                            isOptionEqualToValue={(option, value) => option[0] === value[0]}
-                            multiple
-                            popupIcon={""}
-                            id="checkboxes-tags-demo"
-                            size="small"
-                            options={Object.entries(quals)}
-                            disableCloseOnSelect
-                            getOptionLabel={(option) => option[1] + " (" + option[0] + ")"}
-                            onChange={onChangeQualification}
-                            renderOption={(props, option, { selected }) => (
-                                <li {...props} key={option[0]}>
-                                    <Checkbox
-                                        icon={icon}
-                                        checkedIcon={checkedIcon}
-                                        style={{ marginRight: 8 }}
-                                        checked={selected}
-                                    />
-                                    {option[1] + " (" + option[0] + ")"}
-                                </li>
-                            )}
-                            style={{ width: 500 }}
-                            renderInput={(params) => (
-                                <TextField required {...params} placeholder="Qualification" />
-                            )}
-                        />
-                        {/* </StyledEngineProvider> */}
-                    </Row>
-                    <br />
-
                     <Row>
                         <Form.Label>Skills</Form.Label>
-                        {/* <StyledEngineProvider injectFirst> */}
                         <Autocomplete
                             freeSolo
-                            //filterOptions={filterOptions}
                             classes={classes}
-                            //value={oldJd.skills}
                             isOptionEqualToValue={(option, value) => option.skill_name === value.skill_name}
                             multiple
                             id="checkboxes-tags-demo"
@@ -342,12 +256,41 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                             )}
                             value={jd.skills}
                         />
-                        {/* </StyledEngineProvider> */}
+                    </Row>
+                    <br />
+                    <Row>
+                        <Form.Label>Qualification</Form.Label>
+                        <Autocomplete
+                            defaultValue={Object.entries(oldJd.qualification || {})}
+                            isOptionEqualToValue={(option, value) => option[0] === value[0]}
+                            multiple
+                            popupIcon={""}
+                            id="checkboxes-tags-demo"
+                            size="small"
+                            options={Object.entries(quals)}
+                            disableCloseOnSelect
+                            getOptionLabel={(option) => option[0]}
+                            onChange={onChangeQualification}
+                            renderOption={(props, option, { selected }) => (
+                                <li {...props} key={option[0]}>
+                                    <Checkbox
+                                        icon={icon}
+                                        checkedIcon={checkedIcon}
+                                        style={{ marginRight: 8 }}
+                                        checked={selected}
+                                    />
+                                    {option[0]}
+                                </li>
+                            )}
+                            style={{ width: 500 }}
+                            renderInput={(params) => (
+                                <TextField required {...params} placeholder="Qualification" />
+                            )}
+                        />
                     </Row>
                     <br />
                     <Row>
                         <Form.Label>Universities</Form.Label>
-                        {/* <StyledEngineProvider injectFirst> */}
                         <Autocomplete
                             defaultValue={Object.entries(oldJd.universities || {})}
                             isOptionEqualToValue={(option, value) => option[0] === value[0]}
@@ -375,7 +318,6 @@ function EditJdModal({ showModal, handleCloseModal, oldJd }) {
                                 <TextField required {...params} placeholder="Universities" />
                             )}
                         />
-                        {/* </StyledEngineProvider> */}
                     </Row>
                     <br />
                 </Modal.Body>

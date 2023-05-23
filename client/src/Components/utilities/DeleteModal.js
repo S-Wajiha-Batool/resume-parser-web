@@ -7,7 +7,7 @@ import { deleteJdAPI } from '../../API/JDAPI';
 import { deleteCVAPI } from '../../API/CVAPI';
 import { deleteCvAgainstJdAPI } from '../../API/CVAPI';
 
-function DeleteModal({showModal, handleCloseModal, data, target}){
+function DeleteModal({ showModal, handleCloseModal, data, target }) {
     const navigate = useNavigate()
     const location = window.location.pathname;
     const state = useContext(GlobalState);
@@ -54,7 +54,7 @@ function DeleteModal({showModal, handleCloseModal, data, target}){
                     handleCloseModal()
                     setCallbackCv(!callbackCv)
                     if (location !== '/cvs')
-                    navigate(-1)
+                        navigate(-1)
 
                 })
                 .catch(err => {
@@ -94,32 +94,29 @@ function DeleteModal({showModal, handleCloseModal, data, target}){
             })
     }
 
-    return(
+    return (
         <Modal show={showModal} onHide={handleCloseModal} centered>
-                <Modal.Header >
-                    <Modal.Title>Confirm Delete</Modal.Title>
-
-            <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseModal}></button>
-                </Modal.Header>
-                <Modal.Body>
-                    {target=="jd" && `Are you sure you want to delete ${data.position}?`}
-                    {target!="jd" && `Are you sure you want to delete ${data.cv_original_name}?`}
-                </Modal.Body>
-                <Modal.Footer>
-                    {!isDeleting && <Button className="custom-btn-sec done-btn-footer" style={{marginRight:0}} variant="secondary" onClick={handleCloseModal}>No</Button>}
-                    <Button className="done-btn-footer" style={{borderRadius:"15px",marginRight:"16px"}} variant="danger" disabled={isDeleting} onClick={() => target=="jd" ? onConfirmDeleteJd() : target=="cv" ? onConfirmDeleteCv() : onConfirmDeleteCvAgainstJd()}>
-                        {isDeleting && <Spinner
-                            as="span"
-                            animation="border"
-                            size="sm"
-                            role="status"
-                            aria-hidden="true"
-                        />}
-                        {isDeleting ? " Deleting..." : "Yes"}</Button>
-
-                </Modal.Footer>
-            </Modal>
+            <Modal.Header >
+                <Modal.Title>Confirm Delete</Modal.Title>
+                <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseModal}></button>
+            </Modal.Header>
+            <Modal.Body>
+                {target == "jd" && `Are you sure you want to delete ${data.position}?`}
+                {target != "jd" && `Are you sure you want to delete ${data.cv_original_name}?`}
+            </Modal.Body>
+            <Modal.Footer>
+                {!isDeleting && <Button className="custom-btn-sec done-btn-footer" style={{ marginRight: 0 }} variant="secondary" onClick={handleCloseModal}>No</Button>}
+                <Button className="done-btn-footer" style={{ borderRadius: "15px", marginRight: "16px" }} variant="danger" disabled={isDeleting} onClick={() => target == "jd" ? onConfirmDeleteJd() : target == "cv" ? onConfirmDeleteCv() : onConfirmDeleteCvAgainstJd()}>
+                    {isDeleting && <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                    />}
+                    {isDeleting ? " Deleting..." : "Yes"}</Button>
+            </Modal.Footer>
+        </Modal>
     )
 }
-
 export default DeleteModal

@@ -174,43 +174,6 @@ const JdTable = (props) => {
       </ThemeProvider>
     </div>
   );
-  //     return (
-  //         <Table>
-  //             <TableHead>
-  //                 <TableRow>
-  //                     {headers.map((header, index) => (
-  //                         <TableCell key={index}>
-  // <TableSortLabel
-  //                                 active={sortType.column === header}
-  //                                 direction={sortType.order}
-  //                                 onClick={() => handleSort(header)}
-  //                             >
-  //                                 {labels[index]}
-  //                             </TableSortLabel>
-  //                         </TableCell>
-  //                     ))}
-  //                 </TableRow>
-  //             </TableHead>
-  //             <TableBody>
-  //                 {sortedData.map((item, index) => (
-  //                     <TableRow key={index}
-  //                     onClick={() => {
-  //                         navigate(`/jd/${item._id}`)
-  //                     }}>
-  //                             <TableCell >{item['position']}</TableCell>
-  //                             <TableCell >{item['department']}</TableCell>
-  //                             <TableCell >{getSkills(item['skills']).join(',\r\n')}</TableCell>
-  //                             <TableCell >{item['experience']}</TableCell>
-  //                             <TableCell >{item['qualification']}</TableCell>
-  //                             <TableCell >{item['universities'].join(',\r\n')}</TableCell>
-  //                             <TableCell >{item['uploaded_by']}</TableCell>
-  //                             <TableCell >{item['createdAt']}</TableCell>
-
-  //                     </TableRow>
-  //                 ))}
-  //             </TableBody>
-  //         </Table>
-  //     );
 };
 
 export default JdTable;

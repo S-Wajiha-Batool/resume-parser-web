@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import * as fs from "fs";
 import { useParams } from 'react-router-dom'
 import { Modal, Tabs, Tab, Button, Spinner, Form, Col, Row } from 'react-bootstrap'
 import { Checkbox, TextField, Autocomplete } from '@mui/material';
@@ -23,15 +22,11 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
     const [isMatching, setIsMatching] = useState(false);
     const [loading, setIsLoading] = useState(true);
     const [callbackJdDetails, setCallbackJdDetails] = state.JDAPI.callbackJdDetails;
-    const [parsedCvsFromAPI, setParsedCvsFromAPI] = useState([]);
-    const [fileNamesPC, setFileNamesPC] = useState([]);
     const [scoresPC, setScoresPC] = useState([]);
     const [scoresServer, setScoresServer] = useState([]);
     const [matchingDonePC, setMatchingDonePC] = useState(false);
     const [matchingDoneServer, setMatchingDoneServer] = useState(false);
     const [fileLimit, setFileLimit] = useState(false);
-    const inputRef = useRef();
-    const { id } = useParams()
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
     const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const path = require('path');
@@ -58,20 +53,6 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
         }
 
     }, [token, callbackCv]);
-
-    const getPdf = (file_path) => {
-        const mimetype = file_path.split(".")[1];
-        const sourceFilePath = path.resolve('./word_file.docx');
-        const outputFilePath = path.resolve('./myDoc.pdf');
-        unoconv
-            .convert(sourceFilePath, outputFilePath)
-            .then(result => {
-                return outputFilePath
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
 
     const handleUploadPC = async (e) => {
         e.preventDefault()
@@ -175,7 +156,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
         for (let i = 0; i < files.length; i++) {
             const file = files[i]
             if (index !== i)
-                dt.items.add(file) // here you exclude the file. thus removing it.
+                dt.items.add(file)
         }
         input.files = dt.files
         console.log(input.files)
@@ -231,7 +212,6 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
     }
 
     const resetCvsPCOnClickingView = (option) => {
-        //var contains = false;
         var contains = cvsServer.includes(option);
         console.log(contains)
         if (contains) {
@@ -327,8 +307,6 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                                 options={allCvs}
                                 disableCloseOnSelect
                                 getOptionLabel={(option) => option._id}
-                                //onChange={onChangeUniversities}
-                                //id="disable-clearable"
                                 disableClearable
                                 renderTags={() => null}
                                 onChange={(event, newValue) => {

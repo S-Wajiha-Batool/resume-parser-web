@@ -37,13 +37,15 @@ function Login() {
         navigate('/');
       })
       .catch(err => {
-        console.log(err.response.data.err.msg)
-        showErrorToast("Failed to login. Please try again")
+        console.log(err.response.data.error.msg)
+        if (err.response.data.error.code == 500) {
+          showErrorToast("Unable to login. Please try again")
+        }
+        else {
+          showErrorToast(err.response.data.error.msg)
+        }
       })
   }
-
-
-
 
   return (
     <div className='login-page' style={{ background: 'linear-gradient(to bottom right, #e6f7ff, #dfecf8, #e5f9cd, #f5eef8, #f9ece3)' }}>

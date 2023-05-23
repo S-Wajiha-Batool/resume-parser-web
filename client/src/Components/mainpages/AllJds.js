@@ -5,14 +5,8 @@ import { GlobalState } from '../../GlobalState';
 import { getAllJdsAPI } from '../../API/JDAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
-import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import UploadJdModal from '../utilities/UploadJdModal';
-import { colors } from '@mui/material';
 import Title from '../utilities/Title';
-
-
-const FormData = require('form-data');
-
 
 function AllJds() {
     const state = useContext(GlobalState);
@@ -73,10 +67,6 @@ function AllJds() {
           <LoadingSpinner /> :
           success ?
             <div className="jd-list-container">
-              {/* <div className="jd-list-header">
-                <h1 className="jd-list-title">Job Descriptions</h1>
-                <Button background-color= 'blue' className="jd-list-upload-btn"  onClick={handleShowModal}>Add JD</Button>
-              </div> */}
               <div className="page-title"><Title title={"Job Descriptions"}/></div>
               <JdTable className="jd-list-table" handleShowModal={handleShowModal} />
               <UploadJdModal className="jd-list-upload-modal" showModal={showModal} handleCloseModal={handleCloseModal} />

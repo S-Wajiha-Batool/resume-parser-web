@@ -75,7 +75,6 @@ const CvsAgainstJdTable = (props) => {
                             tooltip: "Add new row",
                             isFreeAction: true,
                             onClick: (e, data) => handleShowModal(),
-                            // isFreeAction:true
                         },
                         {
                             icon: () => <DeleteOutline />,

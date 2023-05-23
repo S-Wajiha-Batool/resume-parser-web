@@ -1,18 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MaterialTable from 'material-table'
 import { ThemeProvider, createTheme } from '@mui/material';
 import { tableIcons } from './TableUtil';
 import AddBox from '@material-ui/icons/AddBox';
-import Edit from '@material-ui/icons/Edit';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import { Modal, Button } from 'react-bootstrap'
-import { deleteCVAPI } from '../../API/CVAPI';
 import { GlobalState } from '../../GlobalState';
-import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
 import DeleteModal from './DeleteModal';
 import '../UI/CvTable.css'
-//import Theme from '../theme/theme'
 
 const customTheme = createTheme({});
 
@@ -110,14 +105,8 @@ const CvTable = (props) => {
             paginationType: "normal",
             showFirstLastPageButtons: false, paginationPosition: "bottom", exportButton: true,
             exportAllData: true, exportFileName: "TableData",
-            //showSelectAllCheckbox: true, showTextRowsSelected: true,
-            selectionProps: rowData => ({
-              // disabled: rowData.age == null,
-              // color:"primary"
-            }),
             grouping: false,
             columnsButton: true,
-            //rowStyle: (data, index) => index % 2 !== 0 ? { background: "#d3d3d3 " } : null,
             rowStyle: { background: "#00000" },
             headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif',textAlign: 'center',
             verticalAlign: 'middle'},

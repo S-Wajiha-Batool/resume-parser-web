@@ -66,14 +66,7 @@ function UploadJdModal({ showModal, handleCloseModal }) {
     };
 
     const onChangeUniversities = (e, values) => {
-        // let newU = values.map((value) => {
-        //     if (typeof value === 'string') {
-        //       // Value is a user-typed string, convert it to an object
-        //       return { value : value };
-        //     }
-        //     return value;
-        //   });
-        setJd({ ...jd, 'universities': values })
+        setJd({ ...jd, 'universities': Object.fromEntries(values) })
     }
 
     const onChangeQualification = (e, value) => {
@@ -205,59 +198,9 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                         </Col>
 
                     </Row>
-                    {/* <Col>
-                            <Form.Group>
-                                <Form.Label>Qualification</Form.Label>
-                                <Form.Select
-                                    name='qualification'
-                                    value={jd.qualification}
-                                    onChange={onChangeInput}>
-                                    {qualification.map((d, key) => {
-                                        return <option className='option' key={key} value={d}>{d}</option>;
-                                    })}
-                                </Form.Select>
-                            </Form.Group>
-                        </Col> */}
                     <br />
-                    <Row>
-                        <Form.Label className='form-label'>Qualification</Form.Label>
-                        {/* <StyledEngineProvider injectFirst> */}
-                        <Autocomplete
-                            isOptionEqualToValue={(option, value) => option[0] === value[0]}
-                            multiple
-                            popupIcon={""}
-                            id="checkboxes-tags-demo"
-                            size="small"
-                            options={Object.entries(quals)}
-                            disableCloseOnSelect
-                            getOptionLabel={(option) =>
-                                option[1] + " (" + option[0] + ")"
-                            }
-                            onChange={onChangeQualification}
-                            renderOption={(props, option, { selected }) => (
-                                <li {...props} key={option[0]}>
-                                    <Checkbox
-                                        icon={icon}
-                                        checkedIcon={checkedIcon}
-                                        style={{ marginRight: 8 }}
-                                        checked={selected}
-                                    />
-                                    {option[1] + " (" + option[0] + ")"}
-                                </li>
-                            )}
-                            style={{ width: 500 }}
-                            renderInput={(params) => (
-                                <TextField required {...params} placeholder="Qualification"
-                                />
-                            )}
-                        />
-                        {/* </StyledEngineProvider> */}
-                    </Row>
-                    <br />
-
                     <Row>
                         <Form.Label className='form-label'>Skills</Form.Label>
-                        {/* <StyledEngineProvider injectFirst> */}
                         <Autocomplete
                             classes={classes}
                             isOptionEqualToValue={(option, value) => option.skill_name === value.skill_name}
@@ -273,16 +216,6 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                             }}
                             getOptionLabel={(option) => option.skill_name || option}
                             onChange={onChangeSkills}
-                            // onInputChange={(event, value) => {
-                            //     if (event.key === 'Enter') {
-                            //         // Handle the selected options
-                            //         let newSkills = [];
-                            //         if (typeof value === 'string') {
-                            //           newSkills = jd.skills.concat({ skill_name: value });
-                            //         }
-                            //         setJd({ ...jd, skills: newSkills });
-                            //       }
-                            //   }}
                             renderOption={(props, option, { selected }) => (
                                 <li {...props} key={option.skill_name}>
                                     <Checkbox
@@ -300,18 +233,48 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                                     {...params}
                                     placeholder="Skills"
                                     onKeyDown={handleKeyDown}
-
                                 />
                             )}
                             value={jd.skills}
                             ListboxComponent={ListboxComponent}
                         />
-                        {/* </StyledEngineProvider> */}
+                    </Row>
+                    <br />
+                    <Row>
+                        <Form.Label className='form-label'>Qualification</Form.Label>
+                        <Autocomplete
+                            isOptionEqualToValue={(option, value) => option[0] === value[0]}
+                            multiple
+                            popupIcon={""}
+                            id="checkboxes-tags-demo"
+                            size="small"
+                            options={Object.entries(quals)}
+                            disableCloseOnSelect
+                            getOptionLabel={(option) =>
+                                option[0] 
+                            }
+                            onChange={onChangeQualification}
+                            renderOption={(props, option, { selected }) => (
+                                <li {...props} key={option[0]}>
+                                    <Checkbox
+                                        icon={icon}
+                                        checkedIcon={checkedIcon}
+                                        style={{ marginRight: 8 }}
+                                        checked={selected}
+                                    />
+                                    {option[0]}
+                                </li>
+                            )}
+                            style={{ width: 500 }}
+                            renderInput={(params) => (
+                                <TextField required {...params} placeholder="Qualification"
+                                />
+                            )}
+                        />
                     </Row>
                     <br />
                     <Row>
                         <Form.Label className='form-label'>Universities</Form.Label>
-                        {/* <StyledEngineProvider injectFirst> */}
                         <Autocomplete
                         popupIcon={""}
                             isOptionEqualToValue={(option, value) => option[0] === value[0]}
@@ -322,7 +285,6 @@ function UploadJdModal({ showModal, handleCloseModal }) {
                             disableCloseOnSelect
                             getOptionLabel={(option) => 
                                  option[1] + " (" + option[0] + ")"
-                                
                             }
                             onChange={onChangeUniversities}
                             renderOption={(props, option, { selected }) => (
