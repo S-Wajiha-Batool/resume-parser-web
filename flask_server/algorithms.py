@@ -1,20 +1,14 @@
 from flask import Flask, request
 import json 
 import docx2txt
-import pdfminer
 from pdfminer.high_level import extract_text
 import re
 import spacy
 from spacy.matcher import PhraseMatcher
-import skillNer
 from skillNer.general_params import SKILL_DB
 from skillNer.skill_extractor_class import SkillExtractor
-import nltk
-import zipfile
 import xml.etree.ElementTree as ET
-import fuzzywuzzy
 from fuzzywuzzy import fuzz
-import sklearn
 import datetime
 import json
 import numpy
@@ -124,7 +118,6 @@ def get_skills(nlp, text:str):
 
 
 def extract_dates_and_text(resume_text):
-    print(resume_text)
     dates_and_text = []
     start_regexes = parsing_constants.WORK_EXPERIENCE_HEADINGS
     end_regex = parsing_constants.EVERY_OTHER_HEADING_REGEX
@@ -386,9 +379,8 @@ def match_cv():
     final_scores = []
     for cv_data in cv_data_array:
         scores = {}
-        resume_text:str = extract_text_from_pdf('../server/' + cv_data['cv_path'])
+        resume_text:str = extract_text_from_pdf('../server/' + cv_data['cv_path'].replace("\\", "/"))
         skills_match_score = 0
-
         if 'skills' in jd_data:
             for skill in jd_data["skills"]:
                     for cv_skill in cv_data["skills"]:
