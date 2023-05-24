@@ -13,6 +13,7 @@ import SouthEastRoundedIcon from '@mui/icons-material/SouthEastRounded';
 import JD_icon from '../images/job-description-2.png'
 import CV_icon from '../images/cv-2.png'
 import count_icon from '../images/curriculum-vitae-2.png'
+import { Doughnut } from 'react-chartjs-2';
 
 function Dashboard() {
 
@@ -167,7 +168,7 @@ function Dashboard() {
               console.log(err.response.data.error.msg)
               if (err.response.data.error.code == 500) {
                 //showErrorToast("CV fetching failed")
-              }
+              }                    
             })
           // .finally(() => {
           //     setIsLoading(false);
@@ -234,7 +235,7 @@ function Dashboard() {
     }
   }, [token, callbackCv])
 
-  const colorScale = [' #73556E', '#9FA1A6', '#F2AA6B', '#F28F6B', '#D97373', '#00BFFF'];
+  const colorScale = [' #73556E', '#9FA1A6', '#F2AA6B', '#F28F6B', '#D97373', '#283555'];
 
 
 
@@ -312,7 +313,7 @@ function Dashboard() {
               <div className='histogram-box'>
                 <h2 className='text1'>Resumes Score Distribution</h2>
                 {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
-                  <VictoryChart domainPadding={{ x: 12 }} width={550} height={370}>
+                  <VictoryChart domainPadding={{ x: 12 }}>
                     <VictoryAxis
                       style={{
                         axis: { stroke: "black", strokeWidth: 2.5 },
@@ -345,7 +346,7 @@ function Dashboard() {
                       data={hist}
                       x="x"
                       y="y"
-                      style={{ data: { fill: 'darkplum' } }}
+                      style={{ data: { fill: '#f5ab35' } }}
                       barRatio={0.6}
                     />
                   </VictoryChart>
@@ -357,7 +358,7 @@ function Dashboard() {
               <div className='pie-chart-box'>
                 <h2 className='text1'>Department-wise Job Descriptions</h2>
                 {isLoadingPie ? (<LoadingSpinner />) : successPie ? (
-                  <VictoryPie data={pie} colorScale={colorScale} width={600}/>
+                  <VictoryPie data={pie} colorScale={colorScale}  innerRadius={100} width={600}/>
                 )
                   : (
                     'Unable to fetch data'

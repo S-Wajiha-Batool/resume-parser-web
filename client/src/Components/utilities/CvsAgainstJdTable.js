@@ -107,7 +107,7 @@ const CvsAgainstJdTable = (props) => {
                         exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1, selection: true,
                         showSelectAllCheckbox: true, showTextRowsSelected: true,
                         columnsButton: true,
-                        headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif',textAlign: 'center',
+                        headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold",textAlign: 'center',
                         verticalAlign: 'middle'},
                         actionsColumnIndex: -1,
                         selection: false,
@@ -117,7 +117,6 @@ const CvsAgainstJdTable = (props) => {
                             fontSize: "1.5em",
                             fontWeight: "bold",
                             margin: "1.33em 0",
-                            fontFamily: 'Open Sans, sans-serif'
                         },
                     }}
                     title="Ranked CVs"

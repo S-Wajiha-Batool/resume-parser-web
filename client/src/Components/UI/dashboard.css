@@ -264,10 +264,11 @@ margin: 20px;
 
 .histogram-box {
   align-items: center;
-  background-color: #ffffff;
+  background-color: #faf9f96b;
   color: #000000;
+  text-align: center;
   padding: 20px;
-  box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
+  box-shadow: 0 0 10px rgba(141, 141, 141, 0.048);
   border-radius: 5px;
   margin: 20px 20px;
   width: 100%;
@@ -278,7 +279,8 @@ margin: 20px;
 .pie-chart-box {
   border: 1px solid #ccc;
   align-items: center;
-  background-color: #ffffff;
+  text-align: center;
+  background-color: #faf9f96b;
   color: #000000;
   padding: 20px;
   box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
@@ -288,9 +290,6 @@ margin: 20px;
   height: fit-content;
 }
 
-tspan {
-  font-family: 'Open Sans', sans-serif !important;
-}
 
 
 .loading-spinner {
@@ -318,7 +317,8 @@ tspan {
   color: black;
   text-align: left;
   padding: 20px;
-  height: 160px;
+  min-height: 160px;
+  max-height: 160px;
   box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
   margin: 0px 10px 10px 10px;
   border-radius: 5px;
@@ -332,7 +332,8 @@ tspan {
   color: black;
   text-align: left;
   padding: 20px;
-  height: 160px;
+  min-height: 160px;
+  max-height: 160px;
   box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
   margin: 0px 10px 10px 10px;
   border-radius: 5px;
@@ -347,7 +348,8 @@ tspan {
   text-align: left;
   padding: 20px;
   box-shadow: 0 0 10px rgba(141, 141, 141, 0.2);
-  height: 160px;
+  min-height: 160px;
+  max-height: 160px;
   margin: 0px 10px 10px 10px;
   border-radius: 5px;
   border: 1px solid #ccc;

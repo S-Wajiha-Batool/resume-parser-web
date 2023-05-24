@@ -162,7 +162,7 @@ const JdTable = (props) => {
             showFirstLastPageButtons: false,
             tableLayout: "auto",
             overflowY: "auto",
-            headerStyle: { background: "#ffb347ad", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif',textAlign: 'center',
+            headerStyle: { background: "#ffb347ad", color: "#fff", fontWeight: "bold",textAlign: 'center',
             verticalAlign: 'middle' },
             selection: false,
             rowStyle: (data, index) => index % 2 != 0 ? { background: "#ececec" } : { background: "#00000" },

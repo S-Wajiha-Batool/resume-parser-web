@@ -27,10 +27,8 @@ const CvTable = (props) => {
   const [token] = state.UserAPI.token;
   const columns = [
     {
-      title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: {
-        fontWeight: "bold", textAlign: 'center',
-        verticalAlign: 'middle'
-      }, headerStyle: { color: "black" }, render: (rowData) => <div className='render-data-cv'><div className='inner-render-data-cv'>{rowData.full_name}</div></div>
+      title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { fontWeight: "bold", textAlign: 'center',
+      verticalAlign: 'middle', }, headerStyle: { color: "black" }, render: (rowData) => <div className='render-data-cv'><div className='inner-render-data-cv'>{rowData.full_name}</div></div>
     },
     {
       title: "Email", field: "emails", cellStyle: {
@@ -68,7 +66,7 @@ const CvTable = (props) => {
       <DeleteModal showModal={showDeleteModal} handleCloseModal={handleCloseDeleteModal} data={selectedItem} target={"cv"} />
       <ThemeProvider theme={customTheme}>
         <MaterialTable columns={columns} data={tableData} icons={tableIcons}
-          style={{ fontFamily: 'Open Sans, sans-serif' }}
+          // fontFamily: 'Open Sans, sans-serif' }}
           actions={[
             {
               icon: () => <AddBox />,
@@ -107,8 +105,8 @@ const CvTable = (props) => {
             exportAllData: true, exportFileName: "TableData",
             grouping: false,
             columnsButton: true,
-            rowStyle: { background: "#00000" },
-            headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif',textAlign: 'center',
+            rowStyle: { background: "#00000", fontWeight:'bold'},
+            headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold",textAlign: 'center',
             verticalAlign: 'middle'},
             actionsColumnIndex: -1,
             selection: false,
