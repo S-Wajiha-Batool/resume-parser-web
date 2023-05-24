@@ -76,7 +76,7 @@ def extract_names_transformer(resume_text:str):
     all_names_list_tmp = []
 
     for ner_dict in ner_list:
-        if ner_dict['entity'] == 'B-PER':
+        if ner_dict['entity'] == 'B-PER': 
             if len(this_name) == 0:
                 this_name.append(ner_dict['word'])
             else:
@@ -98,8 +98,7 @@ def extract_names_transformer(resume_text:str):
     
     return ''
 
- 
-def extract_phone_number(resume_text):
+def extract_phone_number(resume_text:str):
     phone = re.findall(PHONE_REG, resume_text)
  
     if phone:
@@ -109,8 +108,7 @@ def extract_phone_number(resume_text):
             return number
     return None
 
-
-def extract_emails(resume_text):
+def extract_emails(resume_text:str):
     return re.findall(EMAIL_REG, resume_text)
 
 def get_skills(nlp, text:str):
@@ -124,44 +122,9 @@ def get_skills(nlp, text:str):
     unique_skills = list(dict.fromkeys(subset))
     return unique_skills
 
-def extract_dates(resume_text):
-    dates = []
-    start_regexes = parsing_constants.WORK_EXPERIENCE_HEADINGS
-    end_regex = parsing_constants.EVERY_OTHER_HEADING_REGEX
-    result = None
-
-    for start_regex in start_regexes:
-        match = re.search(f'{start_regex}(.*?){end_regex}', resume_text, re.DOTALL | re.IGNORECASE)
-        if match:
-            result = match.group(1)
-            break
-    
-    date_regex = parsing_constants.DATE_REGEX
-    date_formats = parsing_constants.DATE_FORMATS_BY_REGEX
-    matches = re.finditer(date_regex, result)
-
-    for match in matches:
-        for _, possible_formats in date_formats.items():
-            for possible_format in possible_formats:
-                try:
-                    dt = datetime.datetime.strptime(match.group(), possible_format)
-                    dates.append(dt)
-                except ValueError:
-                    pass
-    return dates
-
-def calculate_experience(dates):
-    if len(dates) == 1:
-        return (datetime.datetime.now() - dates[0]).days / 365.25
-    if len(dates) < 1:
-        return 0
-    dates = sorted(dates)
-    start_date = dates[0]
-    end_date = dates[-1]
-    years_of_exp = (end_date - start_date).days / 365.25
-    return round(years_of_exp, 1)
 
 def extract_dates_and_text(resume_text):
+    print(resume_text)
     dates_and_text = []
     start_regexes = parsing_constants.WORK_EXPERIENCE_HEADINGS
     end_regex = parsing_constants.EVERY_OTHER_HEADING_REGEX
@@ -182,6 +145,8 @@ def extract_dates_and_text(resume_text):
         for _, possible_formats in date_formats.items():
             for possible_format in possible_formats:
                 try:
+                    date_str.replace("Present", datetime.datetime.now().strftime("%m/%d/%Y"))
+                    date_str.replace("present", datetime.datetime.now().strftime("%m/%d/%Y"))
                     dt = datetime.datetime.strptime(date_str, possible_format)
                     date_text = re.search(rf".*{date_str}.*", result, re.MULTILINE)
                     if date_text is not None:
@@ -191,7 +156,7 @@ def extract_dates_and_text(resume_text):
                     dates_and_text.append((dt, job_title))
                 except ValueError:
                     pass
-    return dates_and_text
+    return list(set(dates_and_text))
 
 def calculate_experience_for_each_job(dates_and_text):
     total_experience = 0
@@ -202,21 +167,30 @@ def calculate_experience_for_each_job(dates_and_text):
     # Sort the input list by start date
     dates_and_text.sort(key=lambda x: x[0])
 
-    for date, title in dates_and_text:
+    dates_and_text_modified = []
+    for i, (date, title) in enumerate(dates_and_text):
+        if i == 0:
+            title += f";?b1n;{i}"
+        elif i % 2 == 0:
+            title += f";?b1n;{i//2}"
+        else:
+            title += f";?b1n;{i//2}"
+        dates_and_text_modified.append((date, title))
+
+    for date, title in dates_and_text_modified:
         if title != previous_title:
             previous_title = title
             previous_date = date
         else:
-            experience = (date - previous_date).days / 365
+            experience = ((date + datetime.timedelta(days=1)) - previous_date).days / 365
+            title = title.split(";?b1n;")[0]
             if title != '' and experience!=0:
-                print(f"Experience as {title}: {experience:.2f} years")
                 experience_dict[title] = experience
             total_experience += experience
             previous_date = date
 
     total_experience = round(total_experience, 2)
     return experience_dict, total_experience
-
 
 def down_cast(obj):
     if isinstance(obj, numpy.int64): 
@@ -365,8 +339,6 @@ def parse_cv():
     result = []
     for file in data:
         text:str = extract_text_from_pdf('../server/uploaded_CVs/' + file)
-        print(text)
-        dates:list = extract_dates(text)
         #years_of_exp = calculate_experience(dates)
         experience_by_job, total_experience = calculate_experience_for_each_job(extract_dates_and_text(text))
         name_modified = extract_names_modified(nlp, text)
@@ -419,14 +391,13 @@ def match_cv():
 
         if 'skills' in jd_data:
             for skill in jd_data["skills"]:
-                for surface_form in skill["low_surface_forms"]:
                     for cv_skill in cv_data["skills"]:
-                        match_score = fuzz.token_set_ratio(surface_form, cv_skill)
+                        match_score = fuzz.token_set_ratio(skill, cv_skill)
                         if match_score > skills_match_score:
                             skills_match_score = match_score
-                if(skills_match_score>100):
-                    scores["skills"] = 100
-                scores["skills"] = skills_match_score
+            if(skills_match_score>100):
+                scores["skills"] = 100
+            scores["skills"] = skills_match_score
         else:
             scores["skills"] = 100
         
@@ -503,7 +474,6 @@ def match_cv():
         scores["total_score"] = round(total_score)
         final_scores.append(round(total_score))
 
-    print(final_scores)
     # Return data in json format 
     return json.dumps(final_scores)
 
