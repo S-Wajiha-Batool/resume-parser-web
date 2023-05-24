@@ -138,6 +138,9 @@ function JdDetails() {
                                     <div className='key'>Department: </div>
                                     <div className='value'>{jd.department}</div>
                                     <hr className='line2' />
+                                    <div className='key'>Skills: </div>
+                                    <div className='value'>{getSkills(jd.skills).length > 0 ? <div id="tag-container">{getSkills(jd.skills).map((skill, index) => <span className="tag" key={index}>{skill}</span>)}</div> : <div> - </div>}</div>
+                                    <hr className='line2' />
                                     <div className='key'>Experience: </div>
                                     <div className='value'>{jd.experience}</div>
                                     <hr className='line2' />
@@ -154,9 +157,6 @@ function JdDetails() {
                                         <ul>{Object.entries(jd.universities).map((option, index) => <li key={index}>{option[1] + " (" + option[0] + ")"}</li>)}</ul>
                                         :
                                         <div>-</div>}</div>
-                                    <hr className='line2' />
-                                    <div className='key'>Skills: </div>
-                                    <div className='value'>{getSkills(jd.skills).length > 0 ? <div id="tag-container">{getSkills(jd.skills).map((skill, index) => <span className="tag" key={index}>{skill}</span>)}</div> : <div> - </div>}</div>
                                     <hr className='line2' />
                                     <div className='key'>Posted By: </div>
                                     <div className='value'>{user.first_name + " " + user.last_name}</div>

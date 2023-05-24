@@ -52,7 +52,7 @@ function AllCvs() {
             <LoadingSpinner /> :
             success ?
                  <div className='cv-container'>
-                    <div className='page-title'><Title title={"Resumes"} /></div>
+                    <div className='page-title'><Title title={"CVs"} /></div>
                     <CvTable className='table' handleShowAddModal={handleShowAddModal}/>
                     <ParseCvsModal showAddModal={showAddModal} handleCloseAddModal={handleCloseAddModal} />
                 </div>
