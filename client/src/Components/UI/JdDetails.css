@@ -44,6 +44,18 @@
   background-color: #fcfafa;
 }
 
+
+.css-1pz7awu-MuiButtonBase-root-MuiIconButton-root{
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+.css-zylse7-MuiButtonBase-root-MuiIconButton-root{
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+ul{
+  margin-bottom: 0;
+}
 .details {
   flex-grow: 1;  
   overflow-y: scroll;
@@ -74,7 +86,7 @@
 
 .tag {
   display: inline-block;
-  background-color: rgb(255 179 71 / 68%);
+  background-color: rgba(255, 179, 71, 0.68);
   border-radius: 15px;
   padding: 5px 10px;
   margin: 5px;
@@ -91,8 +103,8 @@
   border-radius: 15px;
 }
 .custom-btn {
-  background-color: #FFB347;
-  border: 1px solid #FFB347;
+  background-color: #f5ab35;
+  border: 1px solid #f5ab35;
   color: #2d2d2d;
   border-radius: 15px;
   font-weight: bold;

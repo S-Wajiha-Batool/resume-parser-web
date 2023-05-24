@@ -77,11 +77,11 @@ function ResetPassword() {
                 })
         }
     }
-    
+
     return (
         <div className='ResetPassword-page' style={{ background: 'linear-gradient(to bottom right, #e6f7ff, #dfecf8, #e5f9cd, #f5eef8, #f9ece3)' }}>
           <div className='ResetPassword-form-container'>
-            <div className='ResetPassword-card' style={{ width: '400px', height: '320px' , position: 'fixed', alignSelf: 'center'}} >
+            <div className='ResetPassword-card'>
               <div className="ResetPassword-header">
                 <h2 className='text1'>Reset Password</h2>
               </div>
@@ -102,19 +102,20 @@ function ResetPassword() {
                       />
                     </div>
                     <div className='button-group'>
+                      <button onClick={() => navigate('/login')} position='center' 
+                className='custom-btn-sec back-btn'>
+                        Back
+                      </button>
                       <button
                         type='submit'
                         onClick={SendOTPSubmit}
-                        className='custom-btn login-btn'
+                        className='custom-btn sendOtp-btn'
                         value='Submit'
                         position='center'
                       >
                         Send OTP
                       </button>
-                      <button onClick={() => navigate('/login')} position='center' 
-                className='custom-btn login-btn'>
-                        Back
-                      </button>
+                      
                     </div>
                   </form>
                 ) : (
@@ -159,18 +160,20 @@ function ResetPassword() {
                       />
                     </div>
                     <div className='button-group'>
+                      <button className="custom-btn-sec back-btn"onClick={() => navigate('/login')} position='center'>
+                        Back
+                      </button>
+                      
                       <button
+                      className="custom-btn sendOtp-btn"
                         type='submit'
                         onClick={ChangePasswordSubmit}
-                        className='custom-btn login-btn'
                         value='Submit'
                         position='center'
                       >
                         Change Password
                       </button>
-                      <button onClick={() => navigate('/login')} position='center'>
-                        Back
-                      </button>
+                      
                     </div>
                   </form>
                 )}

@@ -15,8 +15,9 @@ import home_icon from '../images/home.png'
 import JD_icon from '../images/job-description.png'
 import CV_icon from '../images/cv.png'
 import logout_icon from '../images/logout.png'
-import menu_icon from '../images/menu.png'
 import close_icon from '../images/close.png'
+import head_icon from '../images/2.png'
+
 
 const Sidebar = () => {
     const location = window.location.pathname;
@@ -62,7 +63,7 @@ const Sidebar = () => {
                             <Menu>
                             <MenuItem>
                         <div className='heading' onClick={menuIconClick}>
-                        <img className='menu-icon' src={menu_icon} alt='MENU'/>
+                        <img className='menu-icon' src={close_icon} alt='MENU'/>
                         </div> 
                         </MenuItem>
                         </Menu>):( 
@@ -70,7 +71,9 @@ const Sidebar = () => {
                         <>
                         <div className='heading' onClick={menuIconClick}> 
                         <img className='close-icon' src={close_icon} alt='MENU'/></div>
-                            <div className='logotext'>Parser</div>
+                            <div className='logotext'>
+                                <img className='head-icon' src={head_icon}></img>
+                            </div>
                         </>)}
                     </SidebarHeader>
                     <SidebarContent>

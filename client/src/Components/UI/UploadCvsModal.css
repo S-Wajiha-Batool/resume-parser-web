@@ -14,14 +14,13 @@
     margin: 5px 0;
 }
 
-.file_row{
+.file_roww{
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 10px;
 }
-.file_row span {
+.file_roww span {
     margin: 0;
     padding: 0;
   }
@@ -52,12 +51,16 @@
     margin-bottom: 12px ;
 }
 
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #f5ab35;
+    font-weight: bold;
+}
 button.nav-link{
-    color: #FA9C1B;
+    color:#2d2d2d;
 }
 
 button.nav-link:hover{
-    color: #2d2d2d;
+    color: #f5ab35;
 }
 
 .filename-box {

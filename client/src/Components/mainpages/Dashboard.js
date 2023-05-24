@@ -13,6 +13,7 @@ import SouthEastRoundedIcon from '@mui/icons-material/SouthEastRounded';
 import JD_icon from '../images/job-description-2.png'
 import CV_icon from '../images/cv-2.png'
 import count_icon from '../images/curriculum-vitae-2.png'
+import { Doughnut } from 'react-chartjs-2';
 
 function Dashboard() {
 
@@ -39,6 +40,7 @@ function Dashboard() {
   const [pie, setPie] = useState([]);
   const [hist, setHist] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [success, setSuccess] = useState(false)
 
   const maxY = Math.max(...hist.map(dataPoint => dataPoint.y));
 
@@ -46,6 +48,11 @@ function Dashboard() {
     if (!isLoadingJds, !isLoadingCvs, !isLoadingCount, !isLoadingHist, !isLoadingPie)
       setIsLoading(false)
   }, [isLoadingJds, isLoadingCvs, isLoadingCount, isLoadingHist, isLoadingPie])
+
+  useEffect(() => {
+    if (successJds, successCvs, successMedian, successHist, successPie)
+      setSuccess(true)
+  }, [successJds, successCvs, successMedian, successHist, successPie])
 
   useEffect(() => {
     if (token) {
@@ -66,24 +73,23 @@ function Dashboard() {
                     setSuccessJds(false)
                     console.log(err.response.data.error.msg)
                     if (err.response.data.error.code == 500) {
-                      showErrorToast("JD increase fetching failed")
+                      //showErrorToast("JD increase fetching failed")
                     }
-                  })
-                  .finally(() => {
-                    setIsLoadingJds(false);
                   })
               }
               catch (err) {
                 console.log(err)
-                showErrorToast("JD increase fetching failed")
+                //showErrorToast("JD increase fetching failed")
               }
               setSuccessJds(true);
+              setIsLoadingJds(false)
             })
             .catch(err => {
               setSuccessJds(false)
+              setIsLoadingJds(false)
               console.log(err.response.data.error.msg)
               if (err.response.data.error.code == 500) {
-                showErrorToast("JD fetching failed")
+                //showErrorToast("JD fetching failed")
               }
             })
           // .finally(() => {
@@ -92,7 +98,7 @@ function Dashboard() {
         }
         catch (err) {
           console.log(err)
-          showErrorToast("JD fetching failed")
+          //showErrorToast("JD fetching failed")
         }
       }
       getAllJds()
@@ -108,7 +114,7 @@ function Dashboard() {
               setSuccessPie(false)
               console.log(err.response.data.error.msg)
               if (err.response.data.error.code == 500) {
-                showErrorToast("Jd count for each department fetching failed")
+                //showErrorToast("Jd count for each department fetching failed")
               }
             })
             .finally(() => {
@@ -117,7 +123,7 @@ function Dashboard() {
         }
         catch (err) {
           console.log(err)
-          showErrorToast("Jd count for each department fetching failed")
+          //showErrorToast("Jd count for each department fetching failed")
         }
 
       }
@@ -133,7 +139,6 @@ function Dashboard() {
           getAllCvsAPI(token)
             .then(res => {
               setAllCvs(res.data.data.all_cvs)
-              setSuccessCvs(true);
               try {
                 getIncreasedCvsAPI(token)
                   .then(res => {
@@ -143,26 +148,27 @@ function Dashboard() {
                   })
                   .catch(err => {
                     setSuccessCvs(false)
+                    setIsLoadingCvs(false);
                     console.log(err.response.data.error.msg)
                     if (err.response.data.error.code == 500) {
-                      showErrorToast("CV increase fetching failed")
+                      //showErrorToast("CV increase fetching failed")
                     }
-                  })
-                  .finally(() => {
-                    setIsLoadingCvs(false);
                   })
               }
               catch (err) {
                 console.log(err)
-                showErrorToast("CV increase fetching failed")
+                //showErrorToast("CV increase fetching failed")
               }
+              setSuccessCvs(true);
+              setIsLoadingCvs(false)
             })
             .catch(err => {
               setSuccessCvs(false)
+              setIsLoadingCvs(false);
               console.log(err.response.data.error.msg)
               if (err.response.data.error.code == 500) {
-                showErrorToast("CV fetching failed")
-              }
+                //showErrorToast("CV fetching failed")
+              }                    
             })
           // .finally(() => {
           //     setIsLoading(false);
@@ -170,7 +176,7 @@ function Dashboard() {
         }
         catch (err) {
           console.log(err)
-          showErrorToast("CV fetching failed")
+          //showErrorToast("CV fetching failed")
         }
 
       }
@@ -187,7 +193,7 @@ function Dashboard() {
               setSuccessHist(false)
               console.log(err.response.data.error.msg)
               if (err.response.data.error.code == 500) {
-                showErrorToast("CV distribution fetching failed")
+                //showErrorToast("CV distribution fetching failed")
               }
             })
             .finally(() => {
@@ -196,7 +202,7 @@ function Dashboard() {
         }
         catch (err) {
           console.log(err)
-          showErrorToast("CV distribution fetching failed")
+          //showErrorToast("CV distribution fetching failed")
         }
       }
       getCvDistribution()
@@ -213,7 +219,7 @@ function Dashboard() {
               setSuccessMedian(false)
               console.log(err.response.data.error.msg)
               if (err.response.data.error.code == 500) {
-                showErrorToast("Median fetching failed")
+                //showErrorToast("Median fetching failed")
               }
             })
             .finally(() => {
@@ -222,23 +228,21 @@ function Dashboard() {
         }
         catch (err) {
           console.log(err)
-          showErrorToast("Median fetching failed")
+          //showErrorToast("Median fetching failed")
         }
       }
       getMedian()
     }
   }, [token, callbackCv])
 
-  const colorScale = [' #73556E', '#9FA1A6', '#F2AA6B', '#F28F6B', '#D97373', '#00BFFF'];
+  const colorScale = [' #73556E', '#9FA1A6', '#F2AA6B', '#F28F6B', '#D97373', '#283555'];
 
 
 
   return (
     isLoading ?
-      <LoadingSpinner /> :
-      allJDs.length == 0 ? <div className='dashboard-container'>
-        <div className='text3'> - No Job Descriptions Uploaded - </div>
-      </div> :
+      <LoadingSpinner /> : 
+
         <div className='dashboard-container'>
           <div className='page-title'><Title title={"Dashboard"}/></div>          
           <div className='cont'>
@@ -297,7 +301,7 @@ function Dashboard() {
                 {isLoadingCount ? (<LoadingSpinner />) : successMedian ? (
                   <>
                     <p className='text2'>{median}</p>
-                    <div className='text3'>{count} CVs scoring more than median</div>
+                    <div className='text3'><span style={{fontWeight:'bold'}} >{count}</span> CVs scoring more than median</div>
                   </>
                 )
                   : (
@@ -309,7 +313,7 @@ function Dashboard() {
               <div className='histogram-box'>
                 <h2 className='text1'>Resumes Score Distribution</h2>
                 {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
-                  <VictoryChart domainPadding={{ x: 12 }} width={550} height={370}>
+                  <VictoryChart domainPadding={{ x: 12 }}>
                     <VictoryAxis
                       style={{
                         axis: { stroke: "black", strokeWidth: 2.5 },
@@ -342,7 +346,7 @@ function Dashboard() {
                       data={hist}
                       x="x"
                       y="y"
-                      style={{ data: { fill: 'darkplum' } }}
+                      style={{ data: { fill: '#f5ab35' } }}
                       barRatio={0.6}
                     />
                   </VictoryChart>
@@ -354,10 +358,10 @@ function Dashboard() {
               <div className='pie-chart-box'>
                 <h2 className='text1'>Department-wise Job Descriptions</h2>
                 {isLoadingPie ? (<LoadingSpinner />) : successPie ? (
-                  <VictoryPie data={pie} colorScale={colorScale} width={600}/>
+                  <VictoryPie data={pie} colorScale={colorScale}  innerRadius={100} width={600}/>
                 )
                   : (
-                    <div className='error'>Unable to fetch data. Please try again.</div>
+                    'Unable to fetch data'
                   )}
               </div>
             </div>

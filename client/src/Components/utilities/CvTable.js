@@ -27,35 +27,33 @@ const CvTable = (props) => {
   const [token] = state.UserAPI.token;
   const columns = [
     {
-      title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: {
-        fontWeight: "bold", textAlign: 'center',
-        verticalAlign: 'middle'
-      }, headerStyle: { color: "black" }
+      title: "Name", field: "full_name", sorting: false, filtering: false, cellStyle: { fontWeight: "bold", textAlign: 'center',
+      verticalAlign: 'middle', }, headerStyle: { color: "black" }, render: (rowData) => <div className='render-data-cv'><div className='inner-render-data-cv'>{rowData.full_name}</div></div>
     },
     {
       title: "Email", field: "emails", cellStyle: {
           textAlign: 'center',
           verticalAlign: 'middle'
-      }, render: (rowData) => { return rowData.emails.length > 0 ? (<div>{rowData.emails[0]}</div>) : <div>-</div> }
+      }, render: (rowData) => { return rowData.emails.length > 0 ? (<div className="render-data-cv"><div className='inner-render-data-cv'>{rowData.emails[0]}</div></div>) : <div className='render-data-cv'><div className='inner-render-data-cv'>-</div></div> }
   },
   {
     title: "Contact#", field: "phone_number", cellStyle: {
         textAlign: 'center',
         verticalAlign: 'middle'
-    }, render: (rowData) => { return rowData.phone_number ? (<div>{rowData.phone_number}</div>) : <div>-</div> }
+    }, render: (rowData) => { return rowData.phone_number ? (<div className='render-data-cv'><div className='inner-render-data-cv'>{rowData.phone_number}</div></div>) : <div className="render-data-cv"><div className='inner-render-data-cv'>-</div></div> }
 },
     {
       title: "Links", field: "links", cellStyle: {
         textAlign: 'center',
         verticalAlign: 'middle'
-      }, render: (rowData) => { return rowData.links.length > 0 ? <ul>{rowData.links.map((link, index) => <li key={index}><a href={link}>{link}</a></li>)}</ul> : <div>-</div> }, searchable: true, export: true
+      }, render: (rowData) => { return rowData.links.length > 0 ? <div className="render-data-cv"><div className='inner-render-data-cv'><ul>{rowData.links.map((link, index) => <li key={index}><a href={link}>{link}</a></li>)}</ul></div></div> : <div className="render-data-cv"><div className='inner-render-data-cv'>-</div></div> }, searchable: true, export: true
 
     },
     {
       title: "Posted On", field: "createdAt", cellStyle: {
         textAlign: 'center',
         verticalAlign: 'middle'
-      }, render: (rowData) => <div>{getDate(rowData.createdAt)}</div>
+      }, render: (rowData) => <div className="render-data-cv"><div className='inner-render-data-cv'>{getDate(rowData.createdAt)}</div></div>
     },
   ]
 
@@ -68,7 +66,7 @@ const CvTable = (props) => {
       <DeleteModal showModal={showDeleteModal} handleCloseModal={handleCloseDeleteModal} data={selectedItem} target={"cv"} />
       <ThemeProvider theme={customTheme}>
         <MaterialTable columns={columns} data={tableData} icons={tableIcons}
-          style={{ fontFamily: 'Open Sans, sans-serif' }}
+          // fontFamily: 'Open Sans, sans-serif' }}
           actions={[
             {
               icon: () => <AddBox />,
@@ -107,8 +105,8 @@ const CvTable = (props) => {
             exportAllData: true, exportFileName: "TableData",
             grouping: false,
             columnsButton: true,
-            rowStyle: { background: "#00000" },
-            headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold", fontFamily: 'Open Sans, sans-serif',textAlign: 'center',
+            rowStyle: { background: "#00000", fontWeight:'bold'},
+            headerStyle: { background: "#d3d3d3 ", color: "#fff", fontWeight: "bold",textAlign: 'center',
             verticalAlign: 'middle'},
             actionsColumnIndex: -1,
             selection: false,

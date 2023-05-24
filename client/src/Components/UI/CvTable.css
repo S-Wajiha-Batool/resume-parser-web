@@ -2,23 +2,28 @@
     margin-bottom: 0;
 }
 
-.MuiTableCell-head {
-    background-color: #d3d3d3 !important;
-    color: black !important;
-    font-weight: bold;
-}
 
 .MTableHeader-header-83 .MuiTableCell-paddingCheckbox {
     padding: 8px;
 }
 
-/* .MTableToolbar-actions-36 {
+.render-data-cv{
+    overflow: hidden;
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    padding: 8px;
-  } */
-
+    line-height: 1.5;
+    justify-content: center;
+    height: calc(1.5 * 14px * 2);
+  }
+  
+.inner-render-data-cv{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  
 
 .text1 {
     font-size: 12px;

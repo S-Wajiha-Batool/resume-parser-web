@@ -46,7 +46,7 @@
 }
 
 .MuiTableCell-head {
-    background-color: #d3d3d3 !important;
+    background-color: #fccf8f !important;
     color: black !important;
     font-weight: bold;
 }
@@ -68,3 +68,21 @@
     /* Replace 150px with the height of any other fixed elements on your page */
     overflow-y: auto;
 }
+
+.render-data{
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    line-height: 1.5;
+    justify-content: center;
+    height: calc(1.5 * 14px * 3);
+  }
+  
+.inner-render-data{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+  

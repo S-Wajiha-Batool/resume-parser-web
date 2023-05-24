@@ -1,8 +1,18 @@
+.render-data-cvjd{
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  line-height: 1.5;
+  justify-content: center;
+  height: calc(1.5 * 14px * 2);
+}
 
-.MuiTableCell-head {
-  background-color: #d3d3d3 !important;
-  color: black !important;
-  font-weight: bold;
+.inner-render-data-cvjd{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .MTableHeader-header-83 .MuiTableCell-paddingCheckbox {
@@ -10,6 +20,5 @@
 }
 
 h6.css-2ulfj5-MuiTypography-root {
-  font-family: 'Open Sans', sans-serif;
   font-weight: bold; 
 }
