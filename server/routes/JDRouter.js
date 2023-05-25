@@ -13,10 +13,10 @@ router.patch('/update_jd/:id', verifyToken, JDController.updateJD)
 
 router.patch('/delete_jd/:id', verifyToken, JDController.delete_JD)
 
-router.get('/get_job_details/:id', JDController.get_job_details)
+router.get('/get_job_details/:id', verifyToken, JDController.get_job_details)
 
 router.get('/increased_jds', verifyToken, JDController.increased_JD)
 
-router.get('/JD_count', JDController.JD_count)
+router.get('/JD_count', verifyToken, JDController.JD_count)
 
 module.exports = router;
