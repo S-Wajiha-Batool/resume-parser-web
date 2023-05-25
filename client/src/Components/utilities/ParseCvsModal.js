@@ -126,7 +126,7 @@ function ParseCvsModal({ showAddModal, handleCloseAddModal }) {
     }
 
     return (
-        <Modal show={showAddModal} onHide={handleCloseAddModal}>
+        <Modal show={showAddModal} onHide={handleCloseAddModal} centered>
             <Modal.Header>
                 <Modal.Title>Upload CVs</Modal.Title>
                 <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseAddModal}></button>

@@ -177,8 +177,8 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                     <span>
                         {cvsPC.files[i].name}
                     </span>
-                    {matchingDonePC && <span>
-                        {scoresPC[i]}
+                    {matchingDonePC && <span color={''} style={{fontWeight:'bold'}}>
+                        {scoresPC[i]}%
                     </span>}
                     {!matchingDonePC && <span className='remove_action' onClick={() => handleRemoveFilesFromPC(i)}>
                         Remove
