@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom'
 import { Modal, Tabs, Tab, Button, Spinner, Form, Col, Row } from 'react-bootstrap'
 import { Checkbox, TextField, Autocomplete } from '@mui/material';
 import { GlobalState } from '../../GlobalState';
@@ -29,9 +28,6 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
     const [fileLimit, setFileLimit] = useState(false);
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
     const checkedIcon = <CheckBoxIcon fontSize="small" />;
-    const path = require('path');
-    const unoconv = require('awesome-unoconv');
-    console.log('cvsserver', cvsServer)
 
     useEffect(() => {
         if (token) {

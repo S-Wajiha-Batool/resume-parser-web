@@ -5,7 +5,6 @@ import { GlobalState } from '../../GlobalState';
 import { getAllJdsAPI, getIncreasedJdsAPI, getJdCountForEachDeptAPI } from '../../API/JDAPI';
 import { getAllCvsAPI, getIncreasedCvsAPI, getMedianAPI, getCvDistributionAPI } from '../../API/CVAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
-import { showErrorToast } from '../utilities/Toasts';
 import '../UI/arrowindicator.css'
 import Title from '../utilities/Title';
 import NorthEastRoundedIcon from '@mui/icons-material/NorthEastRounded';
@@ -13,7 +12,6 @@ import SouthEastRoundedIcon from '@mui/icons-material/SouthEastRounded';
 import JD_icon from '../images/job-description-2.png'
 import CV_icon from '../images/cv-2.png'
 import count_icon from '../images/curriculum-vitae-2.png'
-import { Doughnut } from 'react-chartjs-2';
 
 function Dashboard() {
 
