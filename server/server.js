@@ -21,7 +21,7 @@ const cvs_route = require("./controllers/CVController")
 
 // ---after---//
 
-database.getInstance();
+//database.getInstance();
 
 // --- //
 
@@ -39,9 +39,16 @@ app.use('/api/jd', require('./routes/JDRouter'))
 // app.use("/resume_parser", cvs_route);
 app.use("/uploaded_JDs", express.static('uploaded_JDs'))
 app.use("/uploaded_CVs", express.static('uploaded_CVs'))
-app.listen(process.env.PORT || 3002, () =>{
-    console.log("server is running");
-});
 
+dotenv.config()
+mongoose.connect("mongodb+srv://Wajiha-Batool:PowerBank6@cluster0.7puwb.mongodb.net/Resume_Parser?retryWrites=true&w=majority")
+  .then(() => 
+  {
+    console.log('Database connected')
+    app.listen(process.env.PORT || 3002, () =>{
+    console.log("server is running");
+    });
+  })
+  .catch((err) => console.error('Error connecting to database', err));
 
 
