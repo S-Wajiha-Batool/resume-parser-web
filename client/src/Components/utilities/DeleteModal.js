@@ -25,7 +25,10 @@ function DeleteModal({ showModal, handleCloseModal, data, target }) {
                     showSuccessToast(`${data.position} deleted successfully`)
                     handleCloseModal()
                     setCallbackJd(!callbackJd)
-                    navigate('/jds')
+                    if (location !== '/jds')
+                        navigate(-1)
+                    else
+                        navigate('/jds')
                 })
                 .catch(err => {
                     console.log(err.response.data.error.msg)
