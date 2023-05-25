@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, } from 'react';
-import { VictoryChart, VictoryAxis, VictoryBar, VictoryPie} from 'victory';
+import { VictoryChart, VictoryAxis, VictoryBar, VictoryPie, VictoryLegend} from 'victory';
 import '../UI/dashboard.css'
 import { GlobalState } from '../../GlobalState';
 import { getAllJdsAPI, getIncreasedJdsAPI, getJdCountForEachDeptAPI } from '../../API/JDAPI';

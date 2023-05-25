@@ -457,12 +457,16 @@ const CVController = {
             else {
                 median = sortedArray[middleIndex];
             }
-            for(var i = 0 ; i < percentages.length; i++){
-                if(percentages[i] >= median){
+            for (var i = 0; i < percentages.length; i++) {
+                if (percentages[i] >= median) {
                     count++;
                 }
             }
-            return res.status(200).json({ error: { code: null, msg: null }, data: {median, count}});
+            
+            if(percentages.length == 0){
+                median = 0;
+            }
+            return res.status(200).json({ error: { code: null, msg: null }, data: { median, count } });
 
         }
         catch (err) {
@@ -546,10 +550,21 @@ const CVController = {
             if (CVs.length == 0) {
                 return res.status(200).json({ error: { code: null, msg: null }, data: 0 });
             }
-            const increased_percentage = ((c_count - l_count) / (l_count)) * 100;
+            
+            if (l_count == 0 && c_count != 0) {
+                return res.status(200).json({ error: { code: null, msg: null }, data: 100 });
 
-            console.log("percentage", increased_percentage);
-            return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage });
+            }
+            else if(l_count == 0 && c_count == 0){
+                return res.status(200).json({ error: { code: null, msg: null }, data: 0 });
+            }
+            else {
+                const increased_percentage = ((c_count - l_count) / (l_count)) * 100;
+
+                console.log("percentage", increased_percentage);
+                return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage });
+            }
+
 
         }
         catch (err) {
