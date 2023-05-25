@@ -13,7 +13,7 @@ class Database {
 
     // Connect to the database
     dotenv.config()
-    mongoose.connect(process.env.MONGO_URL)
+    mongoose.connect("mongodb+srv://Wajiha-Batool:PowerBank6@cluster0.7puwb.mongodb.net/Resume_Parser?retryWrites=true&w=majority")
       .then(() => console.log('Database connected'))
       .catch((err) => console.error('Error connecting to database', err));
 
