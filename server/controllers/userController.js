@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const User = require("../models/Users")
-const Otp = require("../modelsOTP")
+const Otp = require("../models/OTP")
 const CryptoJS = require("crypto-js");
 const jwt = require('jsonwebtoken');
 const { spawn } = require('child_process');
