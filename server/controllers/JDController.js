@@ -456,11 +456,19 @@ const JDController = {
             if (JDs.length == 0) {
                 return res.status(200).json({ error: { code: null, msg: null }, data: 0 });
             }
-        
-            const increased_percentage = ((c_count - l_count) / (l_count)) * 100;
-            const total_jds = JDs.length;
-            console.log("percentage", increased_percentage);
-            return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage });
+            
+            if(l_count == 0 && c_count != 0){
+                return res.status(200).json({ error: { code: null, msg: null }, data: 100 });
+            }
+            else if(l_count == 0 && c_count == 0){
+                return res.status(200).json({ error: { code: null, msg: null }, data: 0 });
+            }
+            else{
+                const increased_percentage = ((c_count - l_count) / (l_count)) * 100;
+                const total_jds = JDs.length;
+                console.log("percentage", increased_percentage);
+                return res.status(200).json({ error: { code: null, msg: null }, data: increased_percentage });   
+            }
 
         }
         catch (err) {
