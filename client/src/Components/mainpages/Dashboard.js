@@ -301,7 +301,7 @@ function Dashboard() {
                 {isLoadingCount ? (<LoadingSpinner />) : successMedian ? (
                   <>
                     <p className='text2'>{median}</p>
-                    <div className='text3'>{count} CVs scoring more than median</div>
+                    <div className='text3'><span style={{fontWeight:'bold'}} >{count}</span> CVs scoring more than median</div>
                   </>
                 )
                   : (

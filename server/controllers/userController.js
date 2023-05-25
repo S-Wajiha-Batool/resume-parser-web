@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const User = require("../models/Users")
-const Otp = require("../models/Otp")
+const Otp = require("../models/OTP")
 const CryptoJS = require("crypto-js");
 const jwt = require('jsonwebtoken');
 const { spawn } = require('child_process');
@@ -56,7 +56,7 @@ const userController = {
     profile: async (req, res) => {
         try {
             var user = {};
-            if (req.params.id){
+            if (req.params.id) {
                 user = await User.findOne({ _id: req.params.id });
             }
             else {
@@ -76,15 +76,15 @@ const userController = {
             console.log(user_email)
             if (!user_email) return res.status(404).json({ error: { code: 404, msg: "No email found" }, data: null })
 
-            let user = await User.findOne({email: user_email});
+            let user = await User.findOne({ email: user_email });
 
             if (!user) return res.status(404).json({ error: { code: 404, msg: "No user found" }, data: null })
-console.log(user)
-            let otpCode = Math.floor((Math.random()*10000) + 1);
+            console.log(user)
+            let otpCode = Math.floor((Math.random() * 10000) + 1);
             let otpData = new Otp({
                 email: user_email,
                 code: otpCode,
-                expires_in: new Date().getTime() + 300*1000 //5 mins
+                expires_in: new Date().getTime() + 300 * 1000 //5 mins
             })
 
             let otpResponse = await otpData.save();
@@ -100,14 +100,14 @@ console.log(user)
 
     changePassword: async (req, res) => {
         try {
-            let {user_email, user_otp, user_password }= req.body;
+            let { user_email, user_otp, user_password } = req.body;
 
             if (!user_email) return res.status(404).json({ error: { code: 404, msg: "Email not found" }, data: null })
             if (!user_otp) return res.status(404).json({ error: { code: 404, msg: "OTP not found" }, data: null })
             if (!user_password) return res.status(404).json({ error: { code: 404, msg: "Password not found" }, data: null })
             if (user_password.length < 8) return res.status(200).json({ error: { code: 404, msg: "Password should be atleast 8 characters long" }, data: null })
 
-            let otp = await Otp.findOne({email: user_email, code: user_otp});
+            let otp = await Otp.findOne({ email: user_email, code: user_otp });
 
             if (!otp) return res.status(404).json({ error: { code: 404, msg: "Invalid OTP" }, data: null })
 
@@ -115,7 +115,7 @@ console.log(user)
             let diff = otp.expires_in - currentTime;
             if (diff < 0) return res.status(404).json({ error: { code: 404, msg: "OTP expired" }, data: null })
 
-            let user = await User.findOne({email: user_email})
+            let user = await User.findOne({ email: user_email })
             user.password = CryptoJS.AES.encrypt(user_password, process.env.SECRET_KEY)
             let saved_user = await user.save();
 
@@ -333,7 +333,7 @@ console.log(user)
         }
     },
 
-    
+
 }
 
 const createAccessToken = (user) => {
@@ -348,7 +348,7 @@ const mailer = (email, otp, res) => {
     var nodemailer = require('nodemailer');
     var transporter = nodemailer.createTransport({
         service: "gmail",
-        port:587,
+        port: 587,
         secure: false,
         auth: {
             user: "tnasir13579@gmail.com",
@@ -363,16 +363,16 @@ const mailer = (email, otp, res) => {
         text: `Hello! Use the following OTP to reset your password : ${otp}. Please note that the OTP will expire in 5 minutes.`
     }
 
-    transporter.sendMail(mailOptions, function(error, info){
-        if(error){
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
             console.log(error)
             return res.status(404).json({ error: { code: 404, msg: "Error in sending email. Please try again" }, data: null })
         }
-        else
-        {
+        else {
             console.log("Email sent " + info.response)
         }
-    })}
-    
+    })
+}
+
 
 module.exports = userController

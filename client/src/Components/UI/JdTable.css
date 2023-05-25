@@ -79,7 +79,7 @@
     height: calc(1.5 * 14px * 3);
   }
   
-  .inner-render-data{
+.inner-render-data{
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;

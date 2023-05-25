@@ -2,7 +2,7 @@ const router = require('express').Router()
 const CVController = require('../controllers/CVController')
 const { verifyToken, verifyTokenAndAuth } = require('../middleware/verifyToken');
 const upload_cv = require('../middleware/upload_cv')
-const fileFilterMiddleware = require('../Middleware/fileSizeHandler')
+const fileFilterMiddleware = require('../middleware/fileSizeHandler')
 const path = require('path');
 const { Router } = require('express');
 
