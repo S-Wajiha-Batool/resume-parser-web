@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const JDController = require('../controllers/JDController')
 const { verifyToken, verifyTokenAndAuth } = require('../middleware/verifyToken');
-const upload_jd = require('../Middleware/upload_jd')
+const upload_jd = require('..middleware/upload_jd')
 const path = require('path')
 const { Router } = require('express');
 
