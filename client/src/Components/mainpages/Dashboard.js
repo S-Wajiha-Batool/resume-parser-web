@@ -12,6 +12,7 @@ import SouthEastRoundedIcon from '@mui/icons-material/SouthEastRounded';
 import JD_icon from '../images/job-description-2.png'
 import CV_icon from '../images/cv-2.png'
 import count_icon from '../images/curriculum-vitae-2.png'
+import ScrollArea from 'react-scrollbar';
 
 function Dashboard() {
 
@@ -233,8 +234,8 @@ function Dashboard() {
     }
   }, [token, callbackCv])
 
-  const colorScale = [' #73556E', '#9FA1A6', '#F2AA6B', '#F28F6B', '#D97373', '#283555'];
-
+  const colorScale = [' #73556E', '#023020', '#C70039', '#FFC300', '#DAF7A6', '#581845', '#9FA1A6', '#F2AA6B', '#F28F6B', '#D97373', '#283555'];
+  const sdd = [{x: "Software Engineering", y: 1}, {x: "Supply Chain", y: 1}, {x: "Marketing", y: 2},{x: "Marketing", y: 2},{x: "Marketing", y: 2},{x: "Marketing", y: 2},{x: "Marketing", y: 2},{x: "Marketing", y: 2},{x: "Marketing", y: 2},{x: "Marketing", y: 2},{x: "Marketing", y: 2},{x: "Marketing", y: 2},{x: "Marketing", y: 2},{x: "Marketing", y: 2},{x: "Marketing", y: 2},{x: "Marketing", y: 2},{x: "Others", y: 2},]
 
 
   return (
@@ -314,6 +315,7 @@ function Dashboard() {
                   <VictoryChart domainPadding={{ x: 12 }}>
                     <VictoryAxis
                       style={{
+                        width: "400px", height:"400px" ,
                         axis: { stroke: "black", strokeWidth: 2.5 },
                         tickLabels: {
                           fontSize: 6,
@@ -353,15 +355,43 @@ function Dashboard() {
                     'Unable to fetch data'
                   )}
               </div>
-              <div className='pie-chart-box'>
-                <h2 className='text1'>Department-wise Job Descriptions</h2>
-                {isLoadingPie ? (<LoadingSpinner />) : successPie ? (
-                  <VictoryPie data={pie} colorScale={colorScale}  innerRadius={100} width={600}/>
-                )
-                  : (
-                    'Unable to fetch data'
-                  )}
-              </div>
+              <div className='pie-chart-box' >
+              <h2 className='text1'>Department-wise Job Descriptions</h2>
+              <div style={{ display: 'flex', marginLeft: '30px', marginTop:'30px', }}>
+                    <VictoryPie
+                    standAlone={false}
+                   data={pie}
+                   colorScale={colorScale}
+                   innerRadius={75}
+                   width={350}
+                   height={435}
+                   labels={() => ''} 
+                   />
+                  <span style={{ overflow: "scroll"}} >
+                  <div style={{ width: "400px",display: 'flex', marginLeft: '50px', marginRight:'10px', marginTop:'25px' }}>
+                    <VictoryLegend
+                      standAlone={false}
+                      colorScale={colorScale}
+                      data={pie.map(({ index, x,y  }) => ({
+                        name: x,
+                        symbol: {
+                          type: 'circle',
+                          fill: colorScale[index],
+                        },
+                      }))}
+                      orientation="vertical"
+                      gutter={10}
+                      style={{
+                        borderRadius: '5px',
+                        padding: '5px',
+                        fontSize: 17, // Adjust the font size here
+                      }}
+                    />
+                    
+                  </div>
+                  </span>
+                </div> 
+                </div>
             </div>
           </div>
         </div>
