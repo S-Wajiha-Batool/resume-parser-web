@@ -12,7 +12,7 @@ import SouthEastRoundedIcon from '@mui/icons-material/SouthEastRounded';
 import JD_icon from '../images/job-description-2.png'
 import CV_icon from '../images/cv-2.png'
 import count_icon from '../images/curriculum-vitae-2.png'
-import ScrollArea from 'react-scrollbar';
+//import ScrollArea from 'react-scrollbar';
 
 function Dashboard() {
 

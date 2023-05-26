@@ -195,7 +195,7 @@ function UploadCvsModal({ jd, showModal, handleCloseModal, tableRef }) {
                 <span>
                     {cvsServer[i].cv_original_name}
                 </span>
-                {matchingDoneServer && <span>
+                {matchingDoneServer && <span style={{fontWeight:'bold'}}>
                     {scoresServer[i]}
                 </span>}
                 {!matchingDoneServer && <span className='remove_action' onClick={() => handleRemoveFilesFromServer(cvsServer[i])}>
