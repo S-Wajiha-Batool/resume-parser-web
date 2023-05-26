@@ -1,18 +1,14 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { GlobalState } from '../../GlobalState';
-import { Container, Row, Col, Modal, Button, Form, FormLabel, Spinner } from 'react-bootstrap';
-import { Checkbox, TextField, Autocomplete, ListboxComponentPropType } from '@mui/material';
+import { Row, Col, Modal, Button, Form, Spinner } from 'react-bootstrap';
+import { Checkbox, TextField, Autocomplete } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import LoadingSpinner from '../utilities/LoadingSpinner';
 import { showSuccessToast, showErrorToast } from '../utilities/Toasts';
-import { addJdAPI } from '../../API/JDAPI'
-import arrow from '../../Icons/down_arrow.svg'
-import '../UI/UploadJdModal.css'
-import { skills, departments, experience, qualification, universities, unis, quals } from '../../constants'
-import { List } from "react-virtualized";
+import { addJdAPI } from '../../API/JDAPI';
+import '../UI/UploadJdModal.css';
+import { skills, departments, experience, unis, quals } from '../../constants';
 import { FixedSizeList } from 'react-window';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 
 

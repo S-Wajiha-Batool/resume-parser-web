@@ -293,7 +293,9 @@ margin: 20px;
   width: 100%; 
   height: fit-content;
 }
-
+.pie-chart-box  tspan {
+  font-size: 12px !important;
+}
 
 
 .loading-spinner {
@@ -359,7 +361,12 @@ margin: 20px;
   border: 1px solid #ccc;
   width: 100%;
   }
-
+.box-legend{
+  align-items: center;
+  color: black;
+  text-align: left;
+  height: fit-content;
+}
 /* 
 @media screen and (min-width: 768px) {
   .chart {

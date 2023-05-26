@@ -5,7 +5,6 @@ import { GlobalState } from '../../GlobalState';
 import { getAllJdsAPI, getIncreasedJdsAPI, getJdCountForEachDeptAPI } from '../../API/JDAPI';
 import { getAllCvsAPI, getIncreasedCvsAPI, getMedianAPI, getCvDistributionAPI } from '../../API/CVAPI'
 import LoadingSpinner from '../utilities/LoadingSpinner';
-import { showErrorToast } from '../utilities/Toasts';
 import '../UI/arrowindicator.css'
 import Title from '../utilities/Title';
 import NorthEastRoundedIcon from '@mui/icons-material/NorthEastRounded';
@@ -13,7 +12,7 @@ import SouthEastRoundedIcon from '@mui/icons-material/SouthEastRounded';
 import JD_icon from '../images/job-description-2.png'
 import CV_icon from '../images/cv-2.png'
 import count_icon from '../images/curriculum-vitae-2.png'
-import { Doughnut } from 'react-chartjs-2';
+import ScrollArea from 'react-scrollbar';
 
 function Dashboard() {
 
@@ -280,98 +279,100 @@ function Dashboard() {
                 <>
                   <p className='text2'>{allCvs.length}</p>
 
-                  <p>{increasedCvs >= 0 ? (
-                    <div className='inc-dec'>
-                      <span className='text3'><span style={{ color: "#51b000" }}>{increasedCvs.toFixed(1)} % <NorthEastRoundedIcon fontSize='small' /></span> increase since last week</span>
-                    </div>
-                  ) : (
-                    <div className='inc-dec'>
-                      <span className='text3'><span style={{ color: "#c72800" }}>{Math.abs(increasedCvs).toFixed(1)} % <SouthEastRoundedIcon fontSize="small" /> </span>decrease since last week</span>
-                    </div>)}
-                  </p>
-                </>)
-                : ('Unable to fetch data'
-                )}
-            </div>
-            <div className="box-count">
-              <div className='title-row'>
-                <h2 className='text1'>Score Median Overview</h2>
-                <span><img className='card-icon' src={count_icon} /></span>
+                    <p>{increasedCvs >= 0 ? (
+                      <div className='inc-dec'>
+                        <span className='text3'><span style={{ color: "#51b000" }}>{increasedCvs.toFixed(1)} % <NorthEastRoundedIcon fontSize='small' /></span> increase since last week</span>
+                      </div>
+                    ) : (
+                      <div className='inc-dec'>
+                        <span className='text3'><span style={{ color: "#c72800" }}>{Math.abs(increasedCvs).toFixed(1)} % <SouthEastRoundedIcon fontSize="small" /> </span>decrease since last week</span>
+                      </div>)}
+                    </p>
+                  </>)
+                  : ('Unable to fetch data'
+                  )}
               </div>
-              {isLoadingCount ? (<LoadingSpinner />) : successMedian ? (
-                <>
-                  <p className='text2'>{median}</p>
-                  <div className='text3'><span style={{ fontWeight: 'bold' }} >{count}</span> CVs scoring more than median</div>
-                </>
-              )
-                : (
-                  'Unable to fetch data'
-                )}
+              <div className="box-count">
+                <div className='title-row'>
+                  <h2 className='text1'>Score Median Overview</h2>
+                  <span><img className='card-icon' src={count_icon} /></span>
+                </div>
+                {isLoadingCount ? (<LoadingSpinner />) : successMedian ? (
+                  <>
+                    <p className='text2'>{median}</p>
+                    <div className='text3'><span style={{fontWeight:'bold'}} >{count}</span> CVs scoring more than median</div>
+                  </>
+                )
+                  : (
+                    'Unable to fetch data'
+                  )}
+              </div>
             </div>
-          </div>
-          <div className='row-2'>
-            <div className='histogram-box'>
-              <h2 className='text1'>Resumes Score Distribution</h2>
-              {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
-                <VictoryChart domainPadding={{ x: 12 }}>
-                  <VictoryAxis
-                    style={{
-                      axis: { stroke: "black", strokeWidth: 2.5 },
-                      tickLabels: {
-                        fontSize: 6,
-                        //textAnchor: 'e',
-                      },
-                      axisLabel: {
-                        fontSize: 10,
-                      }
-                    }}
-                    label="Percentage"
-                    scale={{ x: "linear", y: "linear", yDomain: [0, maxY] }}
-                  //tickValues={['0-10%', '20-30%', '40-50%', '60-70%', '80-90%', ' 90-100%' ]}
-                  />
-                  <VictoryAxis
-                    dependentAxis
-                    style={{
-                      axis: { stroke: "black", strokeWidth: 2 },
-                      tickLabels: {
-                        fontSize: 6
-                      },
-                      axisLabel: {
-                        fontSize: 10,
-                      }
-                    }}
-                    label="Count"
-                  />
-                  <VictoryBar
-                    data={hist}
-                    x="x"
-                    y="y"
-                    style={{ data: { fill: '#f5ab35' } }}
-                    barRatio={0.6}
-                  />
-                </VictoryChart>
-              )
-                : (
-                  'Unable to fetch data'
-                )}
-            </div>
-            <div className='pie-chart-box'>
+            <div className='row-2'>
+              <div className='histogram-box'>
+                <h2 className='text1'>Resumes Score Distribution</h2>
+                {isLoadingHist ? (<LoadingSpinner />) : successHist ? (
+                  <VictoryChart domainPadding={{ x: 12 }}>
+                    <VictoryAxis
+                      style={{
+                        width: "400px", height:"400px" ,
+                        axis: { stroke: "black", strokeWidth: 2.5 },
+                        tickLabels: {
+                          fontSize: 6,
+                          //textAnchor: 'e',
+                        },
+                        axisLabel: {
+                          fontSize: 10,
+                        }
+                      }}
+                      label="Percentage"
+                      scale={{ x: "linear", y: "linear", yDomain: [0, maxY] }}
+                    //tickValues={['0-10%', '20-30%', '40-50%', '60-70%', '80-90%', ' 90-100%' ]}
+                    />
+                    <VictoryAxis
+                      dependentAxis
+                      style={{
+                        axis: { stroke: "black", strokeWidth: 2 },
+                        tickLabels: {
+                          fontSize: 6
+                        },
+                        axisLabel: {
+                          fontSize: 10,
+                        }
+                      }}
+                      label="Count"
+                    />
+                    <VictoryBar
+                      data={hist}
+                      x="x"
+                      y="y"
+                      style={{ data: { fill: '#f5ab35' } }}
+                      barRatio={0.6}
+                    />
+                  </VictoryChart>
+                )
+                  : (
+                    'Unable to fetch data'
+                  )}
+              </div>
+              <div className='pie-chart-box' >
               <h2 className='text1'>Department-wise Job Descriptions</h2>
-              {isLoadingPie ? (<LoadingSpinner />) : successPie ? (
-                 <div style={{ display: 'flex' }}>
+              <div style={{ display: 'flex', marginLeft: '30px', marginTop:'30px', }}>
                     <VictoryPie
                     standAlone={false}
                    data={pie}
                    colorScale={colorScale}
-                   innerRadius={100}
-                   width={400}
-                   //height={600}
-                   labels={() => ''} />
-                  <div style={{ width: "300px"  , overflowY: 'scroll', maxHeight: '100%', marginLeft: '20px' }}>
+                   innerRadius={75}
+                   width={350}
+                   height={435}
+                   labels={() => ''} 
+                   />
+                  <span style={{ overflow: "scroll"}} >
+                  <div style={{ width: "400px",display: 'flex', marginLeft: '50px', marginRight:'10px', marginTop:'25px' }}>
                     <VictoryLegend
                       standAlone={false}
                       colorScale={colorScale}
-                      data={pie.map(({ index, x, y }) => ({
+                      data={pie.map(({ index, x,y  }) => ({
                         name: x,
                         symbol: {
                           type: 'circle',
@@ -382,23 +383,18 @@ function Dashboard() {
                       gutter={10}
                       style={{
                         borderRadius: '5px',
-                        padding: '10px',
-                        fontSize: '16px', // Adjust the font size here
+                        padding: '5px',
+                        fontSize: 17, // Adjust the font size here
                       }}
                     />
+                    
                   </div>
+                  </span>
+                </div> 
                 </div>
-
-
-
-              )
-                : (
-                  'Unable to fetch data'
-                )}
             </div>
           </div>
         </div>
-      </div>
 
   )
 

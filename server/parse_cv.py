@@ -18,7 +18,6 @@ import sklearn
 from sklearn.metrics.pairwise import cosine_similarity
 import sys
 import os
-from promise import promise
 
 PHONE_REG = re.compile(r'[\+\(]?[1-9][0-9 .\-\(\)]{8,}[0-9]')
 EMAIL_REG = re.compile(r'[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.[a-z]+')
